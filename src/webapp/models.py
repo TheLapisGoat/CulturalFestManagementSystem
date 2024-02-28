@@ -90,3 +90,26 @@ class Organizer(models.Model):
     class Meta:
         verbose_name = "Organizer"
         verbose_name_plural = "Organizers"
+class Venue(models.Model):
+    venue_id = models.IntegerField("venue_id",primary_key=True)
+    venue_name = models.CharField("venue_name",max_length=50,blank=False)
+    venue_capacity = models.IntegerField("venue_capacity",blank=False)
+    address_line_1 = models.CharField("address_line_1",max_length=50,blank=False)
+    address_line_2 = models.CharField("address_line_2",max_length=50,blank=True)
+
+
+class Event(models.Model):
+    event_id = models.IntegerField("event_id",primary_key=True)
+    event_name = models.CharField("event_name",max_length=50,blank=False)
+    event_description = models.TextField("event_description",blank=True)
+    event_start_date = models.DateTimeField("event_start_date",blank=False)
+    event_end_date = models.DateTimeField("event_end_date",blank=False)
+    venue_id = models.ForeignKey(Venue,on_delete=models.CASCADE,null=True)
+    registration_start = models.DateTimeField("registration_start",blank=False)
+    registration_end = models.DateTimeField("registration_end",blank=False)
+    max_participants = models.IntegerField("max_participants",blank=False)
+    min_participants = models.IntegerField("min_participants",blank=False)
+
+class Organized_by(models.Model):
+    event_id = models.ForeignKey(Event,on_delete=models.CASCADE)
+    organizer_id = models.ForeignKey(Organizer,on_delete=models.CASCADE)
