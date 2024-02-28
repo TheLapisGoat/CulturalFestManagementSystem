@@ -1,0 +1,4 @@
+Django==5.0.2
+django_phonenumber_field==7.3.0
+phonenumbers==8.13.31
+psycopg2-binary==2.9.9

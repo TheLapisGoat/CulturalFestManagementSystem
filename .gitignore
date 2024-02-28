@@ -1,3 +1,6 @@
 .DS_Store
 .vscode
-*/__pycache__/
+src/webapp/__pycache__/
+src/webapp/migrations/__pycache__/
+src/venv/
+src/webapp/migrations/*

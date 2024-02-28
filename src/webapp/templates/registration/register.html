@@ -7,7 +7,6 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <style>
-            
             input[type="text"], input[type="password"] {
               box-sizing: border-box; 
               display: block;
@@ -20,7 +19,6 @@
             }
             
             div {
-              color: #f00;
               margin-top: 10px;
             }
         
@@ -41,7 +39,7 @@
             }
             
             input[type="submit"] {
-                background-color: #4CAF50;
+                background-color: #387adf;
                 color: #fff;
                 border: none;
                 padding: 10px 20px;
@@ -63,6 +61,13 @@
                 text-align: center;
                 margin-top: 100px;
             }
+
+            h2 {
+                color: #333;
+                font-size: 16px;
+                text-align: center;
+                margin-top: 20px;
+            }
             
             .message {
                 color: #333;
@@ -72,12 +77,12 @@
             }
         </style>
     </head>
-    
+
     <body>
-        <p>Welcome to the Festival Management System</p>
-        <p>
+        <p>Welcome to the Festival Management System <br> </p>
+        <h2>
         Already have an account? <a href="{% url 'login' %}">Login</a>
-        </p>
+        </h2>
         <form action="" method="post">
             {% csrf_token %}
             {{ form }}
