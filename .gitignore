@@ -1,6 +1,7 @@
 .DS_Store
 .vscode
-src/webapp/__pycache__/
-src/webapp/migrations/__pycache__/
+src/webapp/__pycache__/*
+src/webapp/migrations/__pycache__/*
 src/venv/
 src/webapp/migrations/*
+src/FestivalManagementSystem/__pycache__/*

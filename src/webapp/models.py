@@ -5,16 +5,16 @@ from django.contrib.auth.models import AbstractUser, PermissionsMixin
 class User_Entity(AbstractUser, PermissionsMixin):
     
     first_name = models.CharField("first name", max_length=150, blank=False)
-    middle_name = models.CharField("middle name", max_length=150, blank=True)
+    middle_name = models.CharField("middle name", max_length=150, blank=True, null=True)
     last_name = models.CharField("last name", max_length=150, blank=False)
     email = models.EmailField("email address", blank=False)
     address_line_1 = models.CharField("Address Line 1", max_length=150, blank=False)
-    address_line_2 = models.CharField("Address Line 2", max_length=150, blank=True)
+    address_line_2 = models.CharField("Address Line 2", max_length=150, blank=True, null=True)
     state = models.CharField("City", max_length=150, blank=False)
     country = models.CharField("Country", max_length=150, blank=False)
     pin_code = models.CharField("PIN Code", max_length=150, blank=False)
     telephoneNumber = PhoneNumberField("Telephone Number", blank=False)
-    photograph = models.ImageField("Photo", blank = True)
+    photograph = models.ImageField("Photo", blank = True, null = True, upload_to = 'profile_pictures/')
 
     
     ROLES = [
@@ -31,7 +31,7 @@ class User_Entity(AbstractUser, PermissionsMixin):
         ('O', 'Other'),
     ]
 
-    gender = models.CharField(max_length=1, choices = GENDER_CHOICES, blank=True)
+    gender = models.CharField(max_length=1, choices = GENDER_CHOICES, blank=True, null=True)
     date_of_birth = models.DateField("Date of Birth", blank=True, null=True)
 
     class Meta:
@@ -58,6 +58,8 @@ class Student(models.Model):
         verbose_name = "Student"
         verbose_name_plural = "Students"
 
+    REQUIRED_FIELDS = ['roll_number', 'department']
+
 class Volunteer(models.Model):
     student = models.OneToOneField(Student, on_delete = models.CASCADE, related_name = "volunteer", primary_key = True, blank = False, unique = True)
     hours = models.IntegerField("Hours", blank = False)
@@ -80,6 +82,8 @@ class External_Participant(models.Model):
         verbose_name = "External Participant"
         verbose_name_plural = "External Participants"
 
+    REQUIRED_FIELDS = ['organization']
+
 class Organizer(models.Model):
     user = models.OneToOneField(User_Entity, on_delete = models.CASCADE, related_name = "organizer", primary_key = True, blank = False, unique = True)
     department = models.CharField("Department", max_length = 100, blank = False)
@@ -90,6 +94,8 @@ class Organizer(models.Model):
     class Meta:
         verbose_name = "Organizer"
         verbose_name_plural = "Organizers"
+    
+    REQUIRED_FIELDS = ['department']
 class Venue(models.Model):
     venue_id = models.IntegerField("venue_id",primary_key=True)
     venue_name = models.CharField("venue_name",max_length=50,blank=False)

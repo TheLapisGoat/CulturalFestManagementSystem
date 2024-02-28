@@ -10,7 +10,8 @@ Made as part of Assignment 3 for the Database Management Systems Lab Course, Spr
 
 ## Local Setup Instructions 
 - Install postgres, psql and create a user and database with name `postgres`
-- Install required packages using `pip3 install -r requirements.txt`
-- Run `python3 manage.py makemigrations`
+- Setup a virtual environment and activate it
+- Install required packages 
+- Run `python3 manage.py makemigrations webapp`
 - Run `python3 manage.py migrate`
 - Run `python3 manage.py runserver`
