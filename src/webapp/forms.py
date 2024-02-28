@@ -2,9 +2,12 @@ from django import forms
 from .models import User_Entity, Student, Volunteer, External_Participant, Organizer
 
 class StudentRegistrationForm(forms.Form):
+
     username = forms.CharField(max_length=100, required=True)
     password = forms.CharField(max_length=100, required=True, widget=forms.PasswordInput)
     confirm_password = forms.CharField(max_length=100, required=True, widget=forms.PasswordInput)
+    roll_number = forms.CharField(max_length=100, required=True)
+    department = forms.CharField(max_length=100, required=True)
     email = forms.EmailField(max_length=100, required=True)
     first_name = forms.CharField(max_length=150, required=True)
     last_name = forms.CharField(max_length=150, required=True)
