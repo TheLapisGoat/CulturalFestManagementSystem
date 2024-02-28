@@ -58,6 +58,8 @@ class Student(models.Model):
         verbose_name = "Student"
         verbose_name_plural = "Students"
 
+    REQUIRED_FIELDS = ['roll_number', 'department']
+
 class Volunteer(models.Model):
     student = models.OneToOneField(Student, on_delete = models.CASCADE, related_name = "volunteer", primary_key = True, blank = False, unique = True)
     hours = models.IntegerField("Hours", blank = False)
@@ -80,6 +82,8 @@ class External_Participant(models.Model):
         verbose_name = "External Participant"
         verbose_name_plural = "External Participants"
 
+    REQUIRED_FIELDS = ['organization']
+
 class Organizer(models.Model):
     user = models.OneToOneField(User_Entity, on_delete = models.CASCADE, related_name = "organizer", primary_key = True, blank = False, unique = True)
     department = models.CharField("Department", max_length = 100, blank = False)
@@ -90,6 +94,8 @@ class Organizer(models.Model):
     class Meta:
         verbose_name = "Organizer"
         verbose_name_plural = "Organizers"
+    
+    REQUIRED_FIELDS = ['department']
 class Venue(models.Model):
     venue_id = models.IntegerField("venue_id",primary_key=True)
     venue_name = models.CharField("venue_name",max_length=50,blank=False)
