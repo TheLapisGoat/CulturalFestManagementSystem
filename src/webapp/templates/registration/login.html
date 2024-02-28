@@ -20,7 +20,6 @@
             }
             
             div {
-              color: #f00;
               margin-top: 10px;
             }
         
@@ -41,7 +40,7 @@
             }
             
             input[type="submit"] {
-                background-color: #4CAF50;
+                background-color: #387adf;
                 color: #fff;
                 border: none;
                 padding: 10px 20px;
@@ -70,15 +69,30 @@
                 text-align: center;
                 margin-top: 20px;
             }
+
         </style>
     </head>
     <body>
-        <p>Welcome to the Festival Management System</p>
+        <p>Welcome to the Festival Management System <br> Login </p>
+
+        <h2>Choose your role</h2>
+        <form action="" method="post">
+            {% csrf_token %}
+            <select name="role" onchange="this.form.submit()">
+                <option value="student">Student</option>
+                <option value="participant">Participant</option>
+                <option value="volunteer">Volunteer</option>
+                <option value="organizer">Organizer</option>
+                <option value="admin">Admin</option>
+            </select>
+        </form>
+
         <form action="" method="post">
             {% csrf_token %}
             {{ form }}
             <input type="submit" value="Submit">
         </form>
+
         <div class="message">
             {%if messages%}
                 {%for message in messages%}
@@ -86,6 +100,7 @@
                 {%endfor%}
             {%endif%}
         </div>
+
         <script src="" async defer></script>
     </body>
 </html>
