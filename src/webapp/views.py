@@ -204,14 +204,13 @@ def organizer_view(request):
     event_list = Organized_by.objects.filter(organizer_id=organizer)
     event_id_list = event_list.values_list('event_id',flat=True)
     events = list(Event.objects.all())
-    res = []
-    #for i in range(len(events)):
-        #print(events[i])
-    for event in events:
-        if event.event_id in event_id_list:
-            res.append(event)
-    
-    return render(request, 'organizer/organizer_view.html', {'events': res})
+    # res = []
+    # for event in events:
+    #     if event.event_id in event_id_list:
+    #         res.append(event)
+    # return render(request, 'organizer/organizer_view.html', {'events': res})
+    return render(request, 'organizer/organizer_view.html', {'events': events})
+
 
 @login_required(login_url='login')
 def organizer_event_view(request, event_id):
