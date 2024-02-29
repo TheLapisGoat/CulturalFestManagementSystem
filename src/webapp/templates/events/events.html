@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Events Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .events-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        .event-card {
+            width: calc(33.33% - 20px); /* For PC view, display 3 cards in a row */
+            margin-bottom: 20px;
+            background-color: #f9f9f9;
+            border: 2px solid #0f0f0f;
+            border-radius: 5px;
+            padding: 20px;
+            box-sizing: border-box;
+        
+        }
+        @media (max-width: 768px) {
+            .event-card {
+                width: calc(100% - 20px); /* For mobile view, display 1 card in a row */
+            }
+        }
+        .event-card h2 {
+            margin-top: 0;
+            color: #333;
+        }
+        .event-card p {
+            margin: 5px 0;
+            color: #666;
+        }
+        .event-name{
+            width: 90%;
+        text-align: center;
+        background-color: rgb(45, 45, 45);
+        color: white;
+        margin: auto;
+        padding: 5%;
+        border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Events Page</h1>
+        
+        <div class="events-container">
+            {% if events %}
+                {% for event in events %}
+                    <div class="event-card">
+                        <div class="event-name">{{ event.event_name }}</div>
+                        <p>{{ event.event_description }}</p>
+                        <p>Start Date: {{ event.event_start_date }}</p>
+                        <p>End Date: {{ event.event_end_date }}</p>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No events available at the moment.</p>
+            {% endif %}
+        </div>
+        
+    </div>
+</body>
+</html>
