@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Details</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+    </style>
+</head>
+<body>
+    <h1>Event Details</h1>
+    
+    {% if event %}
+        <p><strong>ID:</strong> {{ event.event_id }}</p>
+        <p><strong>Name:</strong> {{ event.event_name }}</p>
+        <p><strong>Description:</strong> {{ event.event_description }}</p>
+
+        {% if volunteer_list %}
+            <h2>Volunteer List</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>First Name</th>
+                        <th>Hours</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for volunteer in volunteer_list %}
+                        <tr>
+                            <td>{{ volunteer.student.user.first_name }}</td>
+                            <td>{{ volunteer.hours }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>No volunteers for this event.</p>
+        {% endif %}
+
+        {% if venue_list %}
+            <h2>Venue List</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Venue Name</th>
+                        <th>Start Time</th>
+                        <th>End Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for venue in venue_list %}
+                        <tr>
+                            <td>{{ venue.venue.venue_name }}</td>
+                            <td>{{ venue.schedule.start_time }}</td>
+                            <td>{{ venue.schedule.end_time }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>No venues for this event.</p>
+        {% endif %}
+    {% else %}
+        <p>No event found.</p>
+    {% endif %}
+</body>
+</html>

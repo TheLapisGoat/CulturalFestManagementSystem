@@ -13,8 +13,9 @@ from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib.auth.tokens import default_token_generator
 import asyncio
+from django.shortcuts import render, get_object_or_404
 from .models import *
-from .forms import StudentRegistrationForm, OTPVerificationForm, External_ParticipantRegistrationForm
+from .forms import StudentRegistrationForm, OTPVerificationForm, External_ParticipantRegistrationForm, OrganizerRegistrationForm
 # Create your views here. (Using class based views)
 
 #View for login
@@ -56,6 +57,8 @@ class RegisterView(View):
                 form = StudentRegistrationForm()
             elif role == 'external_participant':
                 form = External_ParticipantRegistrationForm()
+            elif role == 'organizer':
+                form = OrganizerRegistrationForm()
             return render(request, self.template_name, {'form': form, 'default_role': role})
         
         #If the form was submitted, then process the form
@@ -64,8 +67,9 @@ class RegisterView(View):
         if role == 'student':
             form = StudentRegistrationForm(request.POST, request.FILES)
         elif role == 'external_participant':
-            print('External Participant')
             form = External_ParticipantRegistrationForm(request.POST, request.FILES)
+        elif role == 'organizer':
+            form = OrganizerRegistrationForm(request.POST, request.FILES)
 
         if form.is_valid():
             #Create the user
@@ -101,6 +105,14 @@ class RegisterView(View):
                     user = user,
                     organization = form.cleaned_data['organization']
                 )
+            elif role == 'organizer':
+                organizer = Organizer.objects.create(
+                    user = user
+                )
+
+                #Delete the organizer key
+                organizer_key = Organizer_Key.objects.get(key = form.cleaned_data['organizer_key'])
+                organizer_key.delete()
 
             #Sending otp to created user's email. If otp is not verified in 5 minutes, delete the user
             otp = default_token_generator.make_token(user)
@@ -114,8 +126,13 @@ class RegisterView(View):
             request.session['otp'] = otp
             request.session['username'] = user.username
 
+            extra_args = {}
+            extra_args['role'] = role
+            if role == 'organizer':
+                extra_args['organizer_key'] = form.cleaned_data['organizer_key']
+
             #Schedule a task to delete the user if otp is not verified in 5 minutes
-            threading.Timer(30.0, schedule_deletion, [request]).start()
+            threading.Timer(30.0, schedule_deletion, [request, extra_args]).start()
 
             #Redirect to otp verification page
             return redirect('otp-verification')
@@ -123,11 +140,16 @@ class RegisterView(View):
         else:
             return render(request, self.template_name, {'form': form, 'default_role': request.session['register_current_role']})
         
-def schedule_deletion(request):
+def schedule_deletion(request, extra_args):
     #Check if the user has verified the otp (is_active = True)
     user = User_Entity.objects.get(username = request.session['username'])
     if user.is_active == False:
         user.delete()
+        
+        #If the user is an organizer, then create the organizer key again
+        if extra_args['role'] == 'organizer':
+            organizer_key = Organizer_Key.objects.create(key = extra_args['organizer_key'])
+            organizer_key.save()
 
 class OTPVerificationView(View):
     template_name = 'registration/otp_verification.html'
@@ -159,9 +181,12 @@ class OTPVerificationView(View):
                 user = User_Entity.objects.filter(username = username)
                 if user.exists():
                     user = user[0]
-                    user.is_active = True
-                    user.save()
-                    messages.success(request, 'Account created successfully')
+                    if user.is_active == False:
+                        user.is_active = True
+                        user.save()
+                        messages.success(request, 'Account created successfully')
+                    else:
+                        messages.error(request, 'Account already verified')
                 else:
                     form.add_error('otp', 'OTP expired. Please register again.')
             else:
@@ -169,7 +194,7 @@ class OTPVerificationView(View):
         return render(request, self.template_name, {'form': form})
 
 
-#@login_required(login_url='main-login')
+@login_required(login_url='login')
 def organizer_view(request):
     if(request.user.is_anonymous):
         return HttpResponse("You're not logged in")
@@ -185,15 +210,21 @@ def organizer_view(request):
     for event in events:
         if event.event_id in event_id_list:
             res.append(event)
-    return render(request, 'organizer/organizer_view.html', {'events': res})
+    
+    return render(request, 'organiser/organiser_view.html', {'events': res})
 
+@login_required(login_url='login')
 def organiser_event_view(request, event_id):
     if(request.user.is_anonymous):
         return HttpResponse("You're not logged in")
     if(request.user.role!='organizer'):
         return redirect("index")
     event = get_object_or_404(Event, event_id=event_id)
-    return render(request, 'organizer/organiser_event_view.html', {'event': event})
+    volunteers = Volunteer_event.objects.filter(event=event)
+    volunteer_list = [x.volunteer for x in volunteers]
+    venue_list = Venue_schedule_event.objects.filter(event=event)
+
+    return render(request, 'organiser/organiser_event_view.html', {'event': event, 'volunteer_list':volunteer_list, 'venue_list': venue_list})
 
 
 def index(request):
