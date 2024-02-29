@@ -52,3 +52,6 @@ class StudentRegistrationForm(forms.Form):
             return False
 
         return True
+    
+class OTPVerificationForm(forms.Form):
+    otp = forms.CharField(label='OTP', max_length=100, widget=forms.TextInput(attrs={'autocomplete': 'off'}))

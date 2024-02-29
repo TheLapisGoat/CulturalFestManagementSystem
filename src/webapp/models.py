@@ -5,16 +5,16 @@ from django.contrib.auth.models import AbstractUser, PermissionsMixin
 class User_Entity(AbstractUser, PermissionsMixin):
     
     first_name = models.CharField("first name", max_length=150, blank=False)
-    middle_name = models.CharField("middle name", max_length=150, blank=True, null=True)
+    middle_name = models.CharField("middle name", max_length=150, blank=True)
     last_name = models.CharField("last name", max_length=150, blank=False)
     email = models.EmailField("email address", blank=False)
     address_line_1 = models.CharField("Address Line 1", max_length=150, blank=False)
-    address_line_2 = models.CharField("Address Line 2", max_length=150, blank=True, null=True)
+    address_line_2 = models.CharField("Address Line 2", max_length=150, blank=True)
     state = models.CharField("City", max_length=150, blank=False)
     country = models.CharField("Country", max_length=150, blank=False)
     pin_code = models.CharField("PIN Code", max_length=150, blank=False)
     telephoneNumber = PhoneNumberField("Telephone Number", blank=False)
-    photograph = models.ImageField("Photo", blank = True, null = True, upload_to = 'profile_pictures/')
+    photograph = models.ImageField("Photo", blank = True, null = True)
 
     
     ROLES = [
@@ -31,8 +31,10 @@ class User_Entity(AbstractUser, PermissionsMixin):
         ('O', 'Other'),
     ]
 
-    gender = models.CharField(max_length=1, choices = GENDER_CHOICES, blank=True, null=True)
+    gender = models.CharField(max_length=1, choices = GENDER_CHOICES, blank=True)
     date_of_birth = models.DateField("Date of Birth", blank=True, null=True)
+
+    is_active = models.BooleanField("Active", default=True, blank=False)
 
     class Meta:
         verbose_name = "User"

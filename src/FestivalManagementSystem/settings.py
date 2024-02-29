@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    "anymail",
     'phonenumber_field',
     'webapp.apps.WebappConfig',
     'django.contrib.admin',
@@ -129,3 +130,11 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'webapp.User_Entity'
+
+#Setting up email backend
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.mailgun.org'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'postmaster@sandbox7f91105012124f259abaf138c66b3b62.mailgun.org'
+EMAIL_HOST_PASSWORD = 'd70cac7fdb860c39d6f71ed347744fa3-b7b36bc2-cf56c127'
