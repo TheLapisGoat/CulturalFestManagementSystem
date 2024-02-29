@@ -132,9 +132,16 @@ class Organized_by(models.Model):
 
 class Infra_schedule(models.Model):
     schedule_id = models.IntegerField(primary_key=True)
-    start_time = models.DateTimeField(auto_now_add=True)
-    end_time = models.DateTimeField(auto_now_add=True)
+    start_time = models.DateTimeField(blank=False)
+    end_time = models.DateTimeField(blank=False)
 
 class Volunteer_event(models.Model):
     volunteer = models.ForeignKey(Volunteer,on_delete=models.CASCADE)
     event = models.ForeignKey(Event,on_delete=models.CASCADE)
+
+class Venue_schedule_event(models.Model):
+    schedule = models.ForeignKey(Infra_schedule,on_delete=models.CASCADE)
+    venue = models.ForeignKey(Venue,on_delete=models.CASCADE)
+    event = models.ForeignKey(Event,on_delete=models.CASCADE)
+
+

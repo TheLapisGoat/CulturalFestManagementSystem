@@ -55,6 +55,30 @@
         {% else %}
             <p>No volunteers for this event.</p>
         {% endif %}
+
+        {% if venue_list %}
+            <h2>Venue List</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Venue Name</th>
+                        <th>Start Time</th>
+                        <th>End Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for venue in venue_list %}
+                        <tr>
+                            <td>{{ venue.venue.venue_name }}</td>
+                            <td>{{ venue.schedule.start_time }}</td>
+                            <td>{{ venue.schedule.end_time }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>No venues for this event.</p>
+        {% endif %}
     {% else %}
         <p>No event found.</p>
     {% endif %}

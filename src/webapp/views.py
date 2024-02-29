@@ -194,7 +194,7 @@ class OTPVerificationView(View):
         return render(request, self.template_name, {'form': form})
 
 
-#@login_required(login_url='main-login')
+@login_required(login_url='login')
 def organizer_view(request):
     if(request.user.is_anonymous):
         return HttpResponse("You're not logged in")
@@ -210,11 +210,10 @@ def organizer_view(request):
     for event in events:
         if event.event_id in event_id_list:
             res.append(event)
-    print(res,"RES")
-    for event in res:
-        print(event.event_id)
+    
     return render(request, 'organiser/organiser_view.html', {'events': res})
 
+@login_required(login_url='login')
 def organiser_event_view(request, event_id):
     if(request.user.is_anonymous):
         return HttpResponse("You're not logged in")
@@ -223,7 +222,9 @@ def organiser_event_view(request, event_id):
     event = get_object_or_404(Event, event_id=event_id)
     volunteers = Volunteer_event.objects.filter(event=event)
     volunteer_list = [x.volunteer for x in volunteers]
-    return render(request, 'organiser/organiser_event_view.html', {'event': event, 'volunteer_list':volunteer_list})
+    venue_list = Venue_schedule_event.objects.filter(event=event)
+
+    return render(request, 'organiser/organiser_event_view.html', {'event': event, 'volunteer_list':volunteer_list, 'venue_list': venue_list})
 
 
 def index(request):
