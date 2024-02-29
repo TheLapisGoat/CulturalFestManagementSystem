@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import User_Entity, Student, Volunteer, External_Participant, Organizer, Event, Venue, Organized_by
+from .models import *
 # Register your models here.
 
 admin.site.register(User_Entity)
@@ -10,3 +10,4 @@ admin.site.register(Organizer)
 admin.site.register(Venue)
 admin.site.register(Event)
 admin.site.register(Organized_by)
+admin.site.register(Volunteer_event)

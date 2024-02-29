@@ -127,3 +127,7 @@ class Infra_schedule(models.Model):
     schedule_id = models.IntegerField(primary_key=True)
     start_time = models.DateTimeField(auto_now_add=True)
     end_time = models.DateTimeField(auto_now_add=True)
+
+class Volunteer_event(models.Model):
+    volunteer = models.ForeignKey(Volunteer,on_delete=models.CASCADE)
+    event = models.ForeignKey(Event,on_delete=models.CASCADE)

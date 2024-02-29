@@ -197,7 +197,9 @@ def organiser_event_view(request, event_id):
     if(request.user.role!='organizer'):
         return redirect("index")
     event = get_object_or_404(Event, event_id=event_id)
-    return render(request, 'organiser/organiser_event_view.html', {'event': event})
+    volunteers = Volunteer_event.objects.filter(event=event)
+    volunteer_list = [x.volunteer for x in volunteers]
+    return render(request, 'organiser/organiser_event_view.html', {'event': event, 'volunteer_list':volunteer_list})
 
 
 def index(request):
