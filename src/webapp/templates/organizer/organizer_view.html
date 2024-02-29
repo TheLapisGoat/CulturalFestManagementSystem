@@ -118,7 +118,7 @@
                 flex: 33.33%;
                 padding: 10px;
             }
-            
+
             .card {
                 box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
                 padding: 16px;
@@ -131,16 +131,15 @@
     <body>
         <div class="header">
             <!-- todo: change hrefs -->
-            <a href="#"">All Events</a>
-            <a href="#">Manage Logistics</a>
-            <a href="#">Manage Volunteers</a>
-            <a href="#">Profile</a>
+            <a href="/organizer">Home</a>
+            <a href="#">All Events</a>
+            <a href="#">Volunteer</a>
+            <a href="/organizer/profile/">Profile</a>
             <a href="#" style="float:right">Logout</a>
         </div>
 
         <!-- home page with "live" events -->
-        <h1>Live Events</h1>
-        <!-- make a table of cards , with 3 cards per row -->
+        <h1>Live and Upcoming Events</h1>
         {% for event in events %}
             {% if forloop.first or forloop.counter0|divisibleby:3 %}
                 <div class="row">

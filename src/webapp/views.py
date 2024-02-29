@@ -193,6 +193,34 @@ class OTPVerificationView(View):
                 form.add_error('otp', 'Invalid OTP')
         return render(request, self.template_name, {'form': form})
 
+# @login_required(login_url='login')
+# def profile_view(request, user_type):
+#     if(request.user.is_anonymous):
+#         return HttpResponse("You're not logged in")
+
+#     return render(request, 'profile.html', {'user': request.user})
+
+@login_required(login_url='login')
+def student_view(request):
+    if(request.user.is_anonymous):
+        return HttpResponse("You're not logged in")
+    if(request.user.role!='student'):
+        return redirect("index")
+    
+    events = list(Event.objects.all())
+
+    #todo: send more info required for diff pages
+
+    return render(request, 'student/student_view.html', {'events': events})\
+    
+@login_required(login_url='login')
+def student_profile_view(request):
+    if(request.user.is_anonymous):
+        return HttpResponse("You're not logged in")
+    if(request.user.role!='student'):
+        return redirect("index")
+    student = Student.objects.filter(user=request.user).first()
+    return render(request, 'student/student_profile.html', {'student': student})
 
 @login_required(login_url='login')
 def organizer_view(request):
@@ -204,6 +232,8 @@ def organizer_view(request):
     event_list = Organized_by.objects.filter(organizer_id=organizer)
     event_id_list = event_list.values_list('event_id',flat=True)
     events = list(Event.objects.all())
+
+    #todo: check 
     # res = []
     # for event in events:
     #     if event.event_id in event_id_list:
@@ -224,6 +254,15 @@ def organizer_event_view(request, event_id):
     venue_list = Venue_schedule_event.objects.filter(event=event)
 
     return render(request, 'organizer/organizer_event_view.html', {'event': event, 'volunteer_list':volunteer_list, 'venue_list': venue_list})
+
+@login_required(login_url='login')
+def organizer_profile_view(request):
+    if(request.user.is_anonymous):
+        return HttpResponse("You're not logged in")
+    if(request.user.role!='organizer'):
+        return redirect("index")
+    organizer = Organizer.objects.filter(user=request.user).first()
+    return render(request, 'organizer/organizer_profile.html', {'organizer': organizer})
 
 
 def index(request):

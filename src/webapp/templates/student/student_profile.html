@@ -1,0 +1,106 @@
+<!--
+    first name, middle name (optional), last name, email, address line 1, address line 2 (optional), city, country, pin code, telephone number, photograph (optional), date of birth have to be displayed - passed as 'user' from the view
+ -->
+
+ <!DOCTYPE html>
+ <html lang="en">
+ <head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Profile</title>
+     <style>
+
+        body {
+            background-color: #f2f2f2;
+            font-family: Arial, sans-serif;
+        }
+
+        h1 {
+            text-align: center;
+            color: #387adf;
+        }
+
+
+        .header {
+                overflow: hidden;
+                background-color: #f1f1f1;
+                padding: 20px 10px;
+        }
+
+        .header a {
+            float: left;
+            display: block;
+            color: black;
+            text-align: center;
+            padding-left: 14px;
+            padding-right: 14px;
+            padding-top: 4px;
+            padding-bottom: 4px;
+            text-decoration: none;
+        }
+
+        a:hover {
+                color: #387adf;
+            }
+
+ 
+        .row {
+            display: flex;
+        }
+
+        .column {
+            flex: 50%;
+            padding: 10px;
+        }
+
+        /* make a box for info */
+        .info {
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            padding: 16px;
+            text-align: left;
+        }
+     </style>
+ 
+ </head>
+ 
+ <body>
+
+    <div class="header">
+        <!-- todo: change hrefs -->
+        <a href="/student">Home</a>
+        <a href="#">All Events</a>
+        <a href="#">Volunteer</a>
+        <a href="/student/profile/">Profile</a>
+        <a href="#" style="float:right">Logout</a>
+    </div>
+
+     <h1>Profile</h1>
+     <!-- all info on the left, photo on the right (use placeholder if no photo) -->
+     <div class="row">
+         <div class="column">
+             <div class="info">
+                 <p><strong>First Name:</strong> {{ user.first_name }}</p>
+                 {% if user.middle_name %}
+                 <p><strong>Middle Name:</strong> {{ user.middle_name }}</p>
+                 {% endif %}
+                 <p><strong>Last Name:</strong> {{ user.last_name }}</p>
+                 <p><strong>Email:</strong> {{ user.email }}</p>
+                 <p><strong>Address Line 1:</strong> {{ user.address_line_1 }}</p>
+                 {% if user.address_line_2 %}
+                 <p><strong>Address Line 2:</strong> {{ user.address_line_2 }}</p>
+                 {% endif %}
+                 <p><strong>State:</strong> {{ user.state }}</p>
+                 <p><strong>Country:</strong> {{ user.country }}</p>
+                 <p><strong>Pin Code:</strong> {{ user.pin_code }}</p>
+                 <p><strong>Telephone Number:</strong> {{ user.telephoneNumber }}</p>
+                 <p><strong>Date of Birth:</strong> {{ user.date_of_birth }}</p>
+             </div>
+         </div>
+         
+         <!-- todo: fix this image -->
+         <div class="column">
+            <img src="{{ user.photo }}" alt="Profile Picture" style="width:100%">
+         </div>
+ </body>
+ 
+ </html>

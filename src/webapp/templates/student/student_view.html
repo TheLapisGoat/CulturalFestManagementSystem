@@ -66,25 +66,31 @@
     <body>
         <div class="header">
             <!-- todo: change hrefs -->
+            <a href="/student">Home</a>
             <a href="#">All Events</a>
             <a href="#">Volunteer</a>
-            <a href="#">Profile</a>
+            <a href="/student/profile/">Profile</a>
             <a href="#" style="float:right">Logout</a>
         </div>
 
-        <h1>Live Events</h1>
+        <!-- home page with "live" events -->
+        <h1>Live and Upcoming Events</h1>
         {% for event in events %}
-            {% if forloop.counter0|divisibleby:3 %}
+            {% if forloop.first or forloop.counter0|divisibleby:3 %}
                 <div class="row">
             {% endif %}
             <div class="column">
                 <div class="card">
-                    <h3>{{ event.event_name }}</h3>
-                    <p>{{ event.event_id }}</p>
-                    <p>{{ event.event_description }}</p>
-                    <!-- todo: update the link -->
+                    <h3>{{event.event_name}}</h3>
+                    <p>{{event.event_description}}</p>
+                    <!-- todo: update href -->
                     <a href="#">Register</a>
                 </div>
+            </div>
+            {% if forloop.last or forloop.counter|divisibleby:3 %}
+                </div>
+            {% endif %}
         {% endfor %}
+
     </body>
 </html>
