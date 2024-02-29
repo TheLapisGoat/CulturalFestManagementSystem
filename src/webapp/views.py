@@ -22,6 +22,7 @@ class LoginView(View):
         form = AuthenticationForm(data = request.POST)
         if form.is_valid():
             user = form.get_user()
+            print(user,"User")
             login(request, user)
             return redirect('index')
         else:
@@ -61,6 +62,8 @@ class RegisterView(View):
                 roll_number = form.cleaned_data['roll_number'],
                 department = form.cleaned_data['department']
             )
+            student.save()
+            print("Student saved\n\n\n\n")
             return render(request, self.template_name, {'form': form})
 
         else:
@@ -73,12 +76,25 @@ def organiser_view(request):
         return HttpResponse("You're not logged in")
     if(request.user.role!='organizer'):
         return redirect("index")
-    event_list = Organized_by.objects.filter(organizer_id=request.user)
+    organiser = Organizer.objects.filter(user=request.user).first()
+    event_list = Organized_by.objects.filter(organizer_id=organiser)
     event_id_list = event_list.values_list('event_id',flat=True)
-    events = Event.objects.all()
+    events = list(Event.objects.all())
     res = []
+    #for i in range(len(events)):
+        #print(events[i])
     for event in events:
         if event.event_id in event_id_list:
             res.append(event)
-    return render(request, 'organiser_view.html', {'events': res})
+    return render(request, 'organiser/organiser_view.html', {'events': res})
+def organiser_event_view(request, event_id):
+    if(request.user.is_anonymous):
+        return HttpResponse("You're not logged in")
+    if(request.user.role!='organizer'):
+        return redirect("index")
+    event = get_object_or_404(Event, event_id=event_id)
+    return render(request, 'organiser/organiser_event_view.html', {'event': event})
 
+
+def index(request):
+    return HttpResponse("Hello, world. You're at the webapp index.")

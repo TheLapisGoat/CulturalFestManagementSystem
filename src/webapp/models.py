@@ -119,3 +119,8 @@ class Event(models.Model):
 class Organized_by(models.Model):
     event_id = models.ForeignKey(Event,on_delete=models.CASCADE)
     organizer_id = models.ForeignKey(Organizer,on_delete=models.CASCADE)
+
+class Infra_schedule(models.Model):
+    schedule_id = models.IntegerField(primary_key=True)
+    start_time = models.DateTimeField(auto_now_add=True)
+    end_time = models.DateTimeField(auto_now_add=True)
