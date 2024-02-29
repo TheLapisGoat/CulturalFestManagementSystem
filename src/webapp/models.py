@@ -144,4 +144,22 @@ class Venue_schedule_event(models.Model):
     venue = models.ForeignKey(Venue,on_delete=models.CASCADE)
     event = models.ForeignKey(Event,on_delete=models.CASCADE)
 
+class Accomodation(models.Model):
+    accomodation_id = models.IntegerField(primary_key=True)
+    accomodation_name = models.CharField(max_length=50,blank=False)
+    address_line_1 = models.CharField(max_length=50,blank=False)
+    address_line_2 = models.CharField(max_length=50,blank=True)
+    cost_per_night = models.FloatField(blank=False)
+    facilities = models.TextField(blank=True)
+    contact = PhoneNumberField(blank=True)
+    room_info = models.JSONField(default=list)
+
+class Participant_Accomodation(models.Model):
+    participant = models.ForeignKey(Student,on_delete=models.CASCADE)
+    accomodation = models.ForeignKey(Accomodation,on_delete=models.CASCADE)
+    start_date = models.DateTimeField(blank=False)
+    end_date = models.DateTimeField(blank=False)
+    room_number = models.CharField(max_length=50,blank=False)
+
+
 
