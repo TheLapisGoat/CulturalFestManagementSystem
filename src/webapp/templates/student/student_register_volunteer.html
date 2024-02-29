@@ -15,12 +15,12 @@
 
             h1 {
                 text-align: center;
-                color: #387adf;
+                color: black;
             }
 
             h3 {
                 text-align: center;
-                color: #387adf;
+                color: black;
             }
 
             .header {
@@ -45,22 +45,30 @@
                 color: #387adf;
             }
 
-            .row {
-                display: flex;
-            }
-
-            .column {
-                flex: 33.33%;
-                padding: 10px;
-            }
-
-            .card {
-                box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-                padding: 16px;
+            .submitbutton {
+               /* center align */
+                display: block;
+                margin: 0 auto;
+                width: 20%;
+                padding: 14px 20px;
+                font-size: 16px;
+                cursor: pointer;
                 text-align: center;
+                text-decoration: none;
+                outline: none;
+                color: #fff;
+                background-color: #387adf;
+                border: none;
+                border-radius: 5px;
             }
+
+            .button:hover {
+                background-color: #1f5f8b;
+            }
+
 
         </style>
+
     </head>
 
     <body>
@@ -73,24 +81,13 @@
             <a href="#" style="float:right">Logout</a>
         </div>
 
-        <!-- home page with "live" events -->
-        <h1>Live and Upcoming Events</h1>
-        {% for event in events %}
-            {% if forloop.first or forloop.counter0|divisibleby:3 %}
-                <div class="row">
-            {% endif %}
-            <div class="column">
-                <div class="card">
-                    <h3>{{event.event_name}}</h3>
-                    <p>{{event.event_description}}</p>
-                    <!-- todo: update href -->
-                    <a href="#">Register</a>
-                </div>
-            </div>
-            {% if forloop.last or forloop.counter|divisibleby:3 %}
-                </div>
-            {% endif %}
-        {% endfor %}
+        <!-- inform that they are not volunteer, and ask them to register -->
+        <h1>Volunteer</h1>
+        <h3>You are not a volunteer yet. Register to become a volunteer.</h3>
 
+        <form method="POST" action="/student/register_volunteer/">
+            {% csrf_token %}
+            <input type="submit" class="submitbutton" value="Register">
+        </form>
     </body>
 </html>

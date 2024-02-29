@@ -208,15 +208,34 @@ def student_home_view(request):
 
     return render(request, 'student/student_home.html', {'events': events})
 
-@login_required(login_url='login')
-def student_volunteer_view(request):
-    if(request.user.is_anonymous):
-        return HttpResponse("You're not logged in")
-    if(request.user.role!='student'):
-        return redirect("index")
-    student = Student.objects.filter(user=request.user).first()
-    volunteer_list = Volunteer_event.objects.filter(volunteer=student)
-    return render(request, 'student/student_volunteer.html', {'volunteer_list': volunteer_list})
+#todo: in these classes - how to add login_required?
+#todo: check registration - seems like entity is not getting added
+
+class StudentVolunteerView(View):
+    def get(self, request):
+        if request.user.is_anonymous:
+            return HttpResponse("You're not logged in")
+        if request.user.role != 'student':
+            return redirect("index")
+        student = Student.objects.filter(user=request.user).first()
+        volunteer = Volunteer.objects.filter(student=student).first()
+        if volunteer is not None:
+            return render(request, 'student/student_volunteer.html', {'student': student})
+        else:
+            return render(request, 'student/student_register_volunteer.html', {'student': student})
+    
+    def post(self, request):
+        # user is registering for events
+        #todo: handle
+        pass 
+
+class StudentRegisterVolunteerView(View):
+    def post(self, request):
+        student = Student.objects.filter(user=request.user).first()
+        Volunteer.objects.create(student=student)
+        return redirect('student_volunteer')
+        
+
     
 @login_required(login_url='login')
 def student_profile_view(request):

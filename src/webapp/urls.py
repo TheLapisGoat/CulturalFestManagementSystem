@@ -10,7 +10,8 @@ urlpatterns = [
 
     path("student/", views.student_home_view, name='student'),
     path("student/profile/", views.student_profile_view, name='student_profile'),
-    path("student/volunteer/", views.student_volunteer_view, name='student_volunteer'),
+    path("student/volunteer/", views.StudentVolunteerView.as_view(), name='student_volunteer'),
+    path("student/register_volunteer/", views.StudentRegisterVolunteerView.as_view(), name='student_register_volunteer'),
 
     path('login/', views.LoginView.as_view(), name='login'),
     path('register/', views.RegisterView.as_view(), name='register'),
