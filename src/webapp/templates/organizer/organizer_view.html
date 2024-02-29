@@ -4,32 +4,64 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Event List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+    </style>
 </head>
 <body>
     <h1>Event List</h1>
-    <table border="1">
+    <table>
         <thead>
             <tr>
+                <th>Index</th>
                 <th>ID</th>
                 <th>Name</th>
                 <th>Description</th>
-                <th>Organizer</th>  <!-- New column for the hyperlink -->
-            <!-- </tr>
+                <th>Actions</th>
+            </tr>
         </thead>
         <tbody>
             {% for event in events %}
                 <tr>
-                    <td>{{ event.id }}</td>
-                    <td>{{ event.name }}</td>
-                    <td>{{ event.description }}</td>
-                    <!-- Create a hyperlink with the event's ID -->
-                    <!-- <td><a href="{% url 'organizer' event.id %}">Organizer</a></td>
+                    <td>{{forloop.counter}}</td>
+                    <td>{{event.event_id}}</td>
+                    <td>{{event.event_name}}</td>
+                    <td>{{event.event_description}}</td>
+                    <td><a href="{% url 'organizer_event' event.event_id %}">Actions</a></td>
                 </tr>
             {% endfor %}
         </tbody>
     </table>
 </body>
-</html>  -->
+</html> -->
+
 
 <!DOCTYPE html>
 <html>
@@ -62,7 +94,7 @@
                 padding: 20px 10px;
             }
 
-            a {
+            .header a {
                 float: left;
                 display: block;
                 color: black;
@@ -99,42 +131,27 @@
     <body>
         <div class="header">
             <!-- todo: change hrefs -->
-            <a href="#">All Events</a>
+            <a href="#"">All Events</a>
             <a href="#">Manage Logistics</a>
             <a href="#">Manage Volunteers</a>
             <a href="#">Profile</a>
             <a href="#" style="float:right">Logout</a>
         </div>
 
-        <!-- home page with live events -->
+        <!-- home page with "live" events -->
         <h1>Live Events</h1>
-        <!-- todo: replace with actual events -->
-        <div class="row">
+        {% for event in events %}
+            {% if forloop.counter0|divisibleby:3 %}
+                <div class="row">
+            {% endif %}
             <div class="column">
                 <div class="card">
-                    <h3>Event 1</h3>
-                    <p>Event 1 description</p>
-                    <p>Event 1 date</p>
-                    <p>Event 1 location</p>
+                    <h3>{{ event.event_name }}</h3>
+                    <p>{{ event.event_id }}</p>
+                    <p>{{ event.event_description }}</p>
+                    <a href="{% url 'organizer_event' event.event_id %}">View</a>
                 </div>
-            </div>
-            <div class="column">
-                <div class="card">
-                    <h3>Event 2</h3>
-                    <p>Event 2 description</p>
-                    <p>Event 2 date</p>
-                    <p>Event 2 location</p>
-                </div>
-            </div>
-            <div class="column">
-                <div class="card">
-                    <h3>Event 3</h3>
-                    <p>Event 3 description</p>
-                    <p>Event 3 date</p>
-                    <p>Event 3 location</p>
-                </div>
-            </div>
-        </div>
+        {% endfor %}
     </body>
 </html>
 

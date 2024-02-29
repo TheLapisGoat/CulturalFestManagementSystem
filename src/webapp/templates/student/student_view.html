@@ -29,7 +29,7 @@
                 padding: 20px 10px;
             }
 
-            a {
+            .header a {
                 float: left;
                 display: block;
                 color: black;
@@ -72,37 +72,19 @@
             <a href="#" style="float:right">Logout</a>
         </div>
 
-        <!-- home page with live events -->
         <h1>Live Events</h1>
-        <!-- todo: replace with actual live events -->
-        <div class="row">
+        {% for event in events %}
+            {% if forloop.counter0|divisibleby:3 %}
+                <div class="row">
+            {% endif %}
             <div class="column">
                 <div class="card">
-                    <h3>Event 1</h3>
-                    <p>Event 1 description</p>
-                    <p>Event 1 date</p>
-                    <p>Event 1 location</p>
-                    <button>Register</button>
+                    <h3>{{ event.event_name }}</h3>
+                    <p>{{ event.event_id }}</p>
+                    <p>{{ event.event_description }}</p>
+                    <!-- todo: update the link -->
+                    <a href="#">Register</a>
                 </div>
-            </div>
-            <div class="column">
-                <div class="card">
-                    <h3>Event 2</h3>
-                    <p>Event 2 description</p>
-                    <p>Event 2 date</p>
-                    <p>Event 2 location</p>
-                    <button>Register</button>
-                </div>
-            </div>
-            <div class="column">
-                <div class="card">
-                    <h3>Event 3</h3>
-                    <p>Event 3 description</p>
-                    <p>Event 3 date</p>
-                    <p>Event 3 location</p>
-                    <button>Register</button>
-                </div>
-            </div>
-        </div>
+        {% endfor %}
     </body>
 </html>

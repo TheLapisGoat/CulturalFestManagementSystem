@@ -200,8 +200,8 @@ def organizer_view(request):
         return HttpResponse("You're not logged in")
     if(request.user.role!='organizer'):
         return redirect("index")
-    organiser = Organizer.objects.filter(user=request.user).first()
-    event_list = Organized_by.objects.filter(organizer_id=organiser)
+    organizer = Organizer.objects.filter(user=request.user).first()
+    event_list = Organized_by.objects.filter(organizer_id=organizer)
     event_id_list = event_list.values_list('event_id',flat=True)
     events = list(Event.objects.all())
     res = []
@@ -211,10 +211,10 @@ def organizer_view(request):
         if event.event_id in event_id_list:
             res.append(event)
     
-    return render(request, 'organiser/organiser_view.html', {'events': res})
+    return render(request, 'organizer/organizer_view.html', {'events': res})
 
 @login_required(login_url='login')
-def organiser_event_view(request, event_id):
+def organizer_event_view(request, event_id):
     if(request.user.is_anonymous):
         return HttpResponse("You're not logged in")
     if(request.user.role!='organizer'):
@@ -224,7 +224,7 @@ def organiser_event_view(request, event_id):
     volunteer_list = [x.volunteer for x in volunteers]
     venue_list = Venue_schedule_event.objects.filter(event=event)
 
-    return render(request, 'organiser/organiser_event_view.html', {'event': event, 'volunteer_list':volunteer_list, 'venue_list': venue_list})
+    return render(request, 'organizer/organizer_event_view.html', {'event': event, 'volunteer_list':volunteer_list, 'venue_list': venue_list})
 
 
 def index(request):
