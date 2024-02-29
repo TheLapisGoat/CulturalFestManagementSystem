@@ -1,5 +1,6 @@
 .DS_Store
 .vscode
+src/FestivalManagementSystem/credentials.json
 src/webapp/__pycache__/*
 src/webapp/migrations/__pycache__/*
 src/venv/
