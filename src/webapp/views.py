@@ -15,7 +15,7 @@ from django.contrib.auth.tokens import default_token_generator
 import asyncio
 from django.shortcuts import render, get_object_or_404
 from .models import *
-from .forms import StudentRegistrationForm, OTPVerificationForm
+from .forms import StudentRegistrationForm, OTPVerificationForm, External_ParticipantRegistrationForm
 # Create your views here. (Using class based views)
 
 #View for login
@@ -37,14 +37,39 @@ class LoginView(View):
         
 class RegisterView(View):
     template_name = 'registration/register.html'
+
     def get(self, request):
         form = StudentRegistrationForm()
-        return render(request, self.template_name, {'form': form})
+        request.session['register_current_role'] = 'student'
+        return render(request, self.template_name, {'form': form, 'default_role': 'student'})
     
     def post(self, request):
-        form = StudentRegistrationForm(request.POST, request.FILES)
+
+        #Check whether the role was changed or the form was submitted
+        action = request.POST.get('action')
+        
+        #If the role was changed, then return the form with the new role
+        if action == 'role_change':
+            print('Role changed')
+            role = request.POST.get('role')
+            request.session['register_current_role'] = role
+            if role == 'student':
+                form = StudentRegistrationForm()
+            elif role == 'external_participant':
+                form = External_ParticipantRegistrationForm()
+            return render(request, self.template_name, {'form': form, 'default_role': role})
+        
+        #If the form was submitted, then process the form
+        form = None
+        role = request.session['register_current_role']
+        if role == 'student':
+            form = StudentRegistrationForm(request.POST, request.FILES)
+        elif role == 'external_participant':
+            print('External Participant')
+            form = External_ParticipantRegistrationForm(request.POST, request.FILES)
+
         if form.is_valid():
-            #Create the user and student
+            #Create the user
             user = User_Entity.objects.create_user(
                 username = form.cleaned_data['username'], 
                 password = form.cleaned_data['password'],
@@ -59,17 +84,24 @@ class RegisterView(View):
                 pin_code = form.cleaned_data['pin_code'],
                 telephoneNumber = form.cleaned_data['telephoneNumber'],
                 photograph = form.cleaned_data['photograph'],
-                role = 'student',
+                role = role, 
                 gender = form.cleaned_data['gender'],
                 date_of_birth = form.cleaned_data['date_of_birth'],
                 is_active = False,
             )
-
-            student = Student.objects.create(
-                user = user,
-                roll_number = form.cleaned_data['roll_number'],
-                department = form.cleaned_data['department']
-            )
+        
+            #Creating the models corresponding to the role
+            if role == 'student':
+                student = Student.objects.create(
+                    user = user,
+                    roll_number = form.cleaned_data['roll_number'],
+                    department = form.cleaned_data['department']
+                )
+            elif role == 'external_participant':
+                participant = External_Participant.objects.create(
+                    user = user,
+                    organization = form.cleaned_data['organization']
+                )
 
             #Sending otp to created user's email. If otp is not verified in 5 minutes, delete the user
             otp = default_token_generator.make_token(user)
@@ -88,9 +120,9 @@ class RegisterView(View):
 
             #Redirect to otp verification page
             return redirect('otp-verification')
-
+        
         else:
-            return render(request, self.template_name, {'form': form})
+            return render(request, self.template_name, {'form': form, 'default_role': request.session['register_current_role']})
         
 def schedule_deletion(request):
     #Check if the user has verified the otp (is_active = True)
@@ -165,7 +197,6 @@ def organiser_event_view(request, event_id):
     if(request.user.role!='organizer'):
         return redirect("index")
     event = get_object_or_404(Event, event_id=event_id)
-    volunteers = Voluntter
     return render(request, 'organiser/organiser_event_view.html', {'event': event})
 
 
