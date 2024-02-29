@@ -151,6 +151,8 @@ def schedule_deletion(request, extra_args):
             organizer_key = Organizer_Key.objects.create(key = extra_args['organizer_key'])
             organizer_key.save()
 
+    #todo: seems like this fn is incomplete
+
 class OTPVerificationView(View):
     template_name = 'registration/otp_verification.html'
 
@@ -193,15 +195,8 @@ class OTPVerificationView(View):
                 form.add_error('otp', 'Invalid OTP')
         return render(request, self.template_name, {'form': form})
 
-# @login_required(login_url='login')
-# def profile_view(request, user_type):
-#     if(request.user.is_anonymous):
-#         return HttpResponse("You're not logged in")
-
-#     return render(request, 'profile.html', {'user': request.user})
-
 @login_required(login_url='login')
-def student_view(request):
+def student_home_view(request):
     if(request.user.is_anonymous):
         return HttpResponse("You're not logged in")
     if(request.user.role!='student'):
@@ -209,9 +204,19 @@ def student_view(request):
     
     events = list(Event.objects.all())
 
-    #todo: send more info required for diff pages
+    #todo: filter live events
 
-    return render(request, 'student/student_view.html', {'events': events})\
+    return render(request, 'student/student_home.html', {'events': events})
+
+@login_required(login_url='login')
+def student_volunteer_view(request):
+    if(request.user.is_anonymous):
+        return HttpResponse("You're not logged in")
+    if(request.user.role!='student'):
+        return redirect("index")
+    student = Student.objects.filter(user=request.user).first()
+    volunteer_list = Volunteer_event.objects.filter(volunteer=student)
+    return render(request, 'student/student_volunteer.html', {'volunteer_list': volunteer_list})
     
 @login_required(login_url='login')
 def student_profile_view(request):
@@ -223,7 +228,7 @@ def student_profile_view(request):
     return render(request, 'student/student_profile.html', {'student': student})
 
 @login_required(login_url='login')
-def organizer_view(request):
+def organizer_home_view(request):
     if(request.user.is_anonymous):
         return HttpResponse("You're not logged in")
     if(request.user.role!='organizer'):
@@ -233,13 +238,14 @@ def organizer_view(request):
     event_id_list = event_list.values_list('event_id',flat=True)
     events = list(Event.objects.all())
 
-    #todo: check 
+    #todo: filter live events + events organizer is in charge of 
     # res = []
     # for event in events:
     #     if event.event_id in event_id_list:
     #         res.append(event)
-    # return render(request, 'organizer/organizer_view.html', {'events': res})
-    return render(request, 'organizer/organizer_view.html', {'events': events})
+    # return render(request, 'organizer/organizer_home.html', {'events': res})
+
+    return render(request, 'organizer/organizer_home.html', {'events': events})
 
 
 @login_required(login_url='login')
@@ -253,7 +259,7 @@ def organizer_event_view(request, event_id):
     volunteer_list = [x.volunteer for x in volunteers]
     venue_list = Venue_schedule_event.objects.filter(event=event)
 
-    return render(request, 'organizer/organizer_event_view.html', {'event': event, 'volunteer_list':volunteer_list, 'venue_list': venue_list})
+    return render(request, 'organizer/organizer_event.html', {'event': event, 'volunteer_list':volunteer_list, 'venue_list': venue_list})
 
 @login_required(login_url='login')
 def organizer_profile_view(request):

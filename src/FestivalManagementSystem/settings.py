@@ -13,12 +13,11 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 from pathlib import Path
 import json
 
-with open('credentials.json', 'r') as f:
-    credentials = json.load(f)
-
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+with open(f"{BASE_DIR}/FestivalManagementSystem/credentials.json") as f:
+    credentials = json.load(f)
 
 
 # Quick-start development settings - unsuitable for production
