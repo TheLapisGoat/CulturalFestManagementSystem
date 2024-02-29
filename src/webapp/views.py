@@ -137,7 +137,7 @@ class OTPVerificationView(View):
 
 
 #@login_required(login_url='main-login')
-def organiser_view(request):
+def organizer_view(request):
     if(request.user.is_anonymous):
         return HttpResponse("You're not logged in")
     if(request.user.role!='organizer'):
@@ -149,7 +149,7 @@ def organiser_view(request):
     for event in events:
         if event.event_id in event_id_list:
             res.append(event)
-    return render(request, 'organiser_view.html', {'events': res})
+    return render(request, 'organizer_view.html', {'events': res})
 
 
         
