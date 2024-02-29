@@ -16,7 +16,6 @@ class User_Entity(AbstractUser, PermissionsMixin):
     telephoneNumber = PhoneNumberField("Telephone Number", blank=False)
     photograph = models.ImageField("Photo", blank = True, null = True)
 
-    
     ROLES = [
         ('student', 'Student'),
         ('external_participant', 'External Participant'),
@@ -88,7 +87,6 @@ class External_Participant(models.Model):
 
 class Organizer(models.Model):
     user = models.OneToOneField(User_Entity, on_delete = models.CASCADE, related_name = "organizer", primary_key = True, blank = False, unique = True)
-    department = models.CharField("Department", max_length = 100, blank = False)
     
     def __str__(self):
         return self.user.first_name + ' ' + self.user.last_name + ' (' + self.department + ')'
@@ -97,7 +95,17 @@ class Organizer(models.Model):
         verbose_name = "Organizer"
         verbose_name_plural = "Organizers"
     
-    REQUIRED_FIELDS = ['department']
+    # REQUIRED_FIELDS = ['department']
+        
+class Organizer_Key(models.Model):
+    key = models.CharField("Key", max_length = 100, primary_key = True, blank = False, unique = True)
+
+    def __str__(self):
+        return self.key
+    
+    class Meta:
+        verbose_name = "Organizer Key"
+        verbose_name_plural = "Organizer Keys"
 
 class Venue(models.Model):
     venue_id = models.IntegerField("venue_id",primary_key=True)
@@ -105,7 +113,6 @@ class Venue(models.Model):
     venue_capacity = models.IntegerField("venue_capacity",blank=False)
     address_line_1 = models.CharField("address_line_1",max_length=50,blank=False)
     address_line_2 = models.CharField("address_line_2",max_length=50,blank=True)
-
 
 class Event(models.Model):
     event_id = models.IntegerField("event_id",primary_key=True)
