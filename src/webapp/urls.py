@@ -9,4 +9,7 @@ urlpatterns = [
     path('register/', views.RegisterView.as_view(), name='register'),
     path('index/', views.HomeView.as_view(), name='Home'),
     path('otp-verification/', views.OTPVerificationView.as_view(), name='otp-verification'),
+    path('events/', views.events, name='events'),
+    
+
 ]

@@ -9,7 +9,7 @@ class User_Entity(AbstractUser, PermissionsMixin):
     last_name = models.CharField("last name", max_length=150, blank=False)
     email = models.EmailField("email address", blank=False)
     address_line_1 = models.CharField("Address Line 1", max_length=150, blank=False)
-    address_line_2 = models.CharField("Address Line 2", max_length=150, blank=True)
+    # address_line_2 = models.CharField("Address Line 2", max_length=150, blank=True,default="",null=False)
     state = models.CharField("City", max_length=150, blank=False)
     country = models.CharField("Country", max_length=150, blank=False)
     pin_code = models.CharField("PIN Code", max_length=150, blank=False)
@@ -104,7 +104,7 @@ class Venue(models.Model):
     venue_name = models.CharField("venue_name",max_length=50,blank=False)
     venue_capacity = models.IntegerField("venue_capacity",blank=False)
     address_line_1 = models.CharField("address_line_1",max_length=50,blank=False)
-    address_line_2 = models.CharField("address_line_2",max_length=50,blank=True)
+    # address_line_2 = models.CharField("address_line_2",max_length=50,blank=True,default="",null=False)
 
 
 class Event(models.Model):
@@ -127,3 +127,7 @@ class Infra_schedule(models.Model):
     schedule_id = models.IntegerField(primary_key=True)
     start_time = models.DateTimeField(auto_now_add=True)
     end_time = models.DateTimeField(auto_now_add=True)
+
+class EventParticipant(models.Model):
+    event = models.ForeignKey(Event, on_delete=models.CASCADE)
+    user = models.ForeignKey(User_Entity, on_delete=models.CASCADE)

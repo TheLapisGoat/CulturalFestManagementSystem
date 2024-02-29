@@ -185,14 +185,15 @@ def organizer_view(request):
     for event in events:
         if event.event_id in event_id_list:
             res.append(event)
-    return render(request, 'organiser/organiser_view.html', {'events': res})
+    return render(request, 'organizer/organizer_view.html', {'events': res})
+
 def organiser_event_view(request, event_id):
     if(request.user.is_anonymous):
         return HttpResponse("You're not logged in")
     if(request.user.role!='organizer'):
         return redirect("index")
     event = get_object_or_404(Event, event_id=event_id)
-    return render(request, 'organiser/organiser_event_view.html', {'event': event})
+    return render(request, 'organizer/organiser_event_view.html', {'event': event})
 
 
 def index(request):
@@ -211,3 +212,8 @@ class HomeView(View):
         recipient_list = ['sourodeepdatta@gmail.com']
         send_mail(subject, message, email_from, recipient_list)
         return HttpResponse('Mail Sent')
+    
+def events(request):
+    # Retrieve all events from the database
+    events = Event.objects.all()
+    return render(request, 'events/events.html', {'events': events})
