@@ -98,6 +98,7 @@ class Organizer(models.Model):
         verbose_name_plural = "Organizers"
     
     REQUIRED_FIELDS = ['department']
+    
 class Venue(models.Model):
     venue_id = models.IntegerField("venue_id",primary_key=True)
     venue_name = models.CharField("venue_name",max_length=50,blank=False)

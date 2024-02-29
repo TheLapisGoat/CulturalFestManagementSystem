@@ -9,9 +9,9 @@
     <h1>Event Details</h1>
     
     {% if event %}
-        <p><strong>ID:</strong> {{ event.id }}</p>
-        <p><strong>Name:</strong> {{ event.name }}</p>
-        <p><strong>Description:</strong> {{ event.description }}</p>
+        <p><strong>ID:</strong> {{ event.event_id }}</p>
+        <p><strong>Name:</strong> {{ event.event_name }}</p>
+        <p><strong>Description:</strong> {{ event.event_description }}</p>
     {% else %}
         <p>No event found.</p>
     {% endif %}

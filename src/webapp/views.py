@@ -13,6 +13,7 @@ from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib.auth.tokens import default_token_generator
 import asyncio
+from django.shortcuts import render, get_object_or_404
 from .models import *
 from .forms import StudentRegistrationForm, OTPVerificationForm
 # Create your views here. (Using class based views)
@@ -153,13 +154,18 @@ def organizer_view(request):
     for event in events:
         if event.event_id in event_id_list:
             res.append(event)
+    print(res,"RES")
+    for event in res:
+        print(event.event_id)
     return render(request, 'organiser/organiser_view.html', {'events': res})
+
 def organiser_event_view(request, event_id):
     if(request.user.is_anonymous):
         return HttpResponse("You're not logged in")
     if(request.user.role!='organizer'):
         return redirect("index")
     event = get_object_or_404(Event, event_id=event_id)
+    volunteers = Voluntter
     return render(request, 'organiser/organiser_event_view.html', {'event': event})
 
 
