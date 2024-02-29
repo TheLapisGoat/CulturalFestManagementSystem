@@ -248,3 +248,4 @@ def events(request):
     # Retrieve all events from the database
     events = Event.objects.all()
     return render(request, 'events/events.html', {'events': events})
+
