@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -14,7 +14,7 @@
                 <th>Name</th>
                 <th>Description</th>
                 <th>Organizer</th>  <!-- New column for the hyperlink -->
-            </tr>
+            <!-- </tr>
         </thead>
         <tbody>
             {% for event in events %}
@@ -23,10 +23,117 @@
                     <td>{{ event.name }}</td>
                     <td>{{ event.description }}</td>
                     <!-- Create a hyperlink with the event's ID -->
-                    <td><a href="{% url 'organizer' event.id %}">Organizer</a></td>
+                    <!-- <td><a href="{% url 'organizer' event.id %}">Organizer</a></td>
                 </tr>
             {% endfor %}
         </tbody>
     </table>
 </body>
+</html>  -->
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Festival Management System Login</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <style>
+
+            body {
+                background-color: #f2f2f2;
+                font-family: Arial, sans-serif;
+            }
+
+            h1 {
+                text-align: center;
+                color: #387adf;
+            }
+
+            h3 {
+                text-align: center;
+                color: #387adf;
+            }
+
+            .header {
+                overflow: hidden;
+                background-color: #f1f1f1;
+                padding: 20px 10px;
+            }
+
+            a {
+                float: left;
+                display: block;
+                color: black;
+                text-align: center;
+                padding-left: 14px;
+                padding-right: 14px;
+                padding-top: 4px;
+                padding-bottom: 4px;
+                text-decoration: none;
+            }
+
+            a:hover {
+                color: #387adf;
+            }
+
+            .row {
+                display: flex;
+            }
+
+            .column {
+                flex: 33.33%;
+                padding: 10px;
+            }
+
+            .card {
+                box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+                padding: 16px;
+                text-align: center;
+            }
+
+        </style>
+    </head>
+
+    <body>
+        <div class="header">
+            <!-- todo: change hrefs -->
+            <a href="#">All Events</a>
+            <a href="#">Manage Logistics</a>
+            <a href="#">Manage Volunteers</a>
+            <a href="#">Profile</a>
+            <a href="#" style="float:right">Logout</a>
+        </div>
+
+        <!-- home page with live events -->
+        <h1>Live Events</h1>
+        <!-- todo: replace with actual events -->
+        <div class="row">
+            <div class="column">
+                <div class="card">
+                    <h3>Event 1</h3>
+                    <p>Event 1 description</p>
+                    <p>Event 1 date</p>
+                    <p>Event 1 location</p>
+                </div>
+            </div>
+            <div class="column">
+                <div class="card">
+                    <h3>Event 2</h3>
+                    <p>Event 2 description</p>
+                    <p>Event 2 date</p>
+                    <p>Event 2 location</p>
+                </div>
+            </div>
+            <div class="column">
+                <div class="card">
+                    <h3>Event 3</h3>
+                    <p>Event 3 description</p>
+                    <p>Event 3 date</p>
+                    <p>Event 3 location</p>
+                </div>
+            </div>
+        </div>
+    </body>
 </html>
