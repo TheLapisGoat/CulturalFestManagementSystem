@@ -1,8 +1,62 @@
 from django import forms
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from .models import User_Entity, Student, Volunteer, External_Participant, Organizer, Organizer_Key
 from django.forms.widgets import *
 from phonenumber_field.formfields import PhoneNumberField
 from phonenumber_field.widgets import PhoneNumberPrefixWidget
+#Whoever is reading this, THESE FORMS ARE MEANT FOR USE BY THE ADMIN SITE, DO NOT USE THEM ANYWHERE ELSE
+class User_EntityCreationForm(UserCreationForm):
+    class Meta:
+        model = User_Entity
+        fields = ('username', 'first_name', 'last_name', 'email', 'role', 'address_line_1', 'address_line_2', 'state', 'country', 'pin_code', 'telephoneNumber', 'photograph', 'gender', 'date_of_birth', 'is_active')
+
+class User_EntityChangeForm(UserChangeForm):
+    class Meta:
+        model = User_Entity
+        fields = ('username', 'first_name', 'last_name', 'email', 'role', 'address_line_1', 'address_line_2', 'state', 'country', 'pin_code', 'telephoneNumber', 'photograph', 'gender', 'date_of_birth', 'is_active')
+
+class StudentCreationForm(forms.ModelForm):
+    class Meta:
+        model = Student
+        fields = ('roll_number', 'department')
+
+class StudentChangeForm(forms.ModelForm):
+    class Meta:
+        model = Student
+        fields = ('roll_number', 'department')
+
+class VolunteerCreationForm(forms.ModelForm):
+    class Meta:
+        model = Volunteer
+        fields = ('student', 'hours')
+
+class VolunteerChangeForm(forms.ModelForm):
+    class Meta:
+        model = Volunteer
+        fields = ('student', 'hours')
+
+class External_ParticipantCreationForm(forms.ModelForm):
+    class Meta:
+        model = External_Participant
+        fields = ('organization',)
+
+class External_ParticipantChangeForm(forms.ModelForm):
+    class Meta:
+        model = External_Participant
+        fields = ('organization',)
+
+class OrganizerCreationForm(forms.ModelForm):
+    class Meta:
+        model = Organizer
+        fields = ()
+
+class OrganizerChangeForm(forms.ModelForm):
+    class Meta:
+        model = Organizer
+        fields = ()
+
+
+
 class StudentRegistrationForm(forms.Form):
 
     username = forms.CharField(max_length=100, required=True)
