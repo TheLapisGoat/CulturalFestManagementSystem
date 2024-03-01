@@ -59,6 +59,14 @@
             padding: 16px;
             text-align: left;
         }
+
+        img {
+            width: 50%;
+            height: auto;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
      </style>
  
  </head>
@@ -66,10 +74,8 @@
  <body>
 
     <div class="header">
-        <!-- todo: change hrefs -->
         <a href="/student">Home</a>
-        <a href="#">All Events</a>
-        <a href="/student/volunteer">Volunteer</a>
+        <a href="/student/volunteer_redirect/">Volunteer</a>
         <a href="/student/profile/">Profile</a>
         <a href="/logout/" style="float:right">Logout</a>
     </div>
@@ -100,7 +106,7 @@
          <!-- todo: fix this image -->
          <div class="column">
             {% if user.photo %}
-            <img src="{{ user.photo }}" alt="Profile Picture" style="width:100%">
+            <img src="{{ user.photo }}" alt="Profile Picture">
             {% else %}
             <img src="http://www.gravatar.com/avatar/?d=identicon" alt="Profile Picture">
             {%endif%}
