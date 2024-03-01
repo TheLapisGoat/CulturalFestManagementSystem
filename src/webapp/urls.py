@@ -9,7 +9,7 @@ urlpatterns = [
 
     path("organizer/event/<int:event_id>", views.OrganizerEventView.as_view(), name='organizer-event'),
     path('organizer/profile/', views.OrganizerProfileView.as_view(), name='organizer-profile'),
-    path('organizer/volunteer/', views.OrganizerVolunteerView.as_view(), name='organizer-volunteer'),
+    path('organizer/logistics/', views.OrganizerLogisticsView.as_view(), name='organizer-volunteer'),
     path("organizer/", views.OrganizerHomeView.as_view(), name='organizer-home'),
     path("organizer/register_event/", views.Register_Event_View.as_view(), name='organizer-event-register'),
     path('login/', views.LoginView.as_view(), name='login'),

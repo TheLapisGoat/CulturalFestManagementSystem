@@ -65,36 +65,15 @@
 
     <body>
         <div class="header">
-            <!-- todo: change hrefs -->
             <a href="/organizer">Home</a>
-            <a href="/organizer/volunteer/">Volunteer</a>
+            <a href="/organizer/logistics/">Logistics</a>
             <a href="/organizer/profile/">Profile</a>
             <a href="/organizer/register_event/">Create Event</a>
             <a href="/logout/" style="float:right">Logout</a>   
         </div>
 
-        <h1>Volunteers</h1>
-        {% if volunteer_events|length == 0 %}
-            <h3>No volunteers have signed up for events</h3>
-        {% endif %}
-        {% for volunteer, events in volunteer_events.items %}
-            <div class="card">
-                <h2>{{ volunteer.student.user.name }}</h2>
-                <h3>{{ volunteer.student.roll_number }}</h3>
-                <div class="row">
-                    {% if events|length == 0 %}
-                        <h3>Not volunteering in any event</h3>
-                    {% endif %}
-                    {% for event in events %}
-                        <div class="column">
-                            <div class="card">
-                                <p>{{ event }}</p>
-                            </div>
-                        </div>
-                    {% endfor %}
-                </div>
-            </div>
-        {% endfor %}
+        <h1>Logistics</h1>
+        Idk what to do here
     </body>
 </html>
 
