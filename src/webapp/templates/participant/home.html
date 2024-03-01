@@ -66,7 +66,7 @@
     <body>
         <div class="header">
             <!-- todo: change hrefs -->
-            <a href="/participant">All Events</a>
+            <a href="/participant">All Events</a> <!--TODO: Implement All events page-->
             <a href="#">Logistics</a>
             <a href="/participant/profile">Profile</a>
             <a href="#" style="float:right">Logout</a>
@@ -80,14 +80,14 @@
             {% endif %}
             <div class="column">
                 <div class="card">
-                    <h3>{{event.event_name}}</h3>
-                    <p>{{event.event_description}}</p>
+                    <h3>{{event.name}}</h3>
+                    <p>{{event.description}}</p>
                     <!-- todo: update href -->
                     {% for status in registered %}
                         {% if forloop.counter0 == forloop.parentloop.counter0 and status == 0 %}
-                            <a href="{% url 'participant_register' event.event_id %}">Register</a>
+                            <a href="{% url 'participant_register' event.pk %}">Register</a>
                         {% elif forloop.counter0 == forloop.parentloop.counter0 %}
-                            <a href="{% url 'participant_event' event.event_id %}">View</a>
+                            <a href="{% url 'participant_event' event.pk %}">View</a>
                         {% endif %}
                     {% endfor %}
 
@@ -97,5 +97,8 @@
                 </div>
             {% endif %}
         {% endfor %}
+        
+        
+
     </body>
 </html>

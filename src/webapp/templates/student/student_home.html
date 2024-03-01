@@ -70,11 +70,14 @@
             <a href="#">All Events</a>
             <a href="/student/volunteer/">Volunteer</a>
             <a href="/student/profile/">Profile</a>
-            <a href="#" style="float:right">Logout</a>
+            <a href="/logout/" style="float:right">Logout</a>
         </div>
 
         <!-- home page with "live" events -->
         <h1>Live and Upcoming Events</h1>
+        {% if events|length == 0 %}
+                <h3>No events available</h3>
+        {% endif %}
         {% for event in events %}
             {% if forloop.first or forloop.counter0|divisibleby:3 %}
                 <div class="row">

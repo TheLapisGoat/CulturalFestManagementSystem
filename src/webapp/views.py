@@ -253,7 +253,7 @@ class OrganizerProfileView(View):
         
         organizer = Organizer.objects.filter(user=request.user).first()
         return render(request, 'organizer/organizer_profile.html', {'organizer': organizer})
-
+    
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class participant_view(View):
@@ -270,10 +270,13 @@ class participant_view(View):
         events_registered = Participant_event.objects.filter(participant=participant).values('event')
         registerd_event_ids = [x['event'] for x in events_registered]
         for i in range(len(event_list)):
-            if(event_list[i].event_id in registerd_event_ids):
+
+            if(event_list[i].pk in registerd_event_ids):
                 registered[i]=1
         print(registered,events_registered,event_list,"\n\n\n\n\n\n\n")
-        return render(request,"participant/home.html",{'events':event_list,'registered': registered})
+        return render(request,"participant/home.html",{'events':event_list,
+                                                       'registered': registered
+                                                       })
     
     def post(self,request,*args,**kwargs):
         return redirect('participant/')
@@ -286,7 +289,7 @@ class participant_register_view(View):
             return HttpResponse("You're not logged in")
         if(request.user.role!='external_participant'):
             return redirect("index")
-        event = get_object_or_404(Event, event_id=event_id)
+        event = get_object_or_404(Event, pk=event_id)
         participant = External_Participant.objects.filter(user=request.user).first()
         existing_participant_event = Participant_event.objects.filter(participant=participant, event=event).first()
         if existing_participant_event:
@@ -304,8 +307,8 @@ class participant_event_view(View):
             return HttpResponse("You're not logged in")
         if(request.user.role!='external_participant'):
             return redirect("index")
-        event_data = Event.objects.filter(event_id=event_id).values('event_name','event_description','event_start_date','event_end_date','registration_end')
-        event = Event.objects.filter(event_id=event_id).first()
+        event_data = Event.objects.filter(pk=event_id).values('name','description','start_date','end_date','registration_end_date')
+        event = Event.objects.filter(pk=event_id).first()
         print(event_data,"\n\n\n\n\n\n")
         participant = External_Participant.objects.filter(user=request.user).first()
         existing_participant_event = Participant_event.objects.filter(participant=participant, event=event).first()
@@ -327,14 +330,58 @@ class participant_profile_view(View):
         return render(request, 'participant/participant_profile.html', {'participant': participant})
     def post(self, request, *args, **kwargs):
         return redirect('participant/')
-    
 
+@method_decorator(login_required(login_url='login'), name='dispatch')
+class StudentHomeView(View):
+    def get(self, request):
+        if(request.user.is_anonymous):
+            return HttpResponse("You're not logged in")
+        if(request.user.role!='student'):
+            return redirect("index")
+        events = list(Event.objects.all())
+
+        #todo: filter live events
+
+        return render(request, 'student/student_home.html', {'events': events})
+    
+@method_decorator(login_required(login_url='login'), name='dispatch')
+class StudentProfileView(View):
+    def get(self, request):
+        if(request.user.is_anonymous):
+            return HttpResponse("You're not logged in")
+        if(request.user.role!='student'):
+            return redirect("index")
+        student = Student.objects.filter(user=request.user).first()
+        return render(request, 'student/student_profile.html', {'student': student})
+
+#todo: check registration - seems like entity is not getting added
+
+@method_decorator(login_required(login_url='login'), name='dispatch')
+class StudentVolunteerView(View):
+    def get(self, request):
+        if request.user.is_anonymous:
+            return HttpResponse("You're not logged in")
+        if request.user.role != 'student':
+            return redirect("index")
+        student = Student.objects.filter(user=request.user).first()
+        volunteer = Volunteer.objects.filter(student=student).first()
+        if volunteer is not None:
+            # get events that the student has volunteered for
+            volunteer_events = Volunteer_event.objects.filter(volunteer=volunteer)
+            return render(request, 'student/student_volunteer.html', { 'events': volunteer_events})
+        else:
+            return render(request, 'student/student_register_volunteer.html', {'student': student})
+
+@method_decorator(login_required(login_url='login'), name='dispatch')
+class StudentRegisterVolunteerView(View):
+    def post(self, request):
+        student = Student.objects.filter(user=request.user).first()
+        Volunteer.objects.create(student=student, hours=0)
+        return redirect('student-volunteer')
+        
 
 def index(request):
     return HttpResponse("Hello, world. You're at the webapp index.")
-
-        
-
         
 class HomeView(View):
     template_name = 'index.html'
@@ -346,6 +393,11 @@ class HomeView(View):
         recipient_list = ['sourodeepdatta@gmail.com']
         send_mail(subject, message, email_from, recipient_list)
         return HttpResponse('Mail Sent')
+    
+class LogoutView(View):
+    def get(self, request):
+        logout(request)
+        return redirect('login')
     
 def events(request):
     # Retrieve all events from the database

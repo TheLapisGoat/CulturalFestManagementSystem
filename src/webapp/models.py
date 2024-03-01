@@ -127,7 +127,6 @@ class Event(models.Model):
     min_participants = models.IntegerField("Min Participants",blank=False)
 
 class Infra_schedule(models.Model):
-    schedule_id = models.IntegerField(primary_key=True)
     start_time = models.DateTimeField(blank=False)
     end_time = models.DateTimeField(blank=False)
 

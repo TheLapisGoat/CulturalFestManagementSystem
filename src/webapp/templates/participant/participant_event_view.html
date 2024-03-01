@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ event_name }} Details</title>
+    <title>{{ name }} Details</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -41,10 +41,10 @@
 </head>
 <body>
     <div class="event-container">
-        <h1>{{ event_name }}</h1>
-        <p>{{ event_description }}</p>
-        <p class="date"><strong>Event Dates:</strong> {{ event_start_date }} to {{ event_end_date }}</p>
-        <p class="date"><strong>Registration End Date:</strong> {{ registration_end }}</p>
+        <h1>{{ name }}</h1>
+        <p>{{ description }}</p>
+        <p class="date"><strong>Event Dates:</strong> {{ start_date }} to {{ end_date }}</p>
+        <p class="date"><strong>Registration End Date:</strong> {{ registration_end_date }}</p>
     </div>
 </body>
 </html>
