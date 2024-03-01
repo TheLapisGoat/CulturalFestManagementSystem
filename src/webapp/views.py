@@ -377,9 +377,6 @@ class StudentRegisterVolunteerView(View):
 
 def index(request):
     return HttpResponse("Hello, world. You're at the webapp index.")
-
-        
-
         
 class HomeView(View):
     template_name = 'index.html'
@@ -391,6 +388,11 @@ class HomeView(View):
         recipient_list = ['sourodeepdatta@gmail.com']
         send_mail(subject, message, email_from, recipient_list)
         return HttpResponse('Mail Sent')
+    
+class LogoutView(View):
+    def get(self, request):
+        logout(request)
+        return redirect('login')
     
 def events(request):
     # Retrieve all events from the database

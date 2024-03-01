@@ -29,4 +29,5 @@ urlpatterns = [
     path('participant/event/<int:event_id>',views.participant_event_view.as_view(),name="participant_event"),
     path('participant/profile',views.participant_profile_view.as_view(),name="participant_profile"),
 
+    path('logout/', views.LogoutView.as_view(), name='logout'),
 ]
