@@ -4,8 +4,8 @@
 rm -rf webapp/migrations
 
 # Run migrations
-python manage.py makemigrations webapp
-python manage.py migrate
+python3 manage.py makemigrations webapp
+python3 manage.py migrate
 
 # Define predefined user fields
 username="admin"
@@ -69,4 +69,4 @@ echo "from webapp.models import Event, Venue, Organizer; from django.utils impor
 echo "Event 2 created successfully."
 
 # Run the server
-python manage.py runserver
+python3 manage.py runserver
