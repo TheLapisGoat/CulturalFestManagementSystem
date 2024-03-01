@@ -347,7 +347,7 @@ class participant_profile_view(View):
         return redirect('participant/')
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
-class StudentHomeView(View):
+class student_home_view(View):
     def get(self, request):
         if(request.user.is_anonymous):
             return HttpResponse("You're not logged in")
@@ -360,7 +360,7 @@ class StudentHomeView(View):
         return render(request, 'student/student_home.html', {'events': events})
     
 @method_decorator(login_required(login_url='login'), name='dispatch')
-class StudentProfileView(View):
+class student_profile_view(View):
     def get(self, request):
         if(request.user.is_anonymous):
             return HttpResponse("You're not logged in")
@@ -368,8 +368,6 @@ class StudentProfileView(View):
             return redirect("index")
         student = Student.objects.filter(user=request.user).first()
         return render(request, 'student/student_profile.html', {'student': student})
-
-#todo: check registration - seems like entity is not getting added
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class student_volunteer_redirect(View):

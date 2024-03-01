@@ -1,1 +1,111 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Festival Management System Login</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <style>
 
+            body {
+                background-color: #f2f2f2;
+                font-family: Arial, sans-serif;
+            }
+
+            h1 {
+                text-align: center;
+                color: #387adf;
+            }
+
+            h3 {
+                text-align: center;
+                color: #387adf;
+            }
+
+
+            .header {
+                overflow: hidden;
+                background-color: #f1f1f1;
+                padding: 20px 10px;
+            }
+
+            .header a {
+                float: left;
+                display: block;
+                color: black;
+                text-align: center;
+                padding-left: 14px;
+                padding-right: 14px;
+                padding-top: 4px;
+                padding-bottom: 4px;
+                text-decoration: none;
+            }
+
+            .header a:hover {
+                color: #387adf;
+            }
+
+            a:hover {
+                color: black;
+            }
+
+            .submitbutton {
+               /* center align */
+                display: block;
+                margin: 0 auto;
+                width: 20%;
+                padding: 14px 20px;
+                font-size: 16px;
+                cursor: pointer;
+                text-align: center;
+                text-decoration: none;
+                outline: none;
+                color: #fff;
+                background-color: #387adf;
+                border: none;
+                border-radius: 5px;
+            }
+
+            .button:hover {
+                background-color: #1f5f8b;
+            }
+
+
+        </style>
+
+    </head>
+
+    <body>
+        <div class="header">
+            <!-- todo: change hrefs -->
+            <a href="/student">Home</a>
+            <a href="#">All Events</a>
+            <a href="/student/volunteer/">Volunteer</a>
+            <a href="/student/profile/">Profile</a>
+            <a href="/logout/" style="float:right">Logout</a>
+        </div>
+
+        <h1>Volunteer</h1>
+        <!-- display list of events that they are volunteering in -->
+        {% if events|length == 0 %}
+                <h3>You are not volunteering in any event</h3>
+                <!-- todo: update href -->
+                <h3> Go to the <a href="#">All Events</a> page to volunteer for events</h3>
+        {% endif %}
+        {% for event in events %}
+            {% if forloop.first or forloop.counter0|divisibleby:3 %}
+                <div class="row">
+            {% endif %}
+            <div class="column">
+                <div class="card">
+                    <h3>{{event.event_name}}</h3>
+                    <p>{{event.event_description}}</p>
+                </div>
+            </div>
+            {% if forloop.last or forloop.counter|divisibleby:3 %}
+                </div>
+            {% endif %}
+        {% endfor %}
+    </body>
+</html>
