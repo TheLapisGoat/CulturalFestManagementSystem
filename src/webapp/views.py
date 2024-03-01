@@ -371,8 +371,8 @@ class StudentVolunteerView(View):
 class StudentRegisterVolunteerView(View):
     def post(self, request):
         student = Student.objects.filter(user=request.user).first()
-        Volunteer.objects.create(student=student)
-        return redirect('student_volunteer')
+        Volunteer.objects.create(student=student, hours=0)
+        return redirect('student-volunteer')
         
 
 def index(request):
