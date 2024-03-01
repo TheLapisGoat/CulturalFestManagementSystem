@@ -248,7 +248,7 @@ class OrganizerProfileView(View):
         
         organizer = Organizer.objects.filter(user=request.user).first()
         return render(request, 'organizer/organizer_profile.html', {'organizer': organizer})
-
+    
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class participant_view(View):
@@ -322,14 +322,61 @@ class participant_profile_view(View):
         return render(request, 'participant/participant_profile.html', {'participant': participant})
     def post(self, request, *args, **kwargs):
         return redirect('participant/')
-    
 
+@login_required(login_url='login')
+def student_home_view(request):
+    if(request.user.is_anonymous):
+        return HttpResponse("You're not logged in")
+    if(request.user.role!='student'):
+        return redirect("index")
+    
+    events = list(Event.objects.all())
+
+    #todo: filter live events
+
+    return render(request, 'student/student_home.html', {'events': events})
+
+@login_required(login_url='login')
+def student_profile_view(request):
+    if(request.user.is_anonymous):
+        return HttpResponse("You're not logged in")
+    if(request.user.role!='student'):
+        return redirect("index")
+    student = Student.objects.filter(user=request.user).first()
+    return render(request, 'student/student_profile.html', {'student': student})
+
+
+#todo: check registration - seems like entity is not getting added
+
+@method_decorator(login_required(login_url='login'), name='dispatch')
+class StudentVolunteerView(View):
+    def get(self, request):
+        if request.user.is_anonymous:
+            return HttpResponse("You're not logged in")
+        if request.user.role != 'student':
+            return redirect("index")
+        student = Student.objects.filter(user=request.user).first()
+        volunteer = Volunteer.objects.filter(student=student).first()
+        if volunteer is not None:
+            return render(request, 'student/student_volunteer.html', {'student': student})
+        else:
+            return render(request, 'student/student_register_volunteer.html', {'student': student})
+    
+    def post(self, request):
+        # user is registering for events
+        #todo: handle
+        pass 
+
+@method_decorator(login_required(login_url='login'), name='dispatch')
+class StudentRegisterVolunteerView(View):
+    def post(self, request):
+        student = Student.objects.filter(user=request.user).first()
+        Volunteer.objects.create(student=student)
+        return redirect('student_volunteer')
+        
 
 def index(request):
     return HttpResponse("Hello, world. You're at the webapp index.")
-
-        
-
         
 class HomeView(View):
     template_name = 'index.html'
@@ -341,6 +388,11 @@ class HomeView(View):
         recipient_list = ['sourodeepdatta@gmail.com']
         send_mail(subject, message, email_from, recipient_list)
         return HttpResponse('Mail Sent')
+    
+class LogoutView(View):
+    def get(self, request):
+        logout(request)
+        return redirect('login')
     
 def events(request):
     # Retrieve all events from the database
