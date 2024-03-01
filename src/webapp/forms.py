@@ -154,3 +154,22 @@ class OrganizerRegistrationForm(forms.Form):
             return False
 
         return True
+    
+class VolunteerRegistrationForm(forms.Form):
+
+    hours = forms.IntegerField(required=True)
+
+    def clean(self):
+        cleaned_data = super().clean()
+        return cleaned_data
+    
+    def is_valid(self):
+        valid = super().is_valid()
+        if not valid:
+            return valid
+        hours = self.cleaned_data.get('hours')
+        if hours < 0:
+            self.add_error('hours', "Hours cannot be negative")
+            return False
+
+        return True
