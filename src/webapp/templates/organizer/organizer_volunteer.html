@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Festival Management System Login</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <style>
+
+            body {
+                background-color: #f2f2f2;
+                font-family: Arial, sans-serif;
+            }
+
+            h1 {
+                text-align: center;
+                color: #387adf;
+            }
+
+            h3 {
+                text-align: center;
+                color:black;
+            }
+
+            .header {
+                overflow: hidden;
+                background-color: #f1f1f1;
+                padding: 20px 10px;
+            }
+
+            .header a {
+                float: left;
+                display: block;
+                color: black;
+                text-align: center;
+                padding-left: 14px;
+                padding-right: 14px;
+                padding-top: 4px;
+                padding-bottom: 4px;
+                text-decoration: none;
+            }
+
+            a:hover {
+                color: #387adf;
+            }
+
+            .row {
+                display: flex;
+            }
+
+            .column {
+                flex: 33.33%;
+                padding: 10px;
+            }
+
+            .card {
+                box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+                padding: 16px;
+                text-align: center;
+            }
+
+        </style>
+    </head>
+
+    <body>
+        <div class="header">
+            <!-- todo: change hrefs -->
+            <a href="/organizer">Home</a>
+            <a href="#">All Events</a>
+            <a href="/organizer/volunteer/">Volunteer</a>
+            <a href="/organizer/profile/">Profile</a>
+            <a href="/logout/" style="float:right">Logout</a>
+        </div>
+
+        <h1>Volunteers</h1>
+        {% if volunteer_events|length == 0 %}
+            <h3>No volunteers have signed up for events</h3>
+        {% endif %}
+        {% for volunteer, events in volunteer_events.items %}
+            <div class="card">
+                <h2>{{ volunteer.student.user.name }}</h2>
+                <h3>{{ volunteer.student.roll_number }}</h3>
+                <div class="row">
+                    {% if events|length == 0 %}
+                        <h3>Not volunteering in any event</h3>
+                    {% endif %}
+                    {% for event in events %}
+                        <div class="column">
+                            <div class="card">
+                                <p>{{ event }}</p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+    </body>
+</html>
+

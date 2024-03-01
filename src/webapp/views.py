@@ -244,6 +244,21 @@ class OrganizerEventView(View):
         venue_list = Venue_schedule_event.objects.filter(event=event)
 
         return render(request, 'organizer/organizer_event.html', {'event': event, 'volunteer_list': volunteer_list, 'venue_list': venue_list})
+    
+@method_decorator(login_required(login_url='login'), name='dispatch')
+class OrganizerVolunteerView(View):
+    def get(self, request):
+        if request.user.role != 'organizer':
+            return redirect('index-redirector')
+        
+        # get all volunteers and the events they are volunteering for
+        volunteers = Volunteer.objects.all()
+        volunteer_events = {}
+        for volunteer in volunteers:
+            volunteer_events[volunteer] = Volunteer_event.objects.filter(volunteer=volunteer)
+
+        return render(request, 'organizer/organizer_volunteer.html', {'volunteer_events': volunteer_events})
+
 
 @method_decorator(login_required(login_url='login'), name='dispatch')  
 class OrganizerProfileView(View):
