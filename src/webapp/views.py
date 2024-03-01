@@ -225,28 +225,29 @@ class OrganizerHomeView(View):
         events_organized = Event.objects.filter(organizers = organizer)
         #Sort the events by date
         events_organized = sorted(events_organized, key = lambda x: x.start_date)
-        return render(request, 'organizer/organizer_view.html', {'events': events_organized})
+        return render(request, 'organizer/organizer_home.html', {'events': events_organized})
 
-def organiser_event_view(request, event_id):
-    if(request.user.is_anonymous):
-        return HttpResponse("You're not logged in")
-    if(request.user.role!='organizer'):
-        return redirect("index")
-    event = get_object_or_404(Event, event_id=event_id)
-    volunteers = Volunteer_event.objects.filter(event=event)
-    volunteer_list = [x.volunteer for x in volunteers]
-    venue_list = Venue_schedule_event.objects.filter(event=event)
+@method_decorator(login_required(login_url='login'), name='dispatch')   
+class OrganizerEventView(View):
+    def get(self, request, event_id):
+        if request.user.role != 'organizer':
+            return redirect('index-redirector')
+        
+        event = get_object_or_404(Event, pk=event_id)
+        volunteers = Volunteer_event.objects.filter(event=event)
+        volunteer_list = [x.volunteer for x in volunteers]
+        venue_list = Venue_schedule_event.objects.filter(event=event)
 
-    return render(request, 'organizer/organizer_event.html', {'event': event, 'volunteer_list':volunteer_list, 'venue_list': venue_list})
+        return render(request, 'organizer/organizer_event.html', {'event': event, 'volunteer_list': volunteer_list, 'venue_list': venue_list})
 
-@login_required(login_url='login')
-def organizer_profile_view(request):
-    if(request.user.is_anonymous):
-        return HttpResponse("You're not logged in")
-    if(request.user.role!='organizer'):
-        return redirect("index")
-    organizer = Organizer.objects.filter(user=request.user).first()
-    return render(request, 'organizer/organizer_profile.html', {'organizer': organizer})
+@method_decorator(login_required(login_url='login'), name='dispatch')  
+class OrganizerProfileView(View):
+    def get(self, request):
+        if request.user.role != 'organizer':
+            return redirect('index-redirector')
+        
+        organizer = Organizer.objects.filter(user=request.user).first()
+        return render(request, 'organizer/organizer_profile.html', {'organizer': organizer})
 
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
