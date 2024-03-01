@@ -20,6 +20,7 @@ class User_Entity(AbstractUser, PermissionsMixin):
         ('student', 'Student'),
         ('external_participant', 'External Participant'),
         ('organizer', 'Organizer'),
+        ('admin', 'Admin')
     ]
     
     role = models.CharField("Role", max_length=40, choices=ROLES, default='student', blank = False)
@@ -89,7 +90,7 @@ class Organizer(models.Model):
     user = models.OneToOneField(User_Entity, on_delete = models.CASCADE, related_name = "organizer", primary_key = True, blank = False, unique = True)
     
     def __str__(self):
-        return self.user.first_name + ' ' + self.user.last_name + ' (' + self.department + ')'
+        return self.user.first_name + ' ' + self.user.last_name
     
     class Meta:
         verbose_name = "Organizer"
@@ -108,27 +109,22 @@ class Organizer_Key(models.Model):
         verbose_name_plural = "Organizer Keys"
 
 class Venue(models.Model):
-    venue_id = models.IntegerField("venue_id",primary_key=True)
     venue_name = models.CharField("venue_name",max_length=50,blank=False)
     venue_capacity = models.IntegerField("venue_capacity",blank=False)
     address_line_1 = models.CharField("address_line_1",max_length=50,blank=False)
     address_line_2 = models.CharField("address_line_2",max_length=50,blank=True,default="",null=False)
 
 class Event(models.Model):
-    event_id = models.IntegerField("event_id",primary_key=True)
-    event_name = models.CharField("event_name",max_length=50,blank=False)
-    event_description = models.TextField("event_description",blank=True)
-    event_start_date = models.DateTimeField("event_start_date",blank=False)
-    event_end_date = models.DateTimeField("event_end_date",blank=False)
-    venue_id = models.ForeignKey(Venue,on_delete=models.CASCADE,null=True)
-    registration_start = models.DateTimeField("registration_start",blank=False)
-    registration_end = models.DateTimeField("registration_end",blank=False)
-    max_participants = models.IntegerField("max_participants",blank=False)
-    min_participants = models.IntegerField("min_participants",blank=False)
-
-class Organized_by(models.Model):
-    event_id = models.ForeignKey(Event,on_delete=models.CASCADE)
-    organizer_id = models.ForeignKey(Organizer,on_delete=models.CASCADE)
+    organizers = models.ManyToManyField(Organizer, related_name='events')
+    name = models.CharField("Event Name",max_length=50,blank=False)
+    description = models.TextField("Event Description",blank=True)
+    start_date = models.DateTimeField("Event Start Date",blank=False)
+    end_date = models.DateTimeField("Event End Date",blank=False)
+    venue = models.ForeignKey(Venue,on_delete=models.CASCADE,null=True)
+    registration_start_date = models.DateTimeField("Registration Start Date",blank=False)
+    registration_end_date = models.DateTimeField("Registration End Date",blank=False)
+    max_participants = models.IntegerField("Max Participants",blank=False)
+    min_participants = models.IntegerField("Min Participants",blank=False)
 
 class Infra_schedule(models.Model):
     schedule_id = models.IntegerField(primary_key=True)
