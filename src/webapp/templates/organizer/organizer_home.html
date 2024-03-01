@@ -195,6 +195,17 @@
         {% for event in events %}
                 
         {% endfor %} -->
+        <div class="search-container">
+            <form action="" method="post">
+                {% csrf_token %}
+                <input type="text" placeholder="Search for events..." name="search_query">
+                <label for="start_date">Start Date:</label>
+                <input type="datetime-local" id="start_date" name="start_date">
+                <label for="end_date">End Date:</label>
+                <input type="datetime-local" id="end_date" name="end_date">
+                <button type="submit" class="submit-button">Search</button>
+            </form>
+        </div>
         
         <div class="container">
             <div class="events-container">
