@@ -358,14 +358,11 @@ class StudentVolunteerView(View):
         student = Student.objects.filter(user=request.user).first()
         volunteer = Volunteer.objects.filter(student=student).first()
         if volunteer is not None:
-            return render(request, 'student/student_volunteer.html', {'student': student})
+            # get events that the student has volunteered for
+            volunteer_events = Volunteer_event.objects.filter(volunteer=volunteer)
+            return render(request, 'student/student_volunteer.html', { 'events': volunteer_events})
         else:
             return render(request, 'student/student_register_volunteer.html', {'student': student})
-    
-    def post(self, request):
-        # user is registering for events
-        #todo: handle
-        pass 
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class StudentRegisterVolunteerView(View):
