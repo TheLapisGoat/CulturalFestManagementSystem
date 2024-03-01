@@ -323,28 +323,28 @@ class participant_profile_view(View):
     def post(self, request, *args, **kwargs):
         return redirect('participant/')
 
-@login_required(login_url='login')
-def student_home_view(request):
-    if(request.user.is_anonymous):
-        return HttpResponse("You're not logged in")
-    if(request.user.role!='student'):
-        return redirect("index")
+@method_decorator(login_required(login_url='login'), name='dispatch')
+class StudentHomeView(View):
+    def get(self, request):
+        if(request.user.is_anonymous):
+            return HttpResponse("You're not logged in")
+        if(request.user.role!='student'):
+            return redirect("index")
+        events = list(Event.objects.all())
+
+        #todo: filter live events
+
+        return render(request, 'student/student_home.html', {'events': events})
     
-    events = list(Event.objects.all())
-
-    #todo: filter live events
-
-    return render(request, 'student/student_home.html', {'events': events})
-
-@login_required(login_url='login')
-def student_profile_view(request):
-    if(request.user.is_anonymous):
-        return HttpResponse("You're not logged in")
-    if(request.user.role!='student'):
-        return redirect("index")
-    student = Student.objects.filter(user=request.user).first()
-    return render(request, 'student/student_profile.html', {'student': student})
-
+@method_decorator(login_required(login_url='login'), name='dispatch')
+class StudentProfileView(View):
+    def get(self, request):
+        if(request.user.is_anonymous):
+            return HttpResponse("You're not logged in")
+        if(request.user.role!='student'):
+            return redirect("index")
+        student = Student.objects.filter(user=request.user).first()
+        return render(request, 'student/student_profile.html', {'student': student})
 
 #todo: check registration - seems like entity is not getting added
 
@@ -358,21 +358,18 @@ class StudentVolunteerView(View):
         student = Student.objects.filter(user=request.user).first()
         volunteer = Volunteer.objects.filter(student=student).first()
         if volunteer is not None:
-            return render(request, 'student/student_volunteer.html', {'student': student})
+            # get events that the student has volunteered for
+            volunteer_events = Volunteer_event.objects.filter(volunteer=volunteer)
+            return render(request, 'student/student_volunteer.html', { 'events': volunteer_events})
         else:
             return render(request, 'student/student_register_volunteer.html', {'student': student})
-    
-    def post(self, request):
-        # user is registering for events
-        #todo: handle
-        pass 
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class StudentRegisterVolunteerView(View):
     def post(self, request):
         student = Student.objects.filter(user=request.user).first()
-        Volunteer.objects.create(student=student)
-        return redirect('student_volunteer')
+        Volunteer.objects.create(student=student, hours=0)
+        return redirect('student-volunteer')
         
 
 def index(request):
