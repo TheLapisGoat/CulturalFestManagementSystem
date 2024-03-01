@@ -28,7 +28,7 @@ class MainViewRedirect(View):
         if request.user.role == 'student':
             return redirect('student-home')
         elif request.user.role == 'external_participant':
-            return redirect('participant-home')
+            return redirect('external-participant-home')
         elif request.user.role == 'organizer':
             return redirect('organizer-home')
         elif request.user.role == 'admin':
