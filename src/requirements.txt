@@ -3,3 +3,4 @@ django_phonenumber_field==7.3.0
 django-anymail===10.2
 phonenumbers==8.13.31
 psycopg2-binary==2.9.9
+babel==2.14.0
