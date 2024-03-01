@@ -9,7 +9,14 @@ Made as part of Assignment 3 for the Database Management Systems Lab Course, Spr
 
 
 ## Local Setup Instructions 
-- Install postgres, psql and create a user and database with name `postgres`
+- Install postgres, psql and setup user and database
+- Create a file `credentials.json` in `FestivalManagementSystem/` and add the following content:
+```json
+{
+    "USERNAME": <YOUR_POSTGRES_USERNAME>,
+    "PASSWORD": <YOUR_POSTGRES_PASSWORD>
+}
+```
 - Setup a virtual environment and activate it
 - Install required packages 
 - Run `python3 manage.py makemigrations webapp`

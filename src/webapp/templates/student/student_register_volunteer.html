@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Festival Management System Login</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <style>
+
+            body {
+                background-color: #f2f2f2;
+                font-family: Arial, sans-serif;
+            }
+
+            h1 {
+                text-align: center;
+                color: black;
+            }
+
+            h3 {
+                text-align: center;
+                color: black;
+            }
+
+            .header {
+                overflow: hidden;
+                background-color: #f1f1f1;
+                padding: 20px 10px;
+            }
+
+            .header a {
+                float: left;
+                display: block;
+                color: black;
+                text-align: center;
+                padding-left: 14px;
+                padding-right: 14px;
+                padding-top: 4px;
+                padding-bottom: 4px;
+                text-decoration: none;
+            }
+
+            a:hover {
+                color: #387adf;
+            }
+
+            .submitbutton {
+               /* center align */
+                display: block;
+                margin: 0 auto;
+                width: 20%;
+                padding: 14px 20px;
+                font-size: 16px;
+                cursor: pointer;
+                text-align: center;
+                text-decoration: none;
+                outline: none;
+                color: #fff;
+                background-color: #387adf;
+                border: none;
+                border-radius: 5px;
+            }
+
+            .button:hover {
+                background-color: #1f5f8b;
+            }
+
+
+        </style>
+
+    </head>
+
+    <body>
+        <div class="header">
+            <!-- todo: change hrefs -->
+            <a href="/student">Home</a>
+            <a href="#">All Events</a>
+            <a href="/student/volunteer/">Volunteer</a>
+            <a href="/student/profile/">Profile</a>
+            <a href="#" style="float:right">Logout</a>
+        </div>
+
+        <!-- inform that they are not volunteer, and ask them to register -->
+        <h1>Volunteer</h1>
+        <h3>You are not a volunteer yet. Register to become a volunteer.</h3>
+
+        <form method="POST" action="/student/register_volunteer/">
+            {% csrf_token %}
+            <input type="submit" class="submitbutton" value="Register">
+        </form>
+    </body>
+</html>

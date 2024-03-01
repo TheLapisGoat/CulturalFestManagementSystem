@@ -74,7 +74,6 @@
 
         <!-- home page with "live" events -->
         <h1>Live Events</h1>
-        <!-- make a table of cards , with 3 cards per row -->
         {% for event in events %}
             {% if forloop.first or forloop.counter0|divisibleby:3 %}
                 <div class="row">
