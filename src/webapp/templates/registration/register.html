@@ -130,15 +130,13 @@
                 <input type="hidden" name="action" value="role_change">
             </form>
         </div>
-        
 
-        <form action="" method="post">
+        <form action="" enctype='multipart/form-data' method="post">
             {% csrf_token %}
-            <input type="hidden" name="action" value="form_submit">
             {% for field in form %}
                 <div class="field">
-                    {{field.label_tag}}
-                    {{field}}
+                    {{ field.label_tag }}
+                    {{ field }}
                     {% if field.errors %}
                         <ul class="errorlist">
                             {% for error in field.errors %}
@@ -148,9 +146,10 @@
                     {% endif %}
                 </div>
             {% endfor %}
-
+            <input type="hidden" name="action" value="form_submit">
             <input type="submit" value="Submit">
         </form>
+        
         <div class="message">
             {%if messages%}
                 {%for message in messages%}
