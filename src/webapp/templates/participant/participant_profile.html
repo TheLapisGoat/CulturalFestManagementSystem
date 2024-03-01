@@ -52,8 +52,8 @@
         {% if participant.user.photograph %}
             <img src="{{ participant.user.photograph.url }}" alt="Profile Photo">
         {% else %}
-            <p>No photograph available</p>
-        {% endif %}
+        <img src="http://www.gravatar.com/avatar/?d=identicon" alt="Profile Picture">
+        {%endif%}
     </div>
 </body>
 </html>

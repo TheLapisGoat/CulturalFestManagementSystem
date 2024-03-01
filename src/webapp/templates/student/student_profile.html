@@ -99,7 +99,11 @@
          
          <!-- todo: fix this image -->
          <div class="column">
+            {% if user.photo %}
             <img src="{{ user.photo }}" alt="Profile Picture" style="width:100%">
+            {% else %}
+            <img src="http://www.gravatar.com/avatar/?d=identicon" alt="Profile Picture">
+            {%endif%}
          </div>
  </body>
  
