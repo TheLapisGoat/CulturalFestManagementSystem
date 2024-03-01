@@ -131,5 +131,24 @@ role="external_participant"
 
 echo "from django.contrib.auth import get_user_model; from webapp.models import External_Participant; User = get_user_model(); user = User.objects.create_user('$username', '$email', '$password', first_name='$first_name', last_name='$last_name', address_line_1='$address_line_1', address_line_2='$address_line_2', state='$state', country='$country', pin_code='$pin_code', telephoneNumber='$telephoneNumber', role='$role'); External_Participant.objects.create(user=user, organization='$organization')" | python manage.py shell
 echo "CREATED EXTERNAL PARTICIPANT SUCCESSFULLY"
+
+# Create a Student
+username="student"
+password="student"
+email="stud@stud.com"
+address_line_1="1234 Main St"
+state="CA"
+country="US"
+pin_code="12345"
+telephoneNumber="123456789"
+role="student"
+first_name="Student"
+last_name="Student"
+roll_number="123456789"
+department="CSE"
+
+echo "from django.contrib.auth import get_user_model; from webapp.models import Student; User = get_user_model(); user = User.objects.create_user('$username', '$email', '$password', first_name='$first_name', last_name='$last_name', address_line_1='$address_line_1', state='$state', country='$country', pin_code='$pin_code', telephoneNumber='$telephoneNumber', role='$role'); Student.objects.create(user=user, roll_number='$roll_number', department='$department')" | python manage.py shell
+echo "CREATED STUDENT SUCCESSFULLY"
+
 # Run the server
 python3 manage.py runserver

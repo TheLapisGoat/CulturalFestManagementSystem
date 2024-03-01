@@ -1,6 +1,8 @@
 from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
 from django.contrib.auth.models import AbstractUser, PermissionsMixin
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
 
 class User_Entity(AbstractUser, PermissionsMixin):
     
@@ -140,7 +142,6 @@ class Venue_schedule_event(models.Model):
     event = models.ForeignKey(Event,on_delete=models.CASCADE)
 
 class Accomodation(models.Model):
-    accomodation_id = models.IntegerField(primary_key=True)
     accomodation_name = models.CharField(max_length=50,blank=False)
     address_line_1 = models.CharField(max_length=50,blank=False)
     address_line_2 = models.CharField(max_length=50,blank=True)
@@ -150,7 +151,7 @@ class Accomodation(models.Model):
     room_info = models.JSONField(default=list)
 
 class Participant_Accomodation(models.Model):
-    participant = models.ForeignKey(Student,on_delete=models.CASCADE)
+    participant = models.ForeignKey(External_Participant,on_delete=models.CASCADE)
     accomodation = models.ForeignKey(Accomodation,on_delete=models.CASCADE)
     start_date = models.DateTimeField(blank=False)
     end_date = models.DateTimeField(blank=False)
@@ -166,5 +167,29 @@ class StudentEvent(models.Model):
 class Participant_event(models.Model):
     participant = models.ForeignKey(External_Participant,on_delete=models.CASCADE)
     event = models.ForeignKey(Event,on_delete=models.CASCADE)
+
+class EventResults(models.Model):
+    event = models.ForeignKey(Event, on_delete=models.CASCADE)
+    first_place_content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, related_name='first_place_content_type')
+    first_place_object_id = models.PositiveIntegerField()
+    first_place = GenericForeignKey('first_place_content_type', 'first_place_object_id')
+
+    second_place_content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, related_name='second_place_content_type', null=True, blank=True)
+    second_place_object_id = models.PositiveIntegerField(null=True, blank=True)
+    second_place = GenericForeignKey('second_place_content_type', 'second_place_object_id')
+
+    third_place_content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, related_name='third_place_content_type', null=True, blank=True)
+    third_place_object_id = models.PositiveIntegerField(null=True, blank=True)
+    third_place = GenericForeignKey('third_place_content_type', 'third_place_object_id')
+
+    result_description = models.TextField()
+    def get_first_place_type(self):
+        return self.first_place_content_type.model_class()
+    def get_second_place_type(self):
+        return self.second_place_content_type.model_class()
+    def get_third_place_type(self):
+        return self.third_place_content_type.model_class()
+    def __str__(self):
+        return f"Event Result: {self.result_description}"
 
 

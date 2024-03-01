@@ -31,6 +31,7 @@ urlpatterns = [
     path('participant/register/<int:event_id>',views.participant_register_view.as_view(),name="participant_register"),
     path('participant/event/<int:event_id>',views.participant_event_view.as_view(),name="participant_event"),
     path('participant/profile',views.participant_profile_view.as_view(),name="participant_profile"),
+    path('participant/accomodation',views.participant_view_accomodation.as_view(),name="participant_accomodation"),
 
     path('logout/', views.LogoutView.as_view(), name='logout'),
 ]

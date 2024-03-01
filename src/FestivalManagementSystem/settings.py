@@ -116,6 +116,9 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
+LOGIN_URL = "login"
+LOGOUT_REDIRECT_URL = "login"
+
 TIME_ZONE = 'Asia/Calcutta'
 
 USE_I18N = True

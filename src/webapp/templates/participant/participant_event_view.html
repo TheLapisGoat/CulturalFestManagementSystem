@@ -37,6 +37,14 @@
             color: #777;
             font-size: 0.9em;
         }
+
+        .places {
+            margin-top: 15px;
+        }
+
+        .place {
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body>
@@ -45,7 +53,26 @@
         <p>{{ description }}</p>
         <p class="date"><strong>Event Dates:</strong> {{ start_date }} to {{ end_date }}</p>
         <p class="date"><strong>Registration End Date:</strong> {{ registration_end_date }}</p>
+
+        <div class="places">
+            {% if first_place %}
+            <div class="place">
+                <strong>First Place:</strong> {{ first_place }}
+            </div>
+            {% endif %}
+
+            {% if second_place %}
+            <div class="place">
+                <strong>Second Place:</strong> {{ second_place }}
+            </div>
+            {% endif %}
+
+            {% if third_place %}
+            <div class="place">
+                <strong>Third Place:</strong> {{ third_place }}
+            </div>
+            {% endif %}
+        </div>
     </div>
 </body>
 </html>
-    
