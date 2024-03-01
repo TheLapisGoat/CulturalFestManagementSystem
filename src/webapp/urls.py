@@ -25,6 +25,7 @@ urlpatterns = [
     path('student/register_volunteer/', views.student_register_volunteer_view.as_view(), name='student-register-volunteer'),
     path('student/volunteer/', views.student_volunteer_view.as_view(), name='student-volunteer'),
     path('student/profile/', views.student_profile_view.as_view(), name='student-profile'),
+    path('student/view_result/<int:event_id>', views.student_view_result.as_view(), name='student-view-result'),
 
 
 

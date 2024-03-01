@@ -126,6 +126,7 @@
             <p>Description: {{ event.description }}</p>
             <!-- todo: update href -->
             <a href="#">Register</a>
+            <a href="/student/view_result/{{ event.pk }}">View details</a>
         </div>
     </div>
     {% if forloop.last or forloop.counter|divisibleby:3 %}

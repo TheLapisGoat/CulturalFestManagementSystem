@@ -501,7 +501,55 @@ class student_volunteer_view(View):
         volunteer = Volunteer.objects.filter(student=student).first()
         return render(request, 'student/student_volunteer.html', {'volunteer': volunteer})
         
-
+@method_decorator(login_required(login_url='login'), name='dispatch')
+class student_view_result(View):
+    def get(self,request,event_id):
+        if(request.user.is_anonymous):
+            return HttpResponse("You're not logged in")
+        if(request.user.role!='student'):
+            return redirect("index")
+        event_data = Event.objects.filter(pk=event_id).values('name','description','start_date','end_date','registration_end_date')
+        event = Event.objects.filter(pk=event_id).first()
+        print(event_data,"\n\n\n\n\n\n")
+        participant = Student.objects.filter(user=request.user).first()
+        result = EventResults.objects.filter(event=event_id)
+        if(result):
+            result = result[0]
+            if(result.get_first_place_type()==Student):
+                first = Student.objects.filter(pk=result.first_place_object_id)
+                print(result.first_place_object_id, first,"\n\n\n\n")
+                participants = External_Participant.objects.all()
+                for participant in participants:
+                    print(participant.pk)
+                first_place = str(first[0])
+            elif(result.get_first_place_type()==External_Participant):
+                first = External_Participant.objects.filter(pk=result.first_place_object_id)
+                first_place = str(first[0])
+            if(result.get_second_place_type()==Student):
+                second = Student.objects.filter(pk=result.second_place_object_id)
+                second_place = str(second[0])
+            elif(result.get_second_place_type()==External_Participant):
+                second = External_Participant.objects.filter(pk=result.second_place_object_id)
+                second_place = str(second[0])
+            if(result.get_third_place_type()==Student):
+                third = Student.objects.filter(pk=result.third_place_object_id)
+                third_place = str(third[0])
+            elif(result.get_third_place_type()==External_Participant):
+                third = External_Participant.objects.filter(pk=result.third_place_object_id)
+                third_place = str(third[0])
+        else:
+            first_place=None
+            second_place=None
+            third_place=None
+        context1 = {'first_place':first_place,'second_place':second_place,'third_place':third_place}
+        merged_context = {**event_data[0], **context1}
+        existing_participant_event = StudentEvent.objects.filter(student=request.user, event=event).first()
+        if not existing_participant_event:
+            return HttpResponse("You are not registered for this event.")
+        return render(request, 'student/student_event_view.html',context = merged_context)
+    def post(self, request, *args, **kwargs):
+        return redirect('participant/')
+        
 def index(request):
     return HttpResponse("Hello, world. You're at the webapp index.")
         

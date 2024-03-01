@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ name }} Details</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .event-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        p {
+            color: #555;
+        }
+
+        .date {
+            color: #777;
+            font-size: 0.9em;
+        }
+
+        .places {
+            margin-top: 15px;
+        }
+
+        .place {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="event-container">
+        <h1>{{ name }}</h1>
+        <p>{{ description }}</p>
+        <p class="date"><strong>Event Dates:</strong> {{ start_date }} to {{ end_date }}</p>
+        <p class="date"><strong>Registration End Date:</strong> {{ registration_end_date }}</p>
+
+        <div class="places">
+            {% if first_place %}
+            <div class="place">
+                <strong>First Place:</strong> {{ first_place }}
+            </div>
+            {% endif %}
+
+            {% if second_place %}
+            <div class="place">
+                <strong>Second Place:</strong> {{ second_place }}
+            </div>
+            {% endif %}
+
+            {% if third_place %}
+            <div class="place">
+                <strong>Third Place:</strong> {{ third_place }}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
