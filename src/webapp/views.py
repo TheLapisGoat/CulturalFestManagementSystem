@@ -227,7 +227,7 @@ class OrganizerHomeView(View):
         events_organized = sorted(events_organized, key = lambda x: x.start_date)
         return render(request, 'organizer/organizer_view.html', {'events': events_organized})
 
-def organiser_event_view(request, event_id):
+def organizer_event_view(request, event_id):
     if(request.user.is_anonymous):
         return HttpResponse("You're not logged in")
     if(request.user.role!='organizer'):
