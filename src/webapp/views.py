@@ -265,7 +265,7 @@ class participant_view(View):
         events_registered = Participant_event.objects.filter(participant=participant).values('event')
         registerd_event_ids = [x['event'] for x in events_registered]
         for i in range(len(event_list)):
-            if(event_list[i].event_id in registerd_event_ids):
+            if(event_list[i].pk in registerd_event_ids):
                 registered[i]=1
         print(registered,events_registered,event_list,"\n\n\n\n\n\n\n")
         return render(request,"participant/home.html",{'events':event_list,'registered': registered})
@@ -281,7 +281,7 @@ class participant_register_view(View):
             return HttpResponse("You're not logged in")
         if(request.user.role!='external_participant'):
             return redirect("index")
-        event = get_object_or_404(Event, event_id=event_id)
+        event = get_object_or_404(Event, pk=event_id)
         participant = External_Participant.objects.filter(user=request.user).first()
         existing_participant_event = Participant_event.objects.filter(participant=participant, event=event).first()
         if existing_participant_event:
@@ -299,8 +299,8 @@ class participant_event_view(View):
             return HttpResponse("You're not logged in")
         if(request.user.role!='external_participant'):
             return redirect("index")
-        event_data = Event.objects.filter(event_id=event_id).values('event_name','event_description','event_start_date','event_end_date','registration_end')
-        event = Event.objects.filter(event_id=event_id).first()
+        event_data = Event.objects.filter(pk=event_id).values('name','description','start_date','end_date','registration_end_date')
+        event = Event.objects.filter(pk=event_id).first()
         print(event_data,"\n\n\n\n\n\n")
         participant = External_Participant.objects.filter(user=request.user).first()
         existing_participant_event = Participant_event.objects.filter(participant=participant, event=event).first()
