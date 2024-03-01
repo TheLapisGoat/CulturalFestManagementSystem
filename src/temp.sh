@@ -53,6 +53,45 @@ echo "Organizer created successfully:"
 echo "Username: $organizer_username"
 echo "Password: $organizer_password"
 
+# create organizer 2
+organizer2_username="organizer2"
+organizer2_password="organizer2"
+organizer2_first_name="Organizer2"
+organizer2_last_name="Organizer2"
+organizer2_email="org2@org2.com"
+organizer2_address_line_1="5678 Main St"
+organizer2_state="CA"
+organizer2_country="US"
+organizer2_pin_code="54321"
+organizer2_telephoneNumber="987654321"
+organizer2_role="organizer"
+
+# Create organizer
+echo "from django.contrib.auth import get_user_model; from webapp.models import Organizer; User = get_user_model(); user = User.objects.create_user('$organizer2_username', '$organizer2_email', '$organizer2_password', first_name='$organizer2_first_name', last_name='$organizer2_last_name', address_line_1='$organizer2_address_line_1', state='$organizer2_state', country='$organizer2_country', pin_code='$organizer2_pin_code', telephoneNumber='$organizer2_telephoneNumber', role='$organizer2_role'); Organizer.objects.create(user=user)" | python manage.py shell
+
+echo "Organizer 2 created successfully:"
+echo "Username: $organizer2_username"
+echo "Password: $organizer2_password"
+
+# create Organizer 3
+organizer3_username="organizer3"
+organizer3_password="organizer3"
+organizer3_first_name="Organizer3"
+organizer3_last_name="Organizer3"
+organizer3_email="org3@org3.com"
+organizer3_address_line_1="5678 Main St"
+organizer3_state="CA"
+organizer3_country="US"
+organizer3_pin_code="54321"
+organizer3_telephoneNumber="987654321"
+organizer3_role="organizer"
+
+# Create organizer
+echo "from django.contrib.auth import get_user_model; from webapp.models import Organizer; User = get_user_model(); user = User.objects.create_user('$organizer3_username', '$organizer3_email', '$organizer3_password', first_name='$organizer3_first_name', last_name='$organizer3_last_name', address_line_1='$organizer3_address_line_1', state='$organizer3_state', country='$organizer3_country', pin_code='$organizer3_pin_code', telephoneNumber='$organizer3_telephoneNumber', role='$organizer3_role'); Organizer.objects.create(user=user)" | python manage.py shell
+
+echo "Organizer 3 created successfully:"
+echo "Username: $organizer3_username"
+echo "Password: $organizer3_password"
 
 # Define event fields
 event_name1="Event 1"

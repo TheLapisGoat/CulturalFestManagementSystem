@@ -114,42 +114,22 @@
     </head>
 
     <body>
-        <h1>Welcome to the Festival Management System</h1>
-        <h2>Register</h2>
-        <p>Already have an account? <a href="{% url 'login' %}">Login</a></p>
-
-        <div class="role">
-            <form action="" method="post">
-                <h2 class="roletext">Choose your role</h2>
-                {% csrf_token %}
-                <select name="role" onchange="this.form.submit()">
-                    <option value="student" {% if default_role == 'student' %}selected{% endif %}>Student</option>
-                    <option value="external_participant" {% if default_role == 'external_participant' %}selected{% endif %}>External Participant</option>
-                    <option value="organizer" {% if default_role == 'organizer' %}selected{% endif %}>Organizer</option>
-                </select>
-                <input type="hidden" name="action" value="role_change">
-            </form>
-        </div>
-        
-
+        <h1>Register Event</h1>
         <form action="" method="post">
-            {% csrf_token %}
-            <input type="hidden" name="action" value="form_submit">
-            {% for field in form %}
-                <div class="field">
-                    {{field.label_tag}}
-                    {{field}}
-                    {% if field.errors %}
-                        <ul class="errorlist">
-                            {% for error in field.errors %}
-                                <li>{{ error }}</li>
-                            {% endfor %}
-                        </ul>
-                    {% endif %}
-                </div>
-            {% endfor %}
+        {% csrf_token %}
+        {% for field in form %}
+            <div class="field">
+                {{field.label_tag}} {{field}}
+                <ul class="errorlist">
+                    {% for error in field.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endfor %}
 
-            <input type="submit" value="Submit">
+
+            <input type="submit" value="Register Event">
         </form>
         <div class="message">
             {%if messages%}

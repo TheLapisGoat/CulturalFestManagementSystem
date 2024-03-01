@@ -11,6 +11,7 @@ urlpatterns = [
     path('organizer/profile/', views.OrganizerProfileView.as_view(), name='organizer-profile'),
     path('organizer/volunteer/', views.OrganizerVolunteerView.as_view(), name='organizer-volunteer'),
     path("organizer/", views.OrganizerHomeView.as_view(), name='organizer-home'),
+    path("organizer/register_event/", views.Register_Event_View.as_view(), name='organizer-event-register'),
     path('login/', views.LoginView.as_view(), name='login'),
     path('register/', views.RegisterView.as_view(), name='register'),
     path('otp-verification/', views.OTPVerificationView.as_view(), name='otp-verification'),

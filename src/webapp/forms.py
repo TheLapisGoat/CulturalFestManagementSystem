@@ -1,6 +1,8 @@
+from typing import Any
 from django import forms
-from .models import User_Entity, Student, Volunteer, External_Participant, Organizer, Organizer_Key
+from .models import User_Entity, Student, Volunteer, External_Participant, Organizer, Organizer_Key, Venue
 from django.forms.widgets import *
+from django.db.models import Q
 from phonenumber_field.formfields import PhoneNumberField
 from phonenumber_field.widgets import PhoneNumberPrefixWidget
 class StudentRegistrationForm(forms.Form):
@@ -23,8 +25,12 @@ class StudentRegistrationForm(forms.Form):
         max_length=100, required=True, widget=PhoneNumberPrefixWidget(region='IN'))
     photograph = forms.ImageField(required=False)
     gender = forms.ChoiceField(choices = [('', '---'), ('M', 'Male'), ('F', 'Female'), ('O', 'Other')], required=False, initial='')
-    date_of_birth = forms.DateField(widget=SelectDateWidget(years=range(1900, 2024))
-                                    , required=False)
+    date_of_birth = forms.DateField(
+        label="Date of Birth",
+        required=True,
+        widget=forms.DateInput(format="%Y-%m-%d", attrs={"type": "date"}),
+        input_formats=["%Y-%m-%d"]
+    )
 
     def clean(self):
         cleaned_data = super().clean()
@@ -79,8 +85,12 @@ class External_ParticipantRegistrationForm(forms.Form):
         max_length=100, required=True, widget=PhoneNumberPrefixWidget(region='IN'))
     photograph = forms.ImageField(required=False)
     gender = forms.ChoiceField(choices = [('', '---'), ('M', 'Male'), ('F', 'Female'), ('O', 'Other')], required=False, initial='')
-    date_of_birth = forms.DateField(widget=SelectDateWidget(years=range(1900, 2024))
-                                    , required=False)
+    date_of_birth = forms.DateField(
+        label="Date of Birth",
+        required=True,
+        widget=forms.DateInput(format="%Y-%m-%d", attrs={"type": "date"}),
+        input_formats=["%Y-%m-%d"]
+    )
 
     def clean(self):
         cleaned_data = super().clean()
@@ -127,8 +137,12 @@ class OrganizerRegistrationForm(forms.Form):
         max_length=100, required=True, widget=PhoneNumberPrefixWidget(region='IN'))
     photograph = forms.ImageField(required=False)
     gender = forms.ChoiceField(choices = [('', '---'), ('M', 'Male'), ('F', 'Female'), ('O', 'Other')], required=False, initial='')
-    date_of_birth = forms.DateField(widget=SelectDateWidget(years=range(1900, 2024))
-                                    , required=False)
+    date_of_birth = forms.DateField(
+        label="Date of Birth",
+        required=True,
+        widget=forms.DateInput(format="%Y-%m-%d", attrs={"type": "date"}),
+        input_formats=["%Y-%m-%d"]
+    )
 
     def clean(self):
         cleaned_data = super().clean()
@@ -183,6 +197,80 @@ class VolunteerRegistrationForm(forms.Form):
         return True
     
 class Event_Registration_Form(forms.Form):
-    event_name = forms.CharField(max_length=100, required=True)
-    event_description = forms.CharField(max_length=100, required=True)
-    start_date = forms.DateField(widget=SelectDateWidget, required=True)
+    def __init__(self, *args, **kwargs):
+        if 'user' in kwargs:
+            self.user = kwargs.pop('user')
+        else: self.user = None
+        super(Event_Registration_Form, self).__init__(*args, **kwargs)
+        self.queryset = Organizer.objects.filter(~Q(user = self.user))
+        self. fields['event_name'] = forms.CharField(max_length=100, required=True)
+        self.fields['event_description'] = forms.CharField(max_length=100, required=True)
+        venue_list = Venue.objects.all()
+        venue_choices = [(venue.pk, venue.venue_name) for venue in venue_list]
+        self.fields['venue'] = forms.ChoiceField(choices = venue_choices, required=True)
+        self.fields['start_date'] = forms.DateField(
+            label="Start Date",
+            required=True,
+            widget=forms.DateInput(format="%Y-%m-%d", attrs={"type": "date"}),
+            input_formats=["%Y-%m-%d"]
+        )
+        self.fields['end_date'] = forms.DateField(
+            label="End Date",
+            required=True,
+            widget=forms.DateInput(format="%Y-%m-%d", attrs={"type": "date"}),
+            input_formats=["%Y-%m-%d"]
+        )
+        self.fields['registration_start_date_time'] = forms.DateTimeField(
+            label="Registration Start Date Time",
+            required=True,
+            widget=forms.DateTimeInput(format="%Y-%m-%d %H:%M", attrs={"type": "datetime-local"}),
+            input_formats=["%Y-%m-%d %H:%M"]
+        )
+        self.fields['registration_end_date_time'] = forms.DateTimeField(
+            label="Registration End Date Time",
+            required=True,
+            widget=forms.DateTimeInput(format="%Y-%m-%d %H:%M", attrs={"type": "datetime-local"}),
+            input_formats=["%Y-%m-%d %H:%M"]
+        )
+        self.fields['max_participants'] = forms.IntegerField(required=True)
+        self.fields['min_participants'] = forms.IntegerField(required=True)
+        self.fields['organizers'] = forms.ModelMultipleChoiceField(queryset=self.queryset, required=True, widget=forms.CheckboxSelectMultiple)
+
+    def clean(self) -> dict[str, Any]:
+        return super().clean()
+    def is_valid(self):
+        valid = super().is_valid()
+        if not valid:
+            print("SUPER NOT VALID")
+            return valid
+        print("\n\n CHECKING OTHER THIGNS\n")
+        start_date = self.cleaned_data.get('start_date')
+        end_date = self.cleaned_data.get('end_date')
+        registration_start_date_time = self.cleaned_data.get('registration_start_date_time')
+        registration_end_date_time = self.cleaned_data.get('registration_end_date_time')
+        if start_date > end_date:
+            self.add_error('end_date', "End Date cannot be before Start Date")
+            print("End Date cannot be before Start Date")
+            return False
+        if registration_start_date_time > registration_end_date_time:
+            self.add_error('registration_end_date_time', "Registration End Date Time cannot be before Registration Start Date Time")
+            print("Registration End Date Time cannot be before Registration Start Date Time")
+            return False
+        max_participants = self.cleaned_data.get('max_participants')
+        min_participants = self.cleaned_data.get('min_participants')
+        if max_participants < 0:
+            self.add_error('max_participants', "Max Participants cannot be negative")
+            print("Max Participants cannot be negative")
+            return False
+        if min_participants < 0:
+            self.add_error('min_participants', "Min Participants cannot be negative")
+            print("Min Participants cannot be negative")
+            return False
+        if max_participants < min_participants:
+            self.add_error('max_participants', "Max Participants cannot be less than Min Participants")
+            print("Max Participants cannot be less than Min Participants")
+            return False
+        return True
+    
+
+

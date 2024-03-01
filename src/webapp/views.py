@@ -16,7 +16,7 @@ from django.contrib.auth.tokens import default_token_generator
 import asyncio
 from django.shortcuts import render, get_object_or_404
 from .models import *
-from .forms import StudentRegistrationForm, OTPVerificationForm, External_ParticipantRegistrationForm, OrganizerRegistrationForm, VolunteerRegistrationForm
+from .forms import StudentRegistrationForm, OTPVerificationForm, External_ParticipantRegistrationForm, OrganizerRegistrationForm, VolunteerRegistrationForm, Event_Registration_Form
 from django.utils.decorators import method_decorator
 # Create your views here. (Using class based views)
 
@@ -160,16 +160,48 @@ class RegisterView(View):
         else:
             return render(request, self.template_name, {'form': form, 'default_role': request.session['register_current_role']})
         
-# class Register_Event_View(View):
-#     def get(self,request,*args,**kwargs):
-#         if(request.user.is_anonymous):
-#             return HttpResponse("You're not logged in")
-#         if(request.user.role!='organizer'):
-#             return redirect("index")
-#         return render(request,"organizer/event_register.html")
+class Register_Event_View(View):
+    template_name = "organizer/organizer_register_event.html"
+    def get(self,request):
+        form = Event_Registration_Form(user=request.user)
+        if(request.user.is_anonymous):
+            return HttpResponse("You're not logged in")
+        if(request.user.role!='organizer'):
+            return redirect("index")
+        return render(request, self.template_name, {'form':form})
     
-#     def post(self,request,*args,**kwargs):
-#         event = 
+    def post(self,request):
+        form = Event_Registration_Form(request.POST, user = request.user)
+        if form.is_valid():
+            # using organizers.set() to add multiple organizers
+            organizers = form.cleaned_data['organizers']
+            print(organizers)
+            # add the current user as an organizer
+            organizers |= Organizer.objects.filter(user=request.user)
+            venue = form.cleaned_data['venue']
+            venue = Venue.objects.get(pk = venue)
+            print(organizers)
+            event = Event.objects.create(
+                name = form.cleaned_data['event_name'],
+                description = form.cleaned_data['event_description'],
+                start_date = form.cleaned_data['start_date'],
+                end_date = form.cleaned_data['end_date'],
+                registration_start_date = form.cleaned_data['registration_start_date_time'],
+                registration_end_date = form.cleaned_data['registration_end_date_time'],
+                venue = venue,
+                max_participants = form.cleaned_data['max_participants'],
+                min_participants = form.cleaned_data['min_participants']
+            )
+            for organizer in organizers:
+                event.organizers.add(organizer)
+            event.save()
+            return redirect('organizer-home')
+        else:
+            # for field in form:
+            #     print(field, field.errors)
+            # print(form.errors)
+            return render(request,self.template_name,{'form':form})
+
 def schedule_deletion(request, extra_args):
     #Check if the user has verified the otp (is_active = True)
     user = User_Entity.objects.get(username = request.session['username'])
@@ -279,17 +311,6 @@ class OrganizerProfileView(View):
         organizer = Organizer.objects.filter(user=request.user).first()
         return render(request, 'organizer/organizer_profile.html', {'organizer': organizer})
     
-@method_decorator(login_required(login_url='login'), name='dispatch')  
-class Organizeer_Event_Register_View(View):
-    def get(self,request,*args,**kwargs):
-        if(request.user.is_anonymous):
-            return HttpResponse("You're not logged in")
-        if(request.user.role!='organizer'):
-            return redirect("index")
-        return render(request,"organizer/event_register.html")
-    
-    def post(self,request,*args,**kwargs):
-        return redirect('organizer/')
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class participant_view(View):
