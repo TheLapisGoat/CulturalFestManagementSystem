@@ -116,6 +116,41 @@
             color:white;
             cursor:pointer;
         }
+
+        .search-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        input[type=text] {
+            width: 50%;
+            padding: 10px;
+            margin: 8px 0;
+            box-sizing: border-box;
+            border: 2px solid #ccc;
+            border-radius: 4px;
+            outline: none;
+        }
+
+        input[type=text]:focus {
+            border: 2px solid #387adf;
+        }
+
+        .submit-button {
+            width: 20%;
+            background-color: #387adf;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .submit-button:hover {
+            background-color: #1f5f8b;
+        }
+
         </style>
     </head>
 
@@ -126,6 +161,18 @@
             <a href="/organizer/profile/">Profile</a>
             <a href="/organizer/register_event/">Create Event</a>
             <a href="/logout/" style="float:right">Logout</a>   
+        </div>
+
+        <div class="search-container">
+            <form action="" method="post">
+                {% csrf_token %}
+                <input type="text" placeholder="Search for events..." name="search_query">
+                <label for="start_date">Start Date:</label>
+                <input type="datetime-local" id="start_date" name="start_date">
+                <label for="end_date">End Date:</label>
+                <input type="datetime-local" id="end_date" name="end_date">
+                <button type="submit" class="submit-button">Search</button>
+            </form>
         </div>
 
         <!-- home page with "live" events -->
@@ -148,17 +195,6 @@
         {% for event in events %}
                 
         {% endfor %} -->
-        <div class="search-container">
-            <form action="" method="post">
-                {% csrf_token %}
-                <input type="text" placeholder="Search for events..." name="search_query">
-                <label for="start_date">Start Date:</label>
-                <input type="datetime-local" id="start_date" name="start_date">
-                <label for="end_date">End Date:</label>
-                <input type="datetime-local" id="end_date" name="end_date">
-                <button type="submit" class="submit-button">Search</button>
-            </form>
-        </div>
         
         <div class="container">
             <div class="events-container">
