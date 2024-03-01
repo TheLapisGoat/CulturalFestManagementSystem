@@ -75,7 +75,6 @@
  </head>
  
  <body>
-
     <div class="header">
         <a href="/student">Home</a>
         <a href="/student/volunteer_redirect/">Volunteer</a>
@@ -84,7 +83,6 @@
     </div>
 
      <h1>Profile</h1>
-     <!-- all info on the left, photo on the right (use placeholder if no photo) -->
      <div class="row">
          <div class="column">
              <div class="info">
@@ -106,7 +104,6 @@
              </div>
          </div>
          
-         <!-- todo: fix this image -->
          <div class="column">
             {% if user.photo %}
             <img src="{{ user.photo }}" alt="Profile Picture">

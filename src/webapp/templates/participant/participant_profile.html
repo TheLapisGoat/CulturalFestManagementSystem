@@ -6,32 +6,51 @@
     <title>{{ participant.user.first_name }} {{ participant.user.last_name }} Profile</title>
     <style>
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        .profile-container {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            max-width: 600px;
-            width: 100%;
-            text-align: center;
+            background-color: #f2f2f2;
+            font-family: Arial, sans-serif;
         }
 
         h1 {
-            color: #333;
+            text-align: center;
+            color: #387adf;
         }
 
-        p {
-            color: #555;
+
+        .header {
+                overflow: hidden;
+                background-color: #f1f1f1;
+                padding: 20px 10px;
+        }
+
+        .header a {
+            float: left;
+            display: block;
+            color: black;
+            text-align: center;
+            padding-left: 14px;
+            padding-right: 14px;
+            padding-top: 4px;
+            padding-bottom: 4px;
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: #387adf;
+        }
+
+        .row {
+            display: flex;
+        }
+
+        .column {
+            flex: 50%;
+            padding: 10px;
+        }
+
+        .info {
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            padding: 16px;
+            text-align: left;
         }
 
         img {
@@ -48,17 +67,41 @@
     </style>
 </head>
 <body>
-    <div class="profile-container">
-        <h1>{{ participant.user.first_name }} {{ participant.user.last_name }} Profile</h1>
-        <p><strong>Email:</strong> {{ participant.user.email }}</p>
-        <p><strong>Telephone Number:</strong> {{ participant.user.telephoneNumber }}</p>
-        <p><strong>Organization:</strong> {{ participant.organization }}</p>
-
-        {% if participant.user.photograph %}
-            <img src="{{ participant.user.photograph.url }}" alt="Profile Photo">
-        {% else %}
-        <img src="http://www.gravatar.com/avatar/?d=identicon" alt="Profile Picture">
-        {%endif%}
+    <div class="header">
+        <a href="/participant/">Home</a>
+        <a href="/participant/accomodation/"">Logistics</a>
+        <a href="/participant/profile">Profile</a>
+        <a href="/logout/" style="float:right">Logout</a>
     </div>
+
+     <h1>Profile</h1>
+     <div class="row">
+         <div class="column">
+             <div class="info">
+                 <p><strong>First Name:</strong> {{ user.first_name }}</p>
+                 {% if user.middle_name %}
+                 <p><strong>Middle Name:</strong> {{ user.middle_name }}</p>
+                 {% endif %}
+                 <p><strong>Last Name:</strong> {{ user.last_name }}</p>
+                 <p><strong>Email:</strong> {{ user.email }}</p>
+                 <p><strong>Address Line 1:</strong> {{ user.address_line_1 }}</p>
+                 {% if user.address_line_2 %}
+                 <p><strong>Address Line 2:</strong> {{ user.address_line_2 }}</p>
+                 {% endif %}
+                 <p><strong>State:</strong> {{ user.state }}</p>
+                 <p><strong>Country:</strong> {{ user.country }}</p>
+                 <p><strong>Pin Code:</strong> {{ user.pin_code }}</p>
+                 <p><strong>Telephone Number:</strong> {{ user.telephoneNumber }}</p>
+                 <p><strong>Date of Birth:</strong> {{ user.date_of_birth }}</p>
+             </div>
+         </div>
+         
+         <div class="column">
+            {% if user.photo %}
+            <img src="{{ user.photo }}" alt="Profile Picture">
+            {% else %}
+            <img src="http://www.gravatar.com/avatar/?d=identicon" alt="Profile Picture">
+            {%endif%}
+         </div>
 </body>
 </html>
