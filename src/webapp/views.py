@@ -160,6 +160,16 @@ class RegisterView(View):
         else:
             return render(request, self.template_name, {'form': form, 'default_role': request.session['register_current_role']})
         
+# class Register_Event_View(View):
+#     def get(self,request,*args,**kwargs):
+#         if(request.user.is_anonymous):
+#             return HttpResponse("You're not logged in")
+#         if(request.user.role!='organizer'):
+#             return redirect("index")
+#         return render(request,"organizer/event_register.html")
+    
+#     def post(self,request,*args,**kwargs):
+#         event = 
 def schedule_deletion(request, extra_args):
     #Check if the user has verified the otp (is_active = True)
     user = User_Entity.objects.get(username = request.session['username'])
@@ -269,6 +279,17 @@ class OrganizerProfileView(View):
         organizer = Organizer.objects.filter(user=request.user).first()
         return render(request, 'organizer/organizer_profile.html', {'organizer': organizer})
     
+@method_decorator(login_required(login_url='login'), name='dispatch')  
+class Organizeer_Event_Register_View(View):
+    def get(self,request,*args,**kwargs):
+        if(request.user.is_anonymous):
+            return HttpResponse("You're not logged in")
+        if(request.user.role!='organizer'):
+            return redirect("index")
+        return render(request,"organizer/event_register.html")
+    
+    def post(self,request,*args,**kwargs):
+        return redirect('organizer/')
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class participant_view(View):

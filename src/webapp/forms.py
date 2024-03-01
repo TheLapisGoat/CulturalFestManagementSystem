@@ -1,6 +1,8 @@
 from django import forms
 from .models import User_Entity, Student, Volunteer, External_Participant, Organizer, Organizer_Key
-
+from django.forms.widgets import *
+from phonenumber_field.formfields import PhoneNumberField
+from phonenumber_field.widgets import PhoneNumberPrefixWidget
 class StudentRegistrationForm(forms.Form):
 
     username = forms.CharField(max_length=100, required=True)
@@ -17,10 +19,12 @@ class StudentRegistrationForm(forms.Form):
     state = forms.CharField(max_length=100, required=True)
     country = forms.CharField(max_length=100, required=True)
     pin_code = forms.CharField(max_length=100, required=True)
-    telephoneNumber = forms.CharField(max_length=100, required=True)
+    telephoneNumber = PhoneNumberField(
+        max_length=100, required=True, widget=PhoneNumberPrefixWidget(region='IN'))
     photograph = forms.ImageField(required=False)
     gender = forms.ChoiceField(choices = [('', '---'), ('M', 'Male'), ('F', 'Female'), ('O', 'Other')], required=False, initial='')
-    date_of_birth = forms.DateField(required=False)
+    date_of_birth = forms.DateField(widget=SelectDateWidget(years=range(1900, 2024))
+                                    , required=False)
 
     def clean(self):
         cleaned_data = super().clean()
@@ -71,10 +75,12 @@ class External_ParticipantRegistrationForm(forms.Form):
     state = forms.CharField(max_length=100, required=True)
     country = forms.CharField(max_length=100, required=True)
     pin_code = forms.CharField(max_length=100, required=True)
-    telephoneNumber = forms.CharField(max_length=100, required=True)
+    telephoneNumber = PhoneNumberField(
+        max_length=100, required=True, widget=PhoneNumberPrefixWidget(region='IN'))
     photograph = forms.ImageField(required=False)
     gender = forms.ChoiceField(choices = [('', '---'), ('M', 'Male'), ('F', 'Female'), ('O', 'Other')], required=False, initial='')
-    date_of_birth = forms.DateField(required=False)
+    date_of_birth = forms.DateField(widget=SelectDateWidget(years=range(1900, 2024))
+                                    , required=False)
 
     def clean(self):
         cleaned_data = super().clean()
@@ -117,10 +123,12 @@ class OrganizerRegistrationForm(forms.Form):
     state = forms.CharField(max_length=100, required=True)
     country = forms.CharField(max_length=100, required=True)
     pin_code = forms.CharField(max_length=100, required=True)
-    telephoneNumber = forms.CharField(max_length=100, required=True)
+    telephoneNumber = PhoneNumberField(
+        max_length=100, required=True, widget=PhoneNumberPrefixWidget(region='IN'))
     photograph = forms.ImageField(required=False)
     gender = forms.ChoiceField(choices = [('', '---'), ('M', 'Male'), ('F', 'Female'), ('O', 'Other')], required=False, initial='')
-    date_of_birth = forms.DateField(required=False)
+    date_of_birth = forms.DateField(widget=SelectDateWidget(years=range(1900, 2024))
+                                    , required=False)
 
     def clean(self):
         cleaned_data = super().clean()
@@ -173,3 +181,8 @@ class VolunteerRegistrationForm(forms.Form):
             return False
 
         return True
+    
+class Event_Registration_Form(forms.Form):
+    event_name = forms.CharField(max_length=100, required=True)
+    event_description = forms.CharField(max_length=100, required=True)
+    start_date = forms.DateField(widget=SelectDateWidget, required=True)
