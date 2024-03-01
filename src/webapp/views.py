@@ -437,6 +437,20 @@ class student_home_view(View):
 
         return render(request, 'student/student_home.html', {'events': events})
     
+    def post(self, request):
+        search_query = request.POST.get('search_query')
+        start_date = request.POST.get('start_date')
+        end_date = request.POST.get('end_date')
+        #If the search query is empty, then return all events
+        events = Event.objects.all()
+        if search_query:
+            events = Event.objects.filter(name__icontains=search_query.lower())
+        if start_date:
+            events = events.filter(start_date__gte=start_date)
+        if end_date:
+            events = events.filter(end_date__lte=end_date)
+        return render(request, 'student/student_home.html', {'events': events})
+    
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class student_profile_view(View):
     def get(self, request):

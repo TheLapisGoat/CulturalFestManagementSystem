@@ -145,3 +145,6 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'postmaster@sandbox7f91105012124f259abaf138c66b3b62.mailgun.org'
 EMAIL_HOST_PASSWORD = 'd70cac7fdb860c39d6f71ed347744fa3-b7b36bc2-cf56c127'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media/'

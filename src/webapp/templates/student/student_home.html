@@ -1,99 +1,137 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Festival Management System Login</title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <style>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Festival Management System Login</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            background-color: #f2f2f2;
+            font-family: Arial, sans-serif;
+        }
 
-            body {
-                background-color: #f2f2f2;
-                font-family: Arial, sans-serif;
-            }
+        h1, h3 {
+            text-align: center;
+            color: #387adf;
+        }
 
-            h1 {
-                text-align: center;
-                color: #387adf;
-            }
+        .header {
+            overflow: hidden;
+            background-color: #f1f1f1;
+            padding: 20px 10px;
+        }
 
-            h3 {
-                text-align: center;
-                color: #387adf;
-            }
+        .header a {
+            float: left;
+            display: block;
+            color: black;
+            text-align: center;
+            padding: 4px 14px;
+            text-decoration: none;
+        }
 
-            .header {
-                overflow: hidden;
-                background-color: #f1f1f1;
-                padding: 20px 10px;
-            }
+        a:hover {
+            color: #387adf;
+        }
 
-            .header a {
-                float: left;
-                display: block;
-                color: black;
-                text-align: center;
-                padding-left: 14px;
-                padding-right: 14px;
-                padding-top: 4px;
-                padding-bottom: 4px;
-                text-decoration: none;
-            }
+        .row {
+            display: flex;
+        }
 
-            a:hover {
-                color: #387adf;
-            }
+        .column {
+            flex: 33.33%;
+            padding: 10px;
+        }
 
-            .row {
-                display: flex;
-            }
+        .card {
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            padding: 16px;
+            text-align: center;
+        }
 
-            .column {
-                flex: 33.33%;
-                padding: 10px;
-            }
+        .search-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
 
-            .card {
-                box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-                padding: 16px;
-                text-align: center;
-            }
+        input[type=text] {
+            width: 50%;
+            padding: 10px;
+            margin: 8px 0;
+            box-sizing: border-box;
+            border: 2px solid #ccc;
+            border-radius: 4px;
+            outline: none;
+        }
 
-        </style>
-    </head>
+        input[type=text]:focus {
+            border: 2px solid #387adf;
+        }
 
-    <body>
-        <div class="header">
-            <!-- todo: change hrefs -->
-            <a href="/student">Home</a>
-            <a href="#">All Events</a>
-            <a href="/student/volunteer_redirect/">Volunteer</a>
-            <a href="/student/profile/">Profile</a>
-            <a href="/logout/" style="float:right">Logout</a>
+        .submit-button {
+            width: 20%;
+            background-color: #387adf;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .submit-button:hover {
+            background-color: #1f5f8b;
+        }
+    </style>
+</head>
+
+<body>
+<div class="header">
+    <!-- todo: change hrefs -->
+    <a href="/student">Home</a>
+    <a href="#">All Events</a>
+    <a href="/student/volunteer_redirect/">Volunteer</a>
+    <a href="/student/profile/">Profile</a>
+    <a href="/logout/" style="float:right">Logout</a>
+</div>
+
+<div class="search-container">
+    <form action="" method="post">
+        {% csrf_token %}
+        <input type="text" placeholder="Search for events..." name="search_query">
+        <label for="start_date">Start Date:</label>
+        <input type="datetime-local" id="start_date" name="start_date">
+        <label for="end_date">End Date:</label>
+        <input type="datetime-local" id="end_date" name="end_date">
+        <button type="submit" class="submit-button">Search</button>
+    </form>
+</div>
+
+<!-- home page with "live" events -->
+<h1>Live and Upcoming Events</h1>
+{% if events|length == 0 %}
+    <h3>No events available</h3>
+{% endif %}
+{% for event in events %}
+    {% if forloop.first or forloop.counter0|divisibleby:3 %}
+        <div class="row">
+    {% endif %}
+    <div class="column">
+        <div class="card">
+            <h3>{{ event.name }}</h3>
+            <p>Start Date: {{ event.start_date }}</p>
+            <p>End Date: {{ event.end_date }}</p>
+            <p>Description: {{ event.description }}</p>
+            <!-- todo: update href -->
+            <a href="#">Register</a>
         </div>
+    </div>
+    {% if forloop.last or forloop.counter|divisibleby:3 %}
+        </div>
+    {% endif %}
+{% endfor %}
 
-        <!-- home page with "live" events -->
-        <h1>Live and Upcoming Events</h1>
-        {% if events|length == 0 %}
-                <h3>No events available</h3>
-        {% endif %}
-        {% for event in events %}
-            {% if forloop.first or forloop.counter0|divisibleby:3 %}
-                <div class="row">
-            {% endif %}
-            <div class="column">
-                <div class="card">
-                    <h3>{{event.name}}</h3>
-                    <p>{{event.description}}</p>
-                    <!-- todo: update href -->
-                    <a href="#">Register</a>
-                </div>
-            </div>
-            {% if forloop.last or forloop.counter|divisibleby:3 %}
-                </div>
-            {% endif %}
-        {% endfor %}
-
-    </body>
+</body>
 </html>

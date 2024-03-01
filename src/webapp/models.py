@@ -16,7 +16,7 @@ class User_Entity(AbstractUser, PermissionsMixin):
     country = models.CharField("Country", max_length=150, blank=False)
     pin_code = models.CharField("PIN Code", max_length=150, blank=False)
     telephoneNumber = PhoneNumberField("Telephone Number", blank=False)
-    photograph = models.ImageField("Photo", blank = True, null = True)
+    photograph = models.ImageField("Photo", blank = True, null = True, upload_to = "images/")
 
     ROLES = [
         ('student', 'Student'),
