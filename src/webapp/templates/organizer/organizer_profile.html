@@ -57,6 +57,18 @@
             padding: 16px;
             text-align: left;
         }
+
+        img {
+            width: 50%;
+            height: auto;
+            border-radius: 50%;
+            margin-top: 15px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+
+        }
+
      </style>
  
  </head>
@@ -71,7 +83,6 @@
     </div>
 
      <h1>Profile</h1>
-     <!-- all info on the left, photo on the right (use placeholder if no photo) -->
      <div class="row">
          <div class="column">
              <div class="info">
@@ -93,7 +104,6 @@
              </div>
          </div>
 
-          <!-- todo: fix this image -->
           <div class="column">
             {% if user.photo %}
             <img src="{{ user.photo }}" alt="Profile Picture" style="width:100%">

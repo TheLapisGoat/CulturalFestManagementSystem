@@ -25,15 +25,16 @@ urlpatterns = [
     path('student/register_volunteer/', views.student_register_volunteer_view.as_view(), name='student-register-volunteer'),
     path('student/volunteer/', views.student_volunteer_view.as_view(), name='student-volunteer'),
     path('student/profile/', views.student_profile_view.as_view(), name='student-profile'),
+    path('student/view_result/<int:event_id>', views.student_view_result.as_view(), name='student-view-result'),
 
 
 
     path('events/', views.events, name='events'),
-    path('participant',views.participant_view.as_view(), name='external-participant-home'),
+    path('participant/',views.participant_view.as_view(), name='external-participant-home'),
     path('participant/register/<int:event_id>',views.participant_register_view.as_view(),name="participant_register"),
     path('participant/event/<int:event_id>',views.participant_event_view.as_view(),name="participant_event"),
     path('participant/profile',views.participant_profile_view.as_view(),name="participant_profile"),
-    path('participant/accomodation',views.participant_view_accomodation.as_view(),name="participant_accomodation"),
+    path('participant/accomodation/',views.participant_view_accomodation.as_view(),name="participant_accomodation"),
 
     path('logout/', views.LogoutView.as_view(), name='logout'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

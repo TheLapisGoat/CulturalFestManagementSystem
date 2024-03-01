@@ -88,14 +88,12 @@
 </head>
 
 <body>
-<div class="header">
-    <!-- todo: change hrefs -->
-    <a href="/student">Home</a>
-    <a href="#">All Events</a>
-    <a href="/student/volunteer_redirect/">Volunteer</a>
-    <a href="/student/profile/">Profile</a>
-    <a href="/logout/" style="float:right">Logout</a>
-</div>
+    <div class="header">
+        <a href="/student">Home</a>
+        <a href="/student/volunteer_redirect/">Volunteer</a>
+        <a href="/student/profile/">Profile</a>
+        <a href="/logout/" style="float:right">Logout</a>
+    </div>
 
 <div class="search-container">
     <form action="" method="post">
@@ -126,6 +124,7 @@
             <p>Description: {{ event.description }}</p>
             <!-- todo: update href -->
             <a href="#">Register</a>
+            <a href="/student/view_result/{{ event.pk }}">View details</a>
         </div>
     </div>
     {% if forloop.last or forloop.counter|divisibleby:3 %}

@@ -44,22 +44,10 @@
             color: #387adf;
         }
 
-        .submitbutton {
-           /* center align */
-            display: block;
-            margin: 0 auto;
-            width: 20%;
-            padding: 14px 20px;
-            font-size: 16px;
-            cursor: pointer;
+        .field {
+            margin-bottom: 20px;
             text-align: center;
-            text-decoration: none;
-            outline: none;
-            color: #fff;
-            background-color: #387adf;
-            border: none;
-            border-radius: 5px;
-        }
+        }   
 
         .button:hover {
             background-color: #1f5f8b;
@@ -92,15 +80,29 @@
             border-radius: 5px;
         }
 
+        .submit {
+            /* make a small button in the center */
+            display: block;
+            margin: 0 auto;
+            width: 50%;
+            padding: 12px;
+            font-size: 16px;
+            cursor: pointer;
+            text-align: center;
+            color: #fff;
+            background-color: #387adf;
+            border: none;
+            border-radius: 5px;
+        }
+
+
     </style>
 </head>
 
 <body>
 <div class="header">
-    <!-- todo: change hrefs -->
     <a href="/student">Home</a>
-    <a href="#">All Events</a>
-    <a href="/student/volunteer/">Volunteer</a>
+    <a href="/student/volunteer_redirect/">Volunteer</a>
     <a href="/student/profile/">Profile</a>
     <a href="/logout/" style="float:right">Logout</a>
 </div>
@@ -125,7 +127,7 @@
                     {% endif %}
                 </div>
             {% endfor %}
-            <input type="submit" value="Register">
+            <input type="submit"class="submit" value="Register">
         </form>
 </div>
 </body>

@@ -75,8 +75,7 @@ class StudentRegistrationForm(forms.Form):
     state = forms.CharField(max_length=100, required=True)
     country = forms.CharField(max_length=100, required=True)
     pin_code = forms.CharField(max_length=100, required=True)
-    telephoneNumber = PhoneNumberField(
-        max_length=100, required=True, widget=PhoneNumberPrefixWidget(region='IN'))
+    telephoneNumber = PhoneNumberField(max_length=100, required=True, widget=PhoneNumberPrefixWidget(region='IN'))
     photograph = forms.ImageField(required=False)
     gender = forms.ChoiceField(choices = [('', '---'), ('M', 'Male'), ('F', 'Female'), ('O', 'Other')], required=False, initial='')
     date_of_birth = forms.DateField(
@@ -326,5 +325,7 @@ class Event_Registration_Form(forms.Form):
             return False
         return True
     
+
+
 
 
