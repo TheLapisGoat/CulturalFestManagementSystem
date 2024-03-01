@@ -23,7 +23,7 @@
                     <td>{{ event.name }}</td>
                     <td>{{ event.description }}</td>
                     <!-- Create a hyperlink with the event's ID -->
-                    <td><a href="{% url 'organizer' event.id %}">Organizer</a></td>
+                    <td><a href="{% url 'organizer-event' event.id %}">Organizer</a></td>
                 </tr>
             {% endfor %}
         </tbody>

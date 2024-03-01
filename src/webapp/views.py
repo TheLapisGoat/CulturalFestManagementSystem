@@ -8,6 +8,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 from django.contrib.auth import authenticate, login, logout
 from django.core.mail import send_mail
 from django.conf import settings
@@ -17,10 +18,28 @@ from .models import *
 from .forms import StudentRegistrationForm, OTPVerificationForm, External_ParticipantRegistrationForm, OrganizerRegistrationForm
 # Create your views here. (Using class based views)
 
+#Redirects to every home page
+@method_decorator(login_required(login_url='login'), name='dispatch')
+class MainViewRedirect(View):
+
+    def get(self, request):
+        if request.user.role == 'student':
+            return redirect('student-home')
+        elif request.user.role == 'external_participant':
+            return redirect('external-participant-home')
+        elif request.user.role == 'organizer':
+            return redirect('organizer-home')
+        elif request.user.role == 'admin':
+            return redirect('admin-home')
+        else:
+            return redirect('login')
+
 #View for login
 class LoginView(View):
     template_name = 'registration/login.html'
     def get(self, request):
+        if request.user.is_authenticated:
+            return redirect('index-redirector')
         form = AuthenticationForm()
         return render(request, self.template_name, {'form': form})
     
@@ -30,7 +49,7 @@ class LoginView(View):
             user = form.get_user()
             print(user,"User")
             login(request, user)
-            return redirect('index')
+            return redirect('index-redirector')
         else:
             return render(request, self.template_name, {'form': form})
         
@@ -131,7 +150,7 @@ class RegisterView(View):
                 extra_args['organizer_key'] = form.cleaned_data['organizer_key']
 
             #Schedule a task to delete the user if otp is not verified in 5 minutes
-            threading.Timer(30.0, schedule_deletion, [request, extra_args]).start()
+            threading.Timer(300.0, schedule_deletion, [request, extra_args]).start()
 
             #Redirect to otp verification page
             return redirect('otp-verification')
@@ -161,11 +180,11 @@ class OTPVerificationView(View):
             if user.exists():
                 user = user[0]
                 if user.is_active:
-                    return redirect('index')
+                    return redirect('index-redirector')
             else:
-                return redirect('index')
+                return redirect('index-redirector')
         else:
-            return redirect('index')
+            return redirect('index-redirector')
         
         form = OTPVerificationForm()
         return render(request, self.template_name, {'form': form})
@@ -192,24 +211,18 @@ class OTPVerificationView(View):
                 form.add_error('otp', 'Invalid OTP')
         return render(request, self.template_name, {'form': form})
 
+@method_decorator(login_required(login_url='login'), name='dispatch')    
+class OrganizerHomeView(View):
+    template_name = 'organizer/organizer_home.html'
+    def get(self, request):
+        if request.user.role != 'organizer':
+            return redirect('index-redirector')
+        organizer = Organizer.objects.filter(user = request.user).first()
+        events_organized = Event.objects.filter(organizers = organizer)
+        #Sort the events by date
+        events_organized = sorted(events_organized, key = lambda x: x.start_date)
+        return render(request, 'organizer/organizer_view.html', {'events': events_organized})
 
-#@login_required(login_url='main-login')
-def organizer_view(request):
-    if(request.user.is_anonymous):
-        return HttpResponse("You're not logged in")
-    if(request.user.role!='organizer'):
-        return redirect("index")
-    organiser = Organizer.objects.filter(user=request.user).first()
-    event_list = Organized_by.objects.filter(organizer_id=organiser)
-    event_id_list = event_list.values_list('event_id',flat=True)
-    events = list(Event.objects.all())
-    res = []
-    #for i in range(len(events)):
-        #print(events[i])
-    for event in events:
-        if event.event_id in event_id_list:
-            res.append(event)
-    return render(request, 'organiser/organiser_view.html', {'events': res})
 def organiser_event_view(request, event_id):
     if(request.user.is_anonymous):
         return HttpResponse("You're not logged in")
