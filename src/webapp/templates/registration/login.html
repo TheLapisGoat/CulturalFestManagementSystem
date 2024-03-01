@@ -7,6 +7,7 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <style>
+
             
             input[type="text"], input[type="password"] {
               box-sizing: border-box; 
@@ -56,23 +57,21 @@
                 border-radius: 5px;
             }
             
-            p {
-                color: #333;
-                font-size: 32px;
+            h1 {
+                padding-top: 100px;
                 text-align: center;
-                margin-top: 100px;
+                color: #387adf;
             }
 
             h2 {
-                color: #333;
-                font-size: 16px;
+                padding: 20px;
                 text-align: center;
-                margin-top: 20px;
+                color: #387adf;
             }
 
-            #logregtext {
+            p {
                 color: #333;
-                font-size: 32px;
+                font-size: 16px;
                 text-align: center;
                 margin-top: 20px;
             }
@@ -87,9 +86,9 @@
         </style>
     </head>
     <body>
-        <p>Welcome to the Festival Management System</p>
-        <p id="logregtext">Login</p>
-        <h2>Don't have an account? <a href="{% url 'register' %}">Register</a></h2>
+        <h1>Welcome to the Festival Management System</h1>
+        <h2>Login</h2>
+        <p>Don't have an account? <a href="{% url 'register' %}">Register</a></p>
 
         <form action="" method="post">
             {% csrf_token %}
@@ -104,6 +103,7 @@
                 {%endfor%}
             {%endif%}
         </div>
+        
 
         <script src="" async defer></script>
     </body>

@@ -73,25 +73,30 @@
                 border-radius: 5px;
             }
             
-            p {
-                color: #333;
-                font-size: 32px;
+            h1 {
+                padding-top: 100px;
                 text-align: center;
-                margin-top: 100px;
+                color: #387adf;
             }
 
             h2 {
+                padding: 20px;
+                text-align: center;
+                color: #387adf;
+            }
+
+            p {
                 color: #333;
                 font-size: 16px;
                 text-align: center;
                 margin-top: 20px;
             }
 
-            #logregtext {
+            .roletext {
                 color: #333;
-                font-size: 32px;
+                font-size: 24px;
                 text-align: center;
-                margin-top: 20px;
+                padding: 0px;
             }
             
             .message {
@@ -109,15 +114,13 @@
     </head>
 
     <body>
-        <p>Welcome to the Festival Management System</p>
-        <p id="logregtext">Register</p>
-        <h2>
-        Already have an account? <a href="{% url 'login' %}">Login</a>
-        </h2>
+        <h1>Welcome to the Festival Management System</h1>
+        <h2>Register</h2>
+        <p>Already have an account? <a href="{% url 'login' %}">Login</a></p>
 
         <div class="role">
             <form action="" method="post">
-                <h2>Choose your role</h2>
+                <h2 class="roletext">Choose your role</h2>
                 {% csrf_token %}
                 <select name="role" onchange="this.form.submit()">
                     <option value="student" {% if default_role == 'student' %}selected{% endif %}>Student</option>
