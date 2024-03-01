@@ -215,6 +215,8 @@ class OTPVerificationView(View):
                 form.add_error('otp', 'Invalid OTP')
         return render(request, self.template_name, {'form': form})
 
+from datetime import datetime
+
 @method_decorator(login_required(login_url='login'), name='dispatch')    
 class OrganizerHomeView(View):
     template_name = 'organizer/organizer_home.html'
@@ -225,7 +227,10 @@ class OrganizerHomeView(View):
         events_organized = Event.objects.filter(organizers = organizer)
         #Sort the events by date
         events_organized = sorted(events_organized, key = lambda x: x.start_date)
-        return render(request, 'organizer/organizer_home.html', {'events': events_organized})
+        current_date=datetime.now()
+
+        print(current_date)
+        return render(request, 'organizer/organizer_home.html', {'events': events_organized, 'current_date': current_date})
 
 @method_decorator(login_required(login_url='login'), name='dispatch')   
 class OrganizerEventView(View):
