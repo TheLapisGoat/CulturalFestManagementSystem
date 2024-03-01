@@ -20,7 +20,7 @@
 
             h3 {
                 text-align: center;
-                color: #387adf;
+                color:black;
             }
 
             .header {
@@ -66,39 +66,35 @@
     <body>
         <div class="header">
             <!-- todo: change hrefs -->
-            <a href="/participant">All Events</a> <!--TODO: Implement All events page-->
-            <a href="#">Logistics</a>
-            <a href="/participant/profile">Profile</a>
-            <a href="#" style="float:right">Logout</a>
+            <a href="/organizer">Home</a>
+            <a href="#">All Events</a>
+            <a href="/organizer/volunteer/">Volunteer</a>
+            <a href="/organizer/profile/">Profile</a>
+            <a href="/logout/" style="float:right">Logout</a>
         </div>
 
-        <!-- home page with "live" events -->
-        <h1>Live Events</h1>
-        {% for event in events %}
-            {% if forloop.first or forloop.counter0|divisibleby:3 %}
+        <h1>Volunteers</h1>
+        {% if volunteer_events|length == 0 %}
+            <h3>No volunteers have signed up for events</h3>
+        {% endif %}
+        {% for volunteer, events in volunteer_events.items %}
+            <div class="card">
+                <h2>{{ volunteer.student.user.name }}</h2>
+                <h3>{{ volunteer.student.roll_number }}</h3>
                 <div class="row">
-            {% endif %}
-            <div class="column">
-                <div class="card">
-                    <h3>{{ event.name }}</h3>
-                    <p>{{ event.description }}</p>
-                    <!-- todo: update href -->
-                    {% for status in registered %}
-                        {% if forloop.counter0 == forloop.parentloop.counter0 and status == 0 %}
-                            <a href="{% url 'participant_register' event.pk %}">Register</a>
-                        {% elif forloop.counter0 == forloop.parentloop.counter0 %}
-                            <a href="{% url 'participant_event' event.pk %}">View</a>
-                        {% endif %}
+                    {% if events|length == 0 %}
+                        <h3>Not volunteering in any event</h3>
+                    {% endif %}
+                    {% for event in events %}
+                        <div class="column">
+                            <div class="card">
+                                <p>{{ event }}</p>
+                            </div>
+                        </div>
                     {% endfor %}
-
                 </div>
             </div>
-            {% if forloop.last or forloop.counter|divisibleby:3 %}
-                </div>
-            {% endif %}
         {% endfor %}
-        
-        
-
     </body>
 </html>
+

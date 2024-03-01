@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# delete old db
+psql -U postgres -d template1 << EOF
+DROP DATABASE IF EXISTS postgres;
+CREATE DATABASE postgres;
+\q
+EOF
 #Delete webapp/migrations
 rm -rf webapp/migrations
 
@@ -47,6 +53,7 @@ echo "Organizer created successfully:"
 echo "Username: $organizer_username"
 echo "Password: $organizer_password"
 
+
 # Define event fields
 event_name1="Event 1"
 event_description1="Description of Event 1"
@@ -68,5 +75,22 @@ echo "from webapp.models import Event, Venue, Organizer; from django.utils impor
 
 echo "Event 2 created successfully."
 
+# Create Ext Participant
+username="exp"
+password="exp"
+organization="exp"
+email="exp@exp.exp"
+address_line_1="exp"
+address_line_2="exp"
+state="exp"
+first_name="exp"
+last_name="exp"
+country="exp"
+pin_code="00000"
+telephoneNumber="0000000000"
+role="external_participant"
+
+echo "from django.contrib.auth import get_user_model; from webapp.models import External_Participant; User = get_user_model(); user = User.objects.create_user('$username', '$email', '$password', first_name='$first_name', last_name='$last_name', address_line_1='$address_line_1', address_line_2='$address_line_2', state='$state', country='$country', pin_code='$pin_code', telephoneNumber='$telephoneNumber', role='$role'); External_Participant.objects.create(user=user, organization='$organization')" | python manage.py shell
+echo "CREATED EXTERNAL PARTICIPANT SUCCESSFULLY"
 # Run the server
 python3 manage.py runserver

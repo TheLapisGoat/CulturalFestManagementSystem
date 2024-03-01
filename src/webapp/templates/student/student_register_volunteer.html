@@ -1,93 +1,132 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Festival Management System Login</title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <style>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Festival Management System Login</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            background-color: #f2f2f2;
+            font-family: Arial, sans-serif;
+        }
 
-            body {
-                background-color: #f2f2f2;
-                font-family: Arial, sans-serif;
-            }
+        h1 {
+            text-align: center;
+            color: black;
+        }
 
-            h1 {
-                text-align: center;
-                color: black;
-            }
+        h3 {
+            text-align: center;
+            color: black;
+        }
 
-            h3 {
-                text-align: center;
-                color: black;
-            }
+        .header {
+            overflow: hidden;
+            background-color: #f1f1f1;
+            padding: 20px 10px;
+        }
 
-            .header {
-                overflow: hidden;
-                background-color: #f1f1f1;
-                padding: 20px 10px;
-            }
+        .header a {
+            float: left;
+            display: block;
+            color: black;
+            text-align: center;
+            padding-left: 14px;
+            padding-right: 14px;
+            padding-top: 4px;
+            padding-bottom: 4px;
+            text-decoration: none;
+        }
 
-            .header a {
-                float: left;
-                display: block;
-                color: black;
-                text-align: center;
-                padding-left: 14px;
-                padding-right: 14px;
-                padding-top: 4px;
-                padding-bottom: 4px;
-                text-decoration: none;
-            }
+        a:hover {
+            color: #387adf;
+        }
 
-            a:hover {
-                color: #387adf;
-            }
+        .submitbutton {
+           /* center align */
+            display: block;
+            margin: 0 auto;
+            width: 20%;
+            padding: 14px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            outline: none;
+            color: #fff;
+            background-color: #387adf;
+            border: none;
+            border-radius: 5px;
+        }
 
-            .submitbutton {
-               /* center align */
-                display: block;
-                margin: 0 auto;
-                width: 20%;
-                padding: 14px 20px;
-                font-size: 16px;
-                cursor: pointer;
-                text-align: center;
-                text-decoration: none;
-                outline: none;
-                color: #fff;
-                background-color: #387adf;
-                border: none;
-                border-radius: 5px;
-            }
+        .button:hover {
+            background-color: #1f5f8b;
+        }
 
-            .button:hover {
-                background-color: #1f5f8b;
-            }
+        .form-container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
 
+        .form-group {
+            margin-bottom: 20px;
+        }
 
-        </style>
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+        }
 
-    </head>
+        .form-group input[type="text"],
+        .form-group input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
 
-    <body>
-        <div class="header">
-            <!-- todo: change hrefs -->
-            <a href="/student">Home</a>
-            <a href="#">All Events</a>
-            <a href="/student/volunteer/">Volunteer</a>
-            <a href="/student/profile/">Profile</a>
-            <a href="/logout/" style="float:right">Logout</a>
-        </div>
+    </style>
+</head>
 
-        <!-- inform that they are not volunteer, and ask them to register -->
-        <h1>Volunteer</h1>
-        <h3>You are not a volunteer yet. Register to become a volunteer.</h3>
+<body>
+<div class="header">
+    <!-- todo: change hrefs -->
+    <a href="/student">Home</a>
+    <a href="#">All Events</a>
+    <a href="/student/volunteer/">Volunteer</a>
+    <a href="/student/profile/">Profile</a>
+    <a href="/logout/" style="float:right">Logout</a>
+</div>
 
-        <form method="POST" action="/student/register_volunteer/">
+<!-- inform that they are not volunteer, and ask them to register -->
+<h1>Volunteer</h1>
+<h3>You are not a volunteer yet. Register to become a volunteer.</h3>
+
+<div class="form-container">
+        <form action="" method="post">
             {% csrf_token %}
-            <input type="submit" class="submitbutton" value="Register">
+            {% for field in form %}
+                <div class="field">
+                    {{field.label_tag}}
+                    {{field}}
+                    {% if field.errors %}
+                    <ul class="errorlist">
+                        {% for error in field.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            <input type="submit" value="Register">
         </form>
-    </body>
+</div>
+</body>
 </html>
