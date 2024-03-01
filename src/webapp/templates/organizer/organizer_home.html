@@ -203,8 +203,6 @@
                         <div class="event-card">
                             <div class="event-name">{{ event.name }}</div>
                             <p>{{ event.description }}</p>
-                            <p>Start Date: {{ event.start_date }}</p>
-                            <p>End Date: {{ event.end_date }}</p>
                             <div class="btn"><a href="{% url 'organizer-event' event.pk %}" style="margin:auto;"><button class="viewbutton">View</button></a></div>
                         </div>
                     {% endfor %}
@@ -216,4 +214,3 @@
         </div>
     </body>
 </html>
-

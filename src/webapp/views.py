@@ -252,7 +252,7 @@ class OTPVerificationView(View):
                     if user.is_active == False:
                         user.is_active = True
                         user.save()
-                        messages.success(request, 'Account created successfully')
+                        return render(request, 'registration/otp_verification.html', {'form': form, 'check': True})
                     else:
                         messages.error(request, 'Account already verified')
                 else:

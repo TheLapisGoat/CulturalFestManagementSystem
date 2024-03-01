@@ -80,6 +80,11 @@
             color: #856404;
         }
 
+        .success-message {
+            display: none;
+            color: #155724;
+            margin-top: 20px;
+        }
 
         </style>
 
@@ -102,6 +107,31 @@
             {{ form.as_p }}
             <button type="submit">Verify OTP</button>
         </form>
+
+    <div id="success-message">Account Created! Redirecting in <span id="countdown">5</span> seconds...</div>
+
+    <script>
+        // Check if the check variable is set
+        {% if check %}
+            // Display success message
+            document.getElementById("success-message").style.display = "block";
+            
+            // Perform countdown and redirect after 5 seconds
+            var countdownElement = document.getElementById("countdown");
+            var countdownValue = 5;
+
+            var countdownInterval = setInterval(function() {
+                countdownValue--;
+                countdownElement.textContent = countdownValue;
+                
+                if (countdownValue <= 0) {
+                    clearInterval(countdownInterval);
+                    // Redirect to desired URL after countdown
+                    window.location.href = "/login/";
+                }
+            }, 1000);
+        {% endif %}
+    </script>
     </div>
 </body>
 </html>

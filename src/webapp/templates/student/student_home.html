@@ -10,7 +10,6 @@
         body {
             background-color: #f2f2f2;
             font-family: Arial, sans-serif;
-            margin:0;
         }
 
         h1, h3 {
@@ -37,7 +36,7 @@
             color: #387adf;
         }
 
-        /* .row {
+        .row {
             display: flex;
         }
 
@@ -50,7 +49,7 @@
             box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
             padding: 16px;
             text-align: center;
-        } */
+        }
 
         .search-container {
             text-align: center;
@@ -179,7 +178,8 @@
 
 <!-- home page with "live" events -->
 <h1>Live and Upcoming Events</h1>
-<!-- {% if events|length == 0 %}
+
+{% if events|length == 0 %}
     <h3>No events available</h3>
 {% endif %}
 {% for event in events %}
@@ -192,7 +192,7 @@
             <p>Start Date: {{ event.start_date }}</p>
             <p>End Date: {{ event.end_date }}</p>
             <p>Description: {{ event.description }}</p>
-            todo: update href
+            <!-- todo: update href -->
             <a href="#">Register</a>
             <a href="/student/view_result/{{ event.pk }}">View details</a>
         </div>
@@ -200,27 +200,7 @@
     {% if forloop.last or forloop.counter|divisibleby:3 %}
         </div>
     {% endif %}
-{% endfor %} -->
-<div class="container">
-    <div class="events-container">
-        {% if events %}
-            {% for event in events %}
-                <div class="event-card">
-                    <div class="event-name">{{ event.name }}</div>
-                    <p>{{ event.description }}</p>
-                    <p>Start Date: {{ event.start_date }}</p>
-                    <p>End Date: {{ event.end_date }}</p>
-                    <div class="buttons">
-                    <div class="btn"><a href="/student/view_result/{{ event.pk }}" style="margin:auto;"><button class="viewbutton">View</button></a></div>
-                    <div class="btn"><a href="#" style="margin:auto;"><button class="viewbutton">Register</button></a></div>
-                    </div>
-                </div>
-            {% endfor %}
-        {% else %}
-            <p>No events available at the moment.</p>
-        {% endif %}
-    </div>
-    
-</div>
+{% endfor %}
+
 </body>
 </html>
