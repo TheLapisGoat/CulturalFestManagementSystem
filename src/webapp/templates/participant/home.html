@@ -59,7 +59,75 @@
                 padding: 16px;
                 text-align: center;
             }
-
+            .container {
+            max-width: 88%;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .events-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        .event-card {
+            width: calc(33.33% - 20px); /* For PC view, display 3 cards in a row */
+            margin-bottom: 20px;
+            background-color: #f9f9f9;
+            border: 2px solid #0f0f0f;
+            border-radius: 5px;
+         padding: 20px;
+            box-sizing: border-box;
+        
+        }
+        @media (max-width: 768px) {
+            .event-card {
+                width: calc(100% - 20px); /* For mobile view, display 1 card in a row */
+            }
+        }
+        .event-card h2 {
+            margin-top: 0;
+            color: #333;
+        }
+        .event-card p {
+            margin: 5px 0;
+            color: #666;
+        }
+        .event-name{
+            width: 90%;
+        text-align: center;
+        background-color: #1352b1;
+        
+        color: white;
+        margin: auto;
+        margin-bottom: 2rem;
+        padding: 5%;
+        border-radius: 5px;
+        }
+        .buttons{
+            display:flex;
+            flex-wrap: wrap;
+        }
+        .btn{
+            width: 40%;
+            margin: auto;
+            margin-top: 2rem;
+        }
+        .viewbutton{
+            width: 100%;
+            
+            padding: 5px;
+            color: #1352b1;
+            margin: auto;
+            border:1px solid #1352b1;
+        }
+        .viewbutton:hover{
+            background-color: #1352b1;
+            color:white;
+            cursor:pointer;
+        }
         </style>
     </head>
 
@@ -86,7 +154,7 @@
 
         <!-- home page with "live" events -->
         <h1>Live and Upcoming Events</h1>
-        {% if events|length == 0 %}
+        <!-- {% if events|length == 0 %}
             <h3>No events available</h3>
         {% endif %}
         {% for event in events %}
@@ -99,14 +167,34 @@
                     <p>Start Date: {{ event.start_date }}</p>
                     <p>End Date: {{ event.end_date }}</p>
                     <p>Description: {{ event.description }}</p>
-                    <!-- todo: update href -->
+                    todo: update href
                     <a href="#">Register</a>
                 </div>
             </div>
             {% if forloop.last or forloop.counter|divisibleby:3 %}
                 </div>
             {% endif %}
-        {% endfor %}
+        {% endfor %} -->
+        <div class="container">
+            <div class="events-container">
+                {% if events %}
+                    {% for event in events %}
+                        <div class="event-card">
+                            <div class="event-name">{{ event.name }}</div>
+                            <p>{{ event.description }}</p>
+                            <p>Start Date: {{ event.start_date }}</p>
+                            <p>End Date: {{ event.end_date }}</p>
+                            <div class="buttons">
+                            <div class="btn"><a href="#" style="margin:auto;"><button class="viewbutton">Register</button></a></div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p>No events available at the moment.</p>
+                {% endif %}
+            </div>
+            
+        </div>
 
     </body>
 </html>
