@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ participant.user.first_name }} {{ participant.user.last_name }} Profile</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .profile-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        p {
+            color: #555;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 50%;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="profile-container">
+        <h1>{{ participant.user.first_name }} {{ participant.user.last_name }} Profile</h1>
+        <p><strong>Email:</strong> {{ participant.user.email }}</p>
+        <p><strong>Telephone Number:</strong> {{ participant.user.telephoneNumber }}</p>
+        <p><strong>Organization:</strong> {{ participant.organization }}</p>
+
+        {% if participant.user.photograph %}
+            <img src="{{ participant.user.photograph.url }}" alt="Profile Photo">
+        {% else %}
+            <p>No photograph available</p>
+        {% endif %}
+    </div>
+</body>
+</html>

@@ -168,4 +168,8 @@ class StudentEvent(models.Model):
     class Meta:
         unique_together = ('student', 'event',)
 
+class Participant_event(models.Model):
+    participant = models.ForeignKey(External_Participant,on_delete=models.CASCADE)
+    event = models.ForeignKey(Event,on_delete=models.CASCADE)
+
 

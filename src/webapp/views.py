@@ -16,6 +16,7 @@ import asyncio
 from django.shortcuts import render, get_object_or_404
 from .models import *
 from .forms import StudentRegistrationForm, OTPVerificationForm, External_ParticipantRegistrationForm, OrganizerRegistrationForm
+from django.utils.decorators import method_decorator
 # Create your views here. (Using class based views)
 
 #View for login
@@ -224,6 +225,81 @@ def organizer_event_view(request, event_id):
     venue_list = Venue_schedule_event.objects.filter(event=event)
 
     return render(request, 'organizer/organizer_event_view.html', {'event': event, 'volunteer_list':volunteer_list, 'venue_list': venue_list})
+
+
+@method_decorator(login_required(login_url='login'), name='dispatch')
+class participant_view(View):
+    def get(self, request, *args, **kwargs):
+        if(request.user.is_anonymous):
+            return HttpResponse("You're not logged in")
+        if(request.user.role!='external_participant'):
+            return redirect("index")
+        event_list = Event.objects.all()
+        participant = External_Participant.objects.filter(user=request.user).first()
+        registered = []
+        for i in range (len(event_list)):
+            registered.append(0)
+        events_registered = Participant_event.objects.filter(participant=participant).values('event')
+        registerd_event_ids = [x['event'] for x in events_registered]
+        for i in range(len(event_list)):
+            if(event_list[i].event_id in registerd_event_ids):
+                registered[i]=1
+        print(registered,events_registered,event_list,"\n\n\n\n\n\n\n")
+        return render(request,"participant/home.html",{'events':event_list,'registered': registered})
+    
+    def post(self,request,*args,**kwargs):
+        return redirect('participant/')
+
+
+@method_decorator(login_required(login_url='login'), name='dispatch')
+class participant_register_view(View):
+    def get(self,request,event_id):
+        if(request.user.is_anonymous):
+            return HttpResponse("You're not logged in")
+        if(request.user.role!='external_participant'):
+            return redirect("index")
+        event = get_object_or_404(Event, event_id=event_id)
+        participant = External_Participant.objects.filter(user=request.user).first()
+        existing_participant_event = Participant_event.objects.filter(participant=participant, event=event).first()
+        if existing_participant_event:
+            return HttpResponse("You are already registered for this event.")
+        new_participant_event = Participant_event(participant=participant, event=event)
+        new_participant_event.save()
+        return HttpResponse("You have successfully registered for the event.")
+    def post(self, request, *args, **kwargs):
+        return redirect('participant/')
+
+@method_decorator(login_required(login_url='login'), name='dispatch')
+class participant_event_view(View):
+    def get(self, request, event_id):
+        if(request.user.is_anonymous):
+            return HttpResponse("You're not logged in")
+        if(request.user.role!='external_participant'):
+            return redirect("index")
+        event_data = Event.objects.filter(event_id=event_id).values('event_name','event_description','event_start_date','event_end_date','registration_end')
+        event = Event.objects.filter(event_id=event_id).first()
+        print(event_data,"\n\n\n\n\n\n")
+        participant = External_Participant.objects.filter(user=request.user).first()
+        existing_participant_event = Participant_event.objects.filter(participant=participant, event=event).first()
+        if not existing_participant_event:
+            return HttpResponse("You are not registered for this event.")
+        return render(request, 'participant/participant_event_view.html', context = event_data[0])
+
+    def post(self, request, *args, **kwargs):
+        return redirect('participant/')
+
+@method_decorator(login_required(login_url='login'), name='dispatch')
+class participant_profile_view(View):
+    def get(self, request, *args, **kwargs):
+        if(request.user.is_anonymous):
+            return HttpResponse("You're not logged in")
+        if(request.user.role!='external_participant'):
+            return redirect("index")
+        participant = External_Participant.objects.filter(user=request.user).first()
+        return render(request, 'participant/participant_profile.html', {'participant': participant})
+    def post(self, request, *args, **kwargs):
+        return redirect('participant/')
+    
 
 
 def index(request):

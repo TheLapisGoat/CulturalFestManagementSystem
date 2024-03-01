@@ -66,9 +66,9 @@
     <body>
         <div class="header">
             <!-- todo: change hrefs -->
-            <a href="#">All Events</a>
+            <a href="/participant">All Events</a>
             <a href="#">Logistics</a>
-            <a href="#">Profile</a>
+            <a href="/participant/profile">Profile</a>
             <a href="#" style="float:right">Logout</a>
         </div>
 
@@ -84,7 +84,14 @@
                     <h3>{{event.event_name}}</h3>
                     <p>{{event.event_description}}</p>
                     <!-- todo: update href -->
-                    <a href="#">Register</a>
+                    {% for status in registered %}
+                        {% if forloop.counter0 == forloop.parentloop.counter0 and status == 0 %}
+                            <a href="{% url 'participant_register' event.event_id %}">Register</a>
+                        {% elif forloop.counter0 == forloop.parentloop.counter0 %}
+                            <a href="{% url 'participant_event' event.event_id %}">View</a>
+                        {% endif %}
+                    {% endfor %}
+
                 </div>
             </div>
             {% if forloop.last or forloop.counter|divisibleby:3 %}
