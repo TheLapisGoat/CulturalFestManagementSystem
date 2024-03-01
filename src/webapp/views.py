@@ -263,13 +263,9 @@ class participant_view(View):
         for i in range (len(event_list)):
             registered.append(0)
         events_registered = Participant_event.objects.filter(participant=participant).values('event')
-<<<<<<< Updated upstream
         registerd_event_ids = [x['event'] for x in events_registered]
         for i in range(len(event_list)):
-=======
-        registerd_event_ids = [x['event'].pk for x in events_registered]
-        for i in range(len(event_list)): 
->>>>>>> Stashed changes
+
             if(event_list[i].pk in registerd_event_ids):
                 registered[i]=1
         print(registered,events_registered,event_list,"\n\n\n\n\n\n\n")
