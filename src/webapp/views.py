@@ -322,6 +322,18 @@ class participant_profile_view(View):
         return render(request, 'participant/participant_profile.html', {'participant': participant})
     def post(self, request, *args, **kwargs):
         return redirect('participant/')
+    
+@method_decorator(login_required(login_url='login'), name='dispatch')
+class participant_view_accomodation(View):
+    def get(self,request, *args, **kwargs):
+        if(request.user.is_anonymous):
+            return HttpResponse("You're not logged in")
+        if(request.user.role!='external_participant'):
+            return redirect("index")
+        participant = External_Participant.objects.filter(user=request.user).first()
+        accomodation_id = Participant_Accomodation.objects.get(participant=participant)
+        accomodation = Accomodation.objects.get(pk=accomodation_id.accomodation)
+        return render(request, 'participant/participant_accomodation.html', {'accomodation': accomodation,'info':accomodation_id})
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class StudentHomeView(View):

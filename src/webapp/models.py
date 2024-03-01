@@ -140,7 +140,6 @@ class Venue_schedule_event(models.Model):
     event = models.ForeignKey(Event,on_delete=models.CASCADE)
 
 class Accomodation(models.Model):
-    accomodation_id = models.IntegerField(primary_key=True)
     accomodation_name = models.CharField(max_length=50,blank=False)
     address_line_1 = models.CharField(max_length=50,blank=False)
     address_line_2 = models.CharField(max_length=50,blank=True)
