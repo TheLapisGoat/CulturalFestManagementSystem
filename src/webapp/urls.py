@@ -17,10 +17,11 @@ urlpatterns = [
 
     path('index/', views.HomeView.as_view(), name='Home'),
 
-    path('student/', views.StudentHomeView.as_view(), name='student-home'),
-    path('student/volunteer/', views.StudentVolunteerView.as_view(), name='student-volunteer'),
-    path('student/register_volunteer/', views.StudentRegisterVolunteerView.as_view(), name='student-register-volunteer'),
-    path('student/profile/', views.StudentProfileView.as_view(), name='student-profile'),
+    path('student/', views.student_home_view, name='student-home'),
+    path('student/volunteer_redirect/', views.student_volunteer_redirect.as_view(), name='student-volunteer-view-redirector'),
+    path('student/register_volunteer/', views.student_register_volunteer_view.as_view(), name='student-register-volunteer'),
+    path('student/volunteer/', views.student_volunteer_view.as_view(), name='student-volunteer'),
+    path('student/profile/', views.student_profile_view, name='student-profile'),
 
 
 

@@ -68,7 +68,7 @@
             <!-- todo: change hrefs -->
             <a href="/student">Home</a>
             <a href="#">All Events</a>
-            <a href="/student/volunteer/">Volunteer</a>
+            <a href="/student/volunteer_redirect/">Volunteer</a>
             <a href="/student/profile/">Profile</a>
             <a href="/logout/" style="float:right">Logout</a>
         </div>
@@ -84,8 +84,8 @@
             {% endif %}
             <div class="column">
                 <div class="card">
-                    <h3>{{event.event_name}}</h3>
-                    <p>{{event.event_description}}</p>
+                    <h3>{{event.name}}</h3>
+                    <p>{{event.description}}</p>
                     <!-- todo: update href -->
                     <a href="#">Register</a>
                 </div>
