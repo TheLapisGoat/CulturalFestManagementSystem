@@ -43,8 +43,14 @@
     </style>
 </head>
 <body>
+    <div class="header">
+        <a href="/participant/">Home</a>
+        <a href="/participant/accomodation/"">Logistics</a>
+        <a href="/participant/profile">Profile</a>
+        <a href="/logout/" style="float:right">Logout</a>
+    </div>
     <div class="profile-container">
-        <h1>{{ accomodation.accommodation_name }} Details</h1>
+        <h1>{{ accommodation.accommodation_name }} Details</h1>
         <p><strong>Address Line 1:</strong> {{ accommodation.address_line_1 }}</p>
         <p><strong>Address Line 2:</strong> {{ accommodation.address_line_2 }}</p>
         <p><strong>Cost per Night:</strong> {{ accommodation.cost_per_night }}</p>
