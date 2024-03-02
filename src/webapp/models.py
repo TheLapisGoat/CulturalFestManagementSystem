@@ -147,7 +147,6 @@ class Accomodation(models.Model):
     cost_per_night = models.FloatField(blank=False)
     facilities = models.TextField(blank=True)
     contact = PhoneNumberField(blank=True)
-    room_info = models.JSONField(default=list)
 
 class Participant_Accomodation(models.Model):
     participant = models.ForeignKey(External_Participant,on_delete=models.CASCADE)

@@ -193,7 +193,8 @@
             <p>End Date: {{ event.end_date }}</p>
             <p>Description: {{ event.description }}</p>
             <!-- todo: update href -->
-            <a href="#">Register</a>
+            <a href="/student/register/{{ event.pk }}">Register</a>
+            <a href="/student/volunteer/{{ event.pk}}">Volunteer</a>
             <a href="/student/view_result/{{ event.pk }}">View details</a>
         </div>
     </div>

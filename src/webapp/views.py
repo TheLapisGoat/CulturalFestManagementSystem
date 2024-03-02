@@ -454,7 +454,12 @@ class participant_view(View):
             return redirect("/logout/")
         
         events = list(Event.objects.all())
-        return render(request,"participant/home.html",{'events':events})
+        participant = External_Participant.objects.get(user = request.user)
+        participant_events = Participant_event.objects.filter(participant = participant).values('event')
+        participant_events = [x['event'] for x in participant_events]
+        events_registered = [x for x in events if x.pk in participant_events]
+        events = [x for x in events if x.pk not in participant_events]
+        return render(request,"participant/home.html",{'events':events,'events_registered':events_registered})
     
     def post(self, request):
         if(request.user.is_anonymous):
@@ -565,7 +570,7 @@ class participant_view_accomodation(View):
             return redirect("/logout/")
         participant = External_Participant.objects.filter(user=request.user).first()
         accomodation_id = Participant_Accomodation.objects.get(participant=participant)
-        accomodation = Accomodation.objects.get(pk=accomodation_id.accomodation)
+        accomodation = Accomodation.objects.get(pk=accomodation_id.accomodation.pk)
         return render(request, 'participant/participant_accomodation.html', {'accomodation': accomodation,'info':accomodation_id})
 
 @method_decorator(login_required(login_url='login'), name='dispatch')

@@ -40,6 +40,122 @@
             border-radius: 50%;
             margin-top: 15px;
         }
+        body {
+                background-color: #f2f2f2;
+                font-family: Arial, sans-serif;
+            }
+
+            h1 {
+                text-align: center;
+                color: #387adf;
+            }
+
+            h3 {
+                text-align: center;
+                color: #387adf;
+            }
+
+            .header {
+                overflow: hidden;
+                background-color: #f1f1f1;
+                padding: 20px 10px;
+            }
+
+            .header a {
+                float: left;
+                display: block;
+                color: black;
+                text-align: center;
+                padding-left: 14px;
+                padding-right: 14px;
+                padding-top: 4px;
+                padding-bottom: 4px;
+                text-decoration: none;
+            }
+
+            a:hover {
+                color: #387adf;
+            }
+
+            .row {
+                display: flex;
+            }
+
+            .column {
+                flex: 33.33%;
+                padding: 10px;
+            }
+
+            .card {
+                box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+                padding: 16px;
+                text-align: center;
+            }
+            .container {
+            max-width: 88%;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .events-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+        .event-card {
+            width: calc(33.33% - 20px); /* For PC view, display 3 cards in a row */
+            margin-bottom: 20px;
+            background-color: #f9f9f9;
+            border: 2px solid #0f0f0f;
+            border-radius: 5px;
+         padding: 20px;
+            box-sizing: border-box;
+        
+        }
+        @media (max-width: 768px) {
+            .event-card {
+                width: calc(100% - 20px); /* For mobile view, display 1 card in a row */
+            }
+
+            input[type=text]:focus {
+                border: 2px solid #387adf;
+            }
+
+            .submit-button {
+                width: 20%;
+                background-color: #387adf;
+                color: white;
+                padding: 10px 20px;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                outline: none;
+            }
+
+            .submit-button:hover {
+                background-color: #1f5f8b;
+            }
+        }
+        .search-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        input[type=text] {
+            width: 50%;
+            padding: 10px;
+            margin: 8px 0;
+            box-sizing: border-box;
+            border: 2px solid #ccc;
+            border-radius: 4px;
+            outline: none;
+        }
+
+        input[type=text]:focus {
+            border: 2px solid #387adf;
+        }
     </style>
 </head>
 <body>
@@ -50,10 +166,11 @@
         <a href="/logout/" style="float:right">Logout</a>
     </div>
     <div class="profile-container">
-        <h1>{{ accommodation.accommodation_name }} Details</h1>
-        <p><strong>Address Line 1:</strong> {{ accommodation.address_line_1 }}</p>
-        <p><strong>Address Line 2:</strong> {{ accommodation.address_line_2 }}</p>
-        <p><strong>Cost per Night:</strong> {{ accommodation.cost_per_night }}</p>
+        <h1>Accomodation Details</h1>
+        <p><strong>Accomodation Name:</strong> {{ accomodation.accomodation_name }}</p>
+        <p><strong>Address Line 1:</strong> {{ accomodation.address_line_1 }}</p>
+        <p><strong>Address Line 2:</strong> {{ accomodation.address_line_2 }}</p>
+        <p><strong>Cost per Night:</strong> {{ accomodation.cost_per_night }}</p>
         <p><strong>Room Number:</strong> {{ info.room_number }}</p>
     </div>
 </body>
