@@ -29,36 +29,8 @@
                 font-family: Arial, sans-serif;
             }
             
-            form {
-                border: 2px solid #ccc;
-                padding: 20px;
-                width: 500px;
-                margin: 50px auto;
-                background-color: #fff;
-                padding: 20px;
-                border-radius: 5px;
-                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            }
-            
-            input[type="submit"] {
-                background-color: #387adf;
-                color: #fff;
-                border: none;
-                padding: 10px 20px;
-                text-align: center;
-                text-decoration: none;
-                display: inline-block;
-                font-size: 16px;
-                margin: 4px 2px;
-                cursor: pointer;
-                box-sizing: border-box; 
-                width: 100%;
-                height: 40px; 
-                border-radius: 5px;
-            }
             
             h1 {
-                padding-top: 100px;
                 text-align: center;
                 color: #387adf;
             }
@@ -82,28 +54,86 @@
                 text-align: center;
                 margin-top: 20px;
             }
+            .container {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 80%;
+        background-color: #fff;
+        border-radius: 10px;
+        overflow: hidden;
+        display: grid;
+        grid-template-columns: 3fr 4fr;
+    }
+    .image {
+        flex: 1;
+        background-image: url('https://www.iitkgp.ac.in/assets/images/about-iitk-video.jpg');
+        background-size: cover;
+        margin: 15px;
+    }
 
+    .form-container {
+        flex: 1;
+        padding: 32px;
+    }
+    h1 {
+        text-align: center;
+    }
+    form {
+        margin-top: 20px;
+    }
+    input[type="text"],
+    input[type="password"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+    }
+    input[type="submit"] {
+        width: 100%;
+        background-image: linear-gradient(to right, #61a6dd, #183aaa);
+        color: white;
+        padding: 10px;
+        border: none;
+        cursor: pointer;
+        font-size: 1em;
+        box-shadow: 0 5px 20px #89caff94;
+      transition: box-shadow .3s ease-in-out;
+    }
+    input[type="submit"]:hover {
+        transition: all 0.2s;
+        box-shadow: none;
+    }
         </style>
     </head>
     <body>
-        <h1>Welcome to the Festival Management System</h1>
-        <h2>Login</h2>
-        <p>Don't have an account? <a href="{% url 'register' %}">Register</a></p>
 
-        <form action="" method="post">
-            {% csrf_token %}
-            {{ form }}
-            <input type="submit" value="Submit">
-        </form>
-
-        <div class="message">
-            {%if messages%}
-                {%for message in messages%}
-                    {{message}}
-                {%endfor%}
-            {%endif%}
-        </div>
         
+        <div class="container">
+            <div class="image">
+            </div>
+            <div class="form-container">
+                <h1>College Fest Login</h1>
+                <p>Welcome to our college fest! Please login to continue.</p>
+                <form action="" method="post">
+                    {% csrf_token %}
+                    {{ form }}
+                    <input type="submit" value="Submit">
+                </form>
+        
+                <div class="message">
+                    {%if messages%}
+                        {%for message in messages%}
+                            {{message}}
+                        {%endfor%}
+                    {%endif%}
+                </div>
+                <p>Don't have an account? <a href="{% url 'register' %}">Register</a></p>
+            </div>
+        </div>
 
         <script src="" async defer></script>
     </body>
