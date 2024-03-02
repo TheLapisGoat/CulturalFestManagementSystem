@@ -193,15 +193,17 @@
                 <div class="event-card">
                     <div class="event-name">{{ event.name }}</div>
                     <p>{{ event.description }}</p>
-                    <div class="btn"><a href="/student/register_event/{{ event.pk }}" style="margin:auto;"><button class="viewbutton">Register</button></a></div>
-                    <div class="btn"><a href="/student/become_volunteer/{{ event.pk}}" style="margin:auto;"><button class="viewbutton">Volunteer</button></a></div>
-                    <div class="btn"><a href="/student/view_result/{{ event.pk }}" style="margin:auto;"><button class="viewbutton">View Details</button></a></div>
+                    <div class="buttons">
+                        <div class="btn"><a href="/student/register_event/{{ event.pk }}" style="margin:auto;"><button class="viewbutton">Register</button></a></div>
+                        <div class="btn"><a href="/student/become_volunteer/{{ event.pk}}" style="margin:auto;"><button class="viewbutton">Volunteer</button></a></div>    
+                    </div>
+                <div class="btn" style="width: 90%"><a href="/student/view_result/{{ event.pk }}" style="margin:auto;"><button class="viewbutton">View Details</button></a></div>
                 </div>
             {% endfor %}
         {% else %}
-             {% if events_registered %}
-             <p>You are registered for all avaliable events.</p>
-                {% else %}   
+            {% if events_registered %}
+            <p>You are registered for all avaliable events.</p>
+            {% else %}   
             <p>No events available at the moment.</p>
             {% endif %}
         {% endif %}
@@ -215,7 +217,7 @@
                         <div class="event-card">
                             <div class="event-name">{{ event.name }}</div>
                             <p>{{ event.description }}</p>
-                            <div class="btn"><a href="/student/view_result/{{ event.pk }}" style="margin:auto;"><button class="viewbutton">View Details</button></a></div>
+                            <div class="btn" style="width: 90%"><a href="/student/view_result/{{ event.pk }}" style="margin:auto;"><button class="viewbutton">View Details</button></a></div>
                         </div>
                     {% endfor %}
                 {% else %}

@@ -171,8 +171,12 @@
         padding: 5%;
         border-radius: 5px;
         }
+        .buttons{
+            display:flex;
+            flex-wrap: wrap;
+        }
         .btn{
-            width: 60%;
+            width: 40%;
             margin: auto;
             margin-top: 2rem;
         }
@@ -261,8 +265,10 @@
                         <div class="event-card">
                             <div class="event-name">{{ event.name }}</div>
                             <p>{{ event.description }}</p>
-                            <div class="btn"><a href="/participant/register/{{ event.pk }}" style="margin:auto;"><button class="viewbutton">Register</button></a></div>
-                            <div class="btn"><a href="/participant/event/{{ event.pk }}" style="margin:auto;"><button class="viewbutton">View Details</button></a></div>
+                            <div class="buttons">
+                                <div class="btn"><a href="/participant/register/{{ event.pk }}" style="margin:auto;"><button class="viewbutton">Register</button></a></div>
+                                <div class="btn"><a href="/participant/event/{{ event.pk }}" style="margin:auto;"><button class="viewbutton">View Details</button></a></div>
+                            </div>
                         </div>
                     {% endfor %}
                 {% else %}

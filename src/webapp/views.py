@@ -705,9 +705,13 @@ class student_volunteer_view(View):
         events = list(Event.objects.all())
         volunteer_events = Volunteer_event.objects.filter(volunteer=volunteer).values('event')
         volunteer_events = [x['event'] for x in volunteer_events]
-        events = [x for x in events if x.pk in volunteer_events]
+        volunteering_events = [x for x in events if x.pk in volunteer_events]
+        student_events = StudentEvent.objects.filter(student=student).values('event')
+        student_events = [x['event'] for x in student_events]
+        events = [x for x in events if x.pk not in student_events]
+        events = [x for x in events if x.pk not in volunteer_events]
         print(events,'\n\n\n\n\n')
-        return render(request, 'student/student_volunteer.html', {'events': events})
+        return render(request, 'student/student_volunteer.html', {'events': events,'volunteering_events':volunteering_events})
         
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class student_view_result(View):
