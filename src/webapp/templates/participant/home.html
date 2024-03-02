@@ -59,21 +59,99 @@
                 padding: 16px;
                 text-align: center;
             }
+            .container {
+            max-width: 88%;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .events-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+        .event-card {
+            width: calc(33.33% - 20px); /* For PC view, display 3 cards in a row */
+            margin-bottom: 20px;
+            background-color: #f9f9f9;
+            border: 2px solid #0f0f0f;
+            border-radius: 5px;
+         padding: 20px;
+            box-sizing: border-box;
+        
+        }
+        @media (max-width: 768px) {
+            .event-card {
+                width: calc(100% - 20px); /* For mobile view, display 1 card in a row */
+            }
 
+            input[type=text]:focus {
+                border: 2px solid #387adf;
+            }
+
+            .submit-button {
+                width: 20%;
+                background-color: #387adf;
+                color: white;
+                padding: 10px 20px;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                outline: none;
+            }
+
+            .submit-button:hover {
+                background-color: #1f5f8b;
+            }
+        }
+        .search-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        input[type=text] {
+            width: 50%;
+            padding: 10px;
+            margin: 8px 0;
+            box-sizing: border-box;
+            border: 2px solid #ccc;
+            border-radius: 4px;
+            outline: none;
+        }
+
+        input[type=text]:focus {
+            border: 2px solid #387adf;
+        }
         </style>
     </head>
 
     <body>
         <div class="header">
-            <!-- todo: change hrefs -->
-            <a href="/participant">All Events</a> <!--TODO: Implement All events page-->
-            <a href="{% url 'participant_accomodation' %}">Logistics</a>
+            <a href="/participant/">Home</a>
+            <a href="/participant/accomodation/"">Logistics</a>
             <a href="/participant/profile">Profile</a>
             <a href="/logout/" style="float:right">Logout</a>
         </div>
 
+        <div class="search-container">
+            <form action="" method="post">
+                {% csrf_token %}
+                <input type="text" placeholder="Search for events..." name="search_query">
+                <label for="start_date">Start Date:</label>
+                <input type="datetime-local" id="start_date" name="start_date">
+                <label for="end_date">End Date:</label>
+                <input type="datetime-local" id="end_date" name="end_date">
+                <button type="submit" class="submit-button">Search</button>
+            </form>
+        </div>
+    
         <!-- home page with "live" events -->
-        <h1>Live Events</h1>
+        <h1>Live and Upcoming Events</h1>
+        {% if events|length == 0 %}
+            <h3>No events available</h3>
+        {% endif %}
         {% for event in events %}
             {% if forloop.first or forloop.counter0|divisibleby:3 %}
                 <div class="row">
@@ -81,24 +159,17 @@
             <div class="column">
                 <div class="card">
                     <h3>{{ event.name }}</h3>
-                    <p>{{ event.description }}</p>
+                    <p>Start Date: {{ event.start_date }}</p>
+                    <p>End Date: {{ event.end_date }}</p>
+                    <p>Description: {{ event.description }}</p>
                     <!-- todo: update href -->
-                    {% for status in registered %}
-                        {% if forloop.counter0 == forloop.parentloop.counter0 and status == 0 %}
-                            <a href="{% url 'participant_register' event.pk %}">Register</a>
-                        {% elif forloop.counter0 == forloop.parentloop.counter0 %}
-                            <a href="{% url 'participant_event' event.pk %}">View</a>
-                        {% endif %}
-                    {% endfor %}
-
+                    <a href="#">Register</a>
                 </div>
             </div>
             {% if forloop.last or forloop.counter|divisibleby:3 %}
                 </div>
             {% endif %}
         {% endfor %}
-        
-        
 
     </body>
 </html>

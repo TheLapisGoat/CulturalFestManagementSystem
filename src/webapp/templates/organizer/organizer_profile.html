@@ -13,6 +13,7 @@
         body {
             background-color: #f2f2f2;
             font-family: Arial, sans-serif;
+            margin:0;
         }
 
         h1 {
@@ -57,6 +58,106 @@
             padding: 16px;
             text-align: left;
         }
+        .container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80vh; /* Added */
+}
+.card {
+  background: #fff;
+  border-radius: 4px;
+  box-shadow: 0px 14px 80px rgba(34, 35, 58, 0.5);
+  max-width: 32rem;
+  display: flex;
+  flex-direction: row;
+  border-radius: 25px;
+  position: relative;
+  margin: auto;
+  margin-top: 10vh;
+  width:32rem;
+}
+.card h2 {
+  margin: 0;
+  padding: 0 1rem;
+}
+.card .title {
+  padding: 1rem;
+  text-align: right;
+  color: green;
+  font-weight: bold;
+  font-size: 12px;
+}
+.card .desc {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+}
+.card .actions {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  align-items: center;
+  padding: 0.5rem 1rem;
+}
+.card svg {
+  width: 85px;
+  height: 85px;
+  margin: 0 auto;
+}
+
+.img-avatar {
+  width: 100px;
+  height: 100px;
+  position: absolute;
+  border-radius: 50%;
+  border: 6px solid white;
+  background-image: linear-gradient(-60deg, #16a085 0%, #f4d03f 100%);
+  top: 1rem;
+  left: 7.5rem;
+}
+
+.card-text {
+  display: grid;
+  grid-template-columns: 3fr 4fr;
+}
+
+.title-total {
+  padding: 1.5em 1.5em 5.5em 3.5em;
+}
+
+path {
+  fill: white;
+}
+
+.img-portada {
+  width: 100%;
+}
+
+.desc{
+    font-size: 1.2rem;
+}
+.portada {
+  width: 100%;
+  height: 100%;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+  background-image: url("https://static.toiimg.com/photo/99591815.cms");
+  background-position: bottom center;
+  background-size: cover;
+}
+
+button {
+  border: none;
+  background: none;
+  font-size: 24px;
+  color: #8bc34a;
+  cursor: pointer;
+  transition:.5s;
+  &:hover{
+    color: #4CAF50  ;
+    transform: rotate(22deg)
+  }
+}
+
      </style>
  
  </head>
@@ -70,38 +171,46 @@
         <a href="/logout/" style="float:right">Logout</a>   
     </div>
 
-     <h1>Profile</h1>
-     <!-- all info on the left, photo on the right (use placeholder if no photo) -->
-     <div class="row">
-         <div class="column">
-             <div class="info">
-                 <p><strong>First Name:</strong> {{ user.first_name }}</p>
-                 {% if user.middle_name %}
-                 <p><strong>Middle Name:</strong> {{ user.middle_name }}</p>
-                 {% endif %}
-                 <p><strong>Last Name:</strong> {{ user.last_name }}</p>
-                 <p><strong>Email:</strong> {{ user.email }}</p>
-                 <p><strong>Address Line 1:</strong> {{ user.address_line_1 }}</p>
-                 {% if user.address_line_2 %}
-                 <p><strong>Address Line 2:</strong> {{ user.address_line_2 }}</p>
-                 {% endif %}
-                 <p><strong>State:</strong> {{ user.state }}</p>
-                 <p><strong>Country:</strong> {{ user.country }}</p>
-                 <p><strong>Pin Code:</strong> {{ user.pin_code }}</p>
-                 <p><strong>Telephone Number:</strong> {{ user.telephoneNumber }}</p>
-                 <p><strong>Date of Birth:</strong> {{ user.date_of_birth }}</p>
-             </div>
-         </div>
-
-          <!-- todo: fix this image -->
-          <div class="column">
-            {% if user.photo %}
-            <img src="{{ user.photo }}" alt="Profile Picture" style="width:100%">
-            {% else %}
-            <img src="http://www.gravatar.com/avatar/?d=identicon" alt="Profile Picture">
-            {% endif %}
-
-         </div>
+    <div class="container">
+        <div class="card">
+    
+            <div class="img-avatar">
+            
+                {% if user.photo %}
+                <img src="{{ user.photo }}" alt="Profile Picture" style="width:100%;border-radius:100px;">
+                {% else %}
+                <img src="http://www.gravatar.com/avatar/?d=identicon" alt="Profile Picture"style="width:100%;border-radius:100px;">
+                {%endif%}
+    
+            </div>
+            <div class="card-text">
+              <div class="portada">
+              
+              </div>
+              <div class="title-total">   
+                <div class="title"><br></div>
+                <h2>
+                    {{ user.first_name }}
+                        {% if user.middle_name %}
+                            {{ user.middle_name }}
+                        {% endif %}
+                    {{ user.last_name }}
+                </h2>
+            
+            <div class="desc">
+                {{ user.email }}
+                <br>
+                {{ user.telephoneNumber }}
+                <br>
+                {{ user.address_line_1 }}<br>
+                     {% if user.address_line_2 %}
+                     {{ user.address_line_2 }}
+                     {% endif %}
+            </div>
+            </div>  
+            </div>
+          </div>
+        </div>
  </body>
  
  </html>

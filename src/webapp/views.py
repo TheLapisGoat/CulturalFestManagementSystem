@@ -230,6 +230,7 @@ class RegisterView(View):
                 date_of_birth = form.cleaned_data['date_of_birth'],
                 is_active = False,
             )
+            user.save()
         
             #Creating the models corresponding to the role
             if role == 'student':
@@ -238,15 +239,18 @@ class RegisterView(View):
                     roll_number = form.cleaned_data['roll_number'],
                     department = form.cleaned_data['department']
                 )
+                student.save()
             elif role == 'external_participant':
                 participant = External_Participant.objects.create(
                     user = user,
                     organization = form.cleaned_data['organization']
                 )
+                participant.save()
             elif role == 'organizer':
                 organizer = Organizer.objects.create(
                     user = user
                 )
+                organizer.save()
 
                 #Delete the organizer key
                 organizer_key = Organizer_Key.objects.get(key = form.cleaned_data['organizer_key'])
@@ -366,7 +370,7 @@ class OTPVerificationView(View):
                     if user.is_active == False:
                         user.is_active = True
                         user.save()
-                        messages.success(request, 'Account created successfully')
+                        return render(request, 'registration/otp_verification.html', {'form': form, 'check': True})
                     else:
                         messages.error(request, 'Account already verified')
                 else:
@@ -391,6 +395,21 @@ class OrganizerHomeView(View):
 
         print(current_date)
         return render(request, 'organizer/organizer_home.html', {'events': events_organized, 'current_date': current_date})
+    
+    def post(self, request):
+        search_query = request.POST.get('search_query')
+        start_date = request.POST.get('start_date')
+        end_date = request.POST.get('end_date')
+        #If the search query is empty, then return all events
+        organizer = Organizer.objects.filter(user = request.user).first()
+        events = Event.objects.filter(organizers = organizer)
+        if search_query:
+            events = Event.objects.filter(name__icontains=search_query.lower())
+        if start_date:
+            events = events.filter(start_date__gte=start_date)
+        if end_date:
+            events = events.filter(end_date__lte=end_date)
+        return render(request, 'student/student_home.html', {'events': events})
 
 @method_decorator(login_required(login_url='login'), name='dispatch')   
 class OrganizerEventView(View):
@@ -431,24 +450,24 @@ class participant_view(View):
             return HttpResponse("You're not logged in")
         if(request.user.role!='external_participant'):
             return redirect("index/")
-        event_list = Event.objects.all()
-        participant = External_Participant.objects.filter(user=request.user).first()
-        registered = []
-        for i in range (len(event_list)):
-            registered.append(0)
-        events_registered = Participant_event.objects.filter(participant=participant).values('event')
-        registerd_event_ids = [x['event'] for x in events_registered]
-        for i in range(len(event_list)):
-
-            if(event_list[i].pk in registerd_event_ids):
-                registered[i]=1
-        print(registered,events_registered,event_list,"\n\n\n\n\n\n\n")
-        return render(request,"participant/home.html",{'events':event_list,
-                                                       'registered': registered
-                                                       })
+        
+        events = list(Event.objects.all())
+        return render(request,"participant/home.html",{'events':events})
     
-    def post(self,request,*args,**kwargs):
-        return redirect('participant/')
+    def post(self, request):
+        search_query = request.POST.get('search_query')
+        start_date = request.POST.get('start_date')
+        end_date = request.POST.get('end_date')
+        #If the search query is empty, then return all events
+        participant = External_Participant.objects.filter(user=request.user).first()
+        events = Event.objects.all()
+        if search_query:
+            events = Event.objects.filter(name__icontains=search_query.lower())
+        if start_date:
+            events = events.filter(start_date__gte=start_date)
+        if end_date:
+            events = events.filter(end_date__lte=end_date)
+        return render(request, 'student/student_home.html', {'events': events})
 
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
@@ -573,10 +592,8 @@ class student_home_view(View):
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class student_profile_view(View):
     def get(self, request):
-        if(request.user.is_anonymous):
-            return HttpResponse("You're not logged in")
-        if(request.user.role!='student'):
-            return redirect("index")
+        if request.user.role != 'student':
+            return redirect('index-redirector')
         student = Student.objects.filter(user=request.user).first()
         return render(request, 'student/student_profile.html', {'student': student})
 

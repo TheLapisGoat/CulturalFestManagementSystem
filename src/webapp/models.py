@@ -5,7 +5,6 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 
 class User_Entity(AbstractUser, PermissionsMixin):
-    
     first_name = models.CharField("first name", max_length=150, blank=False)
     middle_name = models.CharField("middle name", max_length=150, blank=True)
     last_name = models.CharField("last name", max_length=150, blank=False)
