@@ -156,6 +156,7 @@
                             <div class="event-name">{{ event.name }}</div>
                             <p>{{ event.description }}</p>
                             <div class="btn"><a href="{% url 'organizer-event' event.pk %}" style="margin:auto;"><button class="viewbutton">View</button></a></div>
+                            <div class="btn"><a href="{% url 'organizer-add-result' event.pk %}" style="margin:auto;"><button class="viewbutton">Add/Modify results</button></a></div>
                         </div>
                     {% endfor %}
                 {% else %}

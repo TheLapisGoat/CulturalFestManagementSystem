@@ -17,6 +17,7 @@ urlpatterns = [
     path('login/', views.LoginView.as_view(), name='login'),
     path('register/', views.RegisterView.as_view(), name='register'),
     path('otp-verification/', views.OTPVerificationView.as_view(), name='otp-verification'),
+    path('organizer/addresult/<int:event_id>',views.OrganizerAddResult.as_view(), name='organizer-add-result'),
 
     path('index/', views.HomeView.as_view(), name='Home'),
 

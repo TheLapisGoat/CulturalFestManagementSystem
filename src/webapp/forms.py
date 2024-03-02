@@ -328,5 +328,17 @@ class Event_Registration_Form(forms.Form):
     
 
 
+class EventResultForm(forms.Form):
+    def __init__(self, options1,options2,options3, *args, **kwargs):
+        super(EventResultForm, self).__init__(*args, **kwargs)
+        self.options1 = options1
+        self.options2 = options2
+        self.options3 = options3
+        self.fields['result1'] = forms.ChoiceField(choices = self.options1, required=True)
+        self.fields['result2'] = forms.ChoiceField(choices = self.options2, required=True)
+        self.fields['result3'] = forms.ChoiceField(choices = self.options3, required=True)
+        self.fields['result_description'] = forms.CharField(widget=forms.Textarea, label='Multi-line Text Field', required=True)
+
+
 
 

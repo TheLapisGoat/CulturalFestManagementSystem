@@ -16,8 +16,9 @@ from django.contrib.auth.tokens import default_token_generator
 import asyncio
 from django.shortcuts import render, get_object_or_404
 from .models import *
-from .forms import StudentRegistrationForm, OTPVerificationForm, External_ParticipantRegistrationForm, OrganizerRegistrationForm, VolunteerRegistrationForm, Event_Registration_Form
+from .forms import StudentRegistrationForm, OTPVerificationForm, External_ParticipantRegistrationForm, OrganizerRegistrationForm, VolunteerRegistrationForm, Event_Registration_Form,EventResultForm
 from django.utils.decorators import method_decorator
+
 # Create your views here. (Using class based views)
 
 #Redirects to every home page
@@ -54,7 +55,124 @@ class LoginView(View):
             return redirect('index-redirector')
         else:
             return render(request, self.template_name, {'form': form})
-        
+@method_decorator(login_required(login_url='login'), name='dispatch')  
+class OrganizerAddResult(View):
+    def get(self,request,event_id):
+        if request.user.role != 'organizer':
+            return redirect('index-redirector')
+        students = Student.objects.all()
+        student_primary_keys = Student.objects.all().values('pk')
+        student_names = [str(k) for k in students]
+        participants = External_Participant.objects.all()
+        participant_primary_keys = External_Participant.objects.all().values('pk')
+        participant_names = [str(k) for k in participants]
+        student_choices = [(str(pk), name) for pk, name in zip(student_primary_keys, student_names)]
+        participant_choices = [(str(pk), name) for pk, name in zip(participant_primary_keys, participant_names)]
+        request.session['register_current_role1'] = 'student'
+        request.session['register_current_role2'] = 'student'
+        request.session['register_current_role3'] = 'student'
+        form = EventResultForm(options1=student_choices,options2=student_choices,options3=student_choices)
+        return render(request, 'organizer/add_result.html', {'form': form,'default_role1':'student','default_role2':'student','default_role3':'student'})
+    
+    def post(self,request,event_id):
+        if request.user.role != 'organizer':
+            return redirect('index-redirector')
+        students = Student.objects.all()
+        student_primary_keys = Student.objects.all().values('pk')
+        student_names = [str(k) for k in students]
+        participants = External_Participant.objects.all()
+        participant_primary_keys = External_Participant.objects.all().values('pk')
+        participant_names = [str(k) for k in participants]
+        student_choices = [(str(pk), name) for pk, name in zip(student_primary_keys, student_names)]
+        participant_choices = [(str(pk), name) for pk, name in zip(participant_primary_keys, participant_names)]
+        action = request.POST.get('action')
+        self.template_name = 'organization/add_result.html'
+        if action == 'role_change1' or action == 'role_change2' or action == 'role_change3':
+            
+            form = None
+            role1 = request.session['register_current_role1']
+            role2 = request.session['register_current_role2']
+            role3 = request.session['register_current_role3']
+            choice1 = choice2 = choice3 = None
+            if action=='role_change1':
+                role1 = request.POST.get('role1')
+                request.session['register_current_role1'] = role1
+            if action=='role_change2':
+                role2 = request.POST.get('role2')
+                request.session['register_current_role2'] = role2
+            if action=='role_change3':
+                role3 = request.POST.get('role3')
+                request.session['register_current_role3'] = role3
+            if role1 == 'student':
+                choice1 = student_choices
+            elif role1 == 'external_participant':
+                choice1 = participant_choices
+            if role2 == 'student':
+                choice2 = student_choices
+            elif role2 == 'external_participant':
+                choice2 = participant_choices
+            if role3 == 'student':
+                choice3 = student_choices
+            elif role3 == 'external_participant':
+                choice3 = participant_choices
+            form = EventResultForm(options1=choice1,options2=choice2,options3=choice3)
+            return render(request, 'organizer/add_result.html', {'form': form, 'default_role1': role1, 'default_role2': role2, 'default_role3': role3})
+        form = None
+        role1 = request.session['register_current_role1']
+        role2 = request.session['register_current_role2']
+        role3 = request.session['register_current_role3']
+        choice1 = choice2 = choice3 = None
+        if role1 == 'student':
+            choice1 = student_choices
+        elif role1 == 'external_participant':
+            choice1 = participant_choices
+        if role2 == 'student':
+            choice2 = student_choices
+        elif role2 == 'external_participant':
+            choice2 = participant_choices
+        if role3 == 'student':
+            choice3 = student_choices
+        elif role3 == 'external_participant':
+            choice3 = participant_choices
+        form = EventResultForm(choice1,choice2,choice3,request.POST)
+        if(form.is_valid()):
+            result1 = int(form.cleaned_data['result1'][6:-1])
+            result2 = int(form.cleaned_data['result2'][6:-1])
+            result3 = int(form.cleaned_data['result3'][6:-1])
+            print(result1,result2,result3,'\n\n\n\n\n')
+            event = Event.objects.get(pk=event_id)
+            role1 = request.session['register_current_role1']
+            role2 = request.session['register_current_role2']
+            role3 = request.session['register_current_role3']
+            existing_results = EventResults.objects.filter(event=event)
+            if existing_results:
+                existing_results.delete()
+            choice1 = choice2 = choice3 = None
+            if role1 == 'student':
+                choice1 = ContentType.objects.get_for_model(Student)
+            elif role1 == 'external_participant':
+                choice1 = ContentType.objects.get_for_model(External_Participant)
+            if role2 == 'student':
+                choice2 = ContentType.objects.get_for_model(Student)
+            elif role2 == 'external_participant':
+                choice2 = ContentType.objects.get_for_model(External_Participant)
+            if role3 == 'student':
+                choice3 = ContentType.objects.get_for_model(Student)
+            elif role3 == 'external_participant':
+                choice3 = ContentType.objects.get_for_model(External_Participant)
+            eventresults = EventResults.objects.create(event=event,
+                                                       first_place_content_type=choice1,
+                                                       first_place_object_id=result1,
+                                                       second_place_content_type=choice2,
+                                                       second_place_object_id=result2,
+                                                       third_place_content_type=choice3,
+                                                       third_place_object_id=result3,
+                                                       result_description=form.cleaned_data['result_description']
+                                )
+            eventresults.save()
+            messages.success(request, 'Results added successfully')
+            return redirect('organizer-home')
+       
 class RegisterView(View):
     template_name = 'registration/register.html'
 
@@ -304,6 +422,7 @@ class OrganizerProfileView(View):
         organizer = Organizer.objects.filter(user=request.user).first()
         return render(request, 'organizer/organizer_profile.html', {'organizer': organizer})
     
+
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class participant_view(View):
