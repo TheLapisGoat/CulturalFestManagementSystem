@@ -116,4 +116,5 @@ admin.site.register(Volunteer_event)
 admin.site.register(EventResults)
 admin.site.register(Participant_Accomodation)
 admin.site.register(StudentEvent)
+admin.site.register(Accomodation)
 admin.site.site_header = 'Festival Management System Administration'

@@ -147,7 +147,6 @@ class Accomodation(models.Model):
     cost_per_night = models.FloatField(blank=False)
     facilities = models.TextField(blank=True)
     contact = PhoneNumberField(blank=True)
-    room_info = models.JSONField(default=list)
 
 class Participant_Accomodation(models.Model):
     participant = models.ForeignKey(External_Participant,on_delete=models.CASCADE)
@@ -157,7 +156,7 @@ class Participant_Accomodation(models.Model):
     room_number = models.CharField(max_length=50,blank=False)
 
 class StudentEvent(models.Model):
-    student = models.ForeignKey(User_Entity, on_delete=models.CASCADE)
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
     # Add other fields as needed
     class Meta:

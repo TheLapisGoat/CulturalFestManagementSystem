@@ -27,8 +27,8 @@ urlpatterns = [
     path('student/volunteer/', views.student_volunteer_view.as_view(), name='student-volunteer'),
     path('student/profile/', views.student_profile_view.as_view(), name='student-profile'),
     path('student/view_result/<int:event_id>', views.student_view_result.as_view(), name='student-view-result'),
-
-
+    path('student/register_event/<int:event_id>', views.student_register_event.as_view(), name='student-register-event'),
+    path('student/become_volunteer/<int:event_id>', views.student_volunteer.as_view(), name='student-volunteer'),
 
     path('events/', views.events, name='events'),
     path('participant/',views.participant_view.as_view(), name='external-participant-home'),
