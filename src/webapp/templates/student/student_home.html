@@ -194,7 +194,11 @@
                     <div class="event-name">{{ event.name }}</div>
                     <p>{{ event.description }}</p>
                     <div class="buttons">
+                        {% if event.registered_participants <= event.max_participants %}
                         <div class="btn"><a href="/student/register_event/{{ event.pk }}" style="margin:auto;"><button class="viewbutton">Register</button></a></div>
+                        {% else %}
+                        <p>Event is full</p>
+                        {% endif %}
                         <div class="btn"><a href="/student/become_volunteer/{{ event.pk}}" style="margin:auto;"><button class="viewbutton">Volunteer</button></a></div>    
                     </div>
                 <div class="btn" style="width: 90%"><a href="/student/view_result/{{ event.pk }}" style="margin:auto;"><button class="viewbutton">View Details</button></a></div>

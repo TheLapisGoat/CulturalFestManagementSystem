@@ -496,6 +496,8 @@ class participant_register_view(View):
             return HttpResponse("You are already registered for this event.")
         new_participant_event = Participant_event(participant=participant, event=event)
         new_participant_event.save()
+        event.registered_participants += 1
+        event.save()
         return HttpResponse("You have successfully registered for the event.")
     def post(self, request, *args, **kwargs):
         return redirect('participant/')
@@ -631,6 +633,8 @@ class student_register_event(View):
             return HttpResponse("You are already registered for this event.")
         new_participant_event = StudentEvent(student=student, event=event)
         new_participant_event.save()
+        event.registered_participants += 1
+        event.save()
         return HttpResponse("You have successfully registered for the event.")
     def post(self, request, *args, **kwargs):
         return redirect('student/')

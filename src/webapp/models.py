@@ -126,7 +126,8 @@ class Event(models.Model):
     registration_end_date = models.DateTimeField("Registration End Date",blank=False)
     max_participants = models.IntegerField("Max Participants",blank=False)
     min_participants = models.IntegerField("Min Participants",blank=False)
-
+    registered_participants = models.IntegerField("Registered Participants", default=0)
+    
 class Infra_schedule(models.Model):
     start_time = models.DateTimeField(blank=False)
     end_time = models.DateTimeField(blank=False)
