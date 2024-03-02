@@ -253,44 +253,42 @@
     
         <!-- home page with "live" events -->
         <h1>Live and Upcoming Events</h1>
-        {% if events|length == 0 and events_registered|length == 0 %}
-            <h3>No events available</h3>
-        {% endif %}
-        {% for event in events %}
-            {% if forloop.first or forloop.counter0|divisibleby:3 %}
-                <div class="row">
-            {% endif %}
-            <div class="column">
-                <div class="card">
-                    <h3>{{ event.name }}</h3>
-                    <p>Start Date: {{ event.start_date }}</p>
-                    <p>End Date: {{ event.end_date }}</p>
-                    <p>Description: {{ event.description }}</p>
-                    <!-- todo: update href -->
-                    <a href="/participant/register/{{ event.pk }}">Register</a>
-                </div>
+        
+        <div class="container">
+            <div class="events-container">
+                {% if events %}
+                    {% for event in events %}
+                        <div class="event-card">
+                            <div class="event-name">{{ event.name }}</div>
+                            <p>{{ event.description }}</p>
+                            <div class="btn"><a href="/participant/register/{{ event.pk }}" style="margin:auto;"><button class="viewbutton">Register</button></a></div>
+                            <div class="btn"><a href="/participant/event/{{ event.pk }}" style="margin:auto;"><button class="viewbutton">View Details</button></a></div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                     {% if events_registered %}
+                     <p>You are registered for all avaliable events.</p>
+                        {% else %}   
+                    <p>No events available at the moment.</p>
+                    {% endif %}
+                {% endif %}
             </div>
-            {% if forloop.last or forloop.counter|divisibleby:3 %}
+        </div>
+        
+                <div class="container">
+                    <div class="events-container">
+                        {% if events_registered %}
+                            {% for event in events_registered %}
+                                <div class="event-card">
+                                    <div class="event-name">{{ event.name }}</div>
+                                    <p>{{ event.description }}</p>
+                                    <div class="btn"><a href="/participant/event/{{ event.pk }}" style="margin:auto;"><button class="viewbutton">View Details</button></a></div>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <p>You have not registered for any event yet.</p>
+                        {% endif %}
+                    </div>
                 </div>
-            {% endif %}
-        {% endfor %}
-        {% for event in events_registered %}
-            {% if forloop.first or forloop.counter0|divisibleby:3 %}
-                <div class="row">
-            {% endif %}
-            <div class="column">
-                <div class="card">
-                    <h3>{{ event.name }}</h3>
-                    <p>Start Date: {{ event.start_date }}</p>
-                    <p>End Date: {{ event.end_date }}</p>
-                    <p>Description: {{ event.description }}</p>
-                    <!-- todo: update href -->
-                    <a href="/participant/event/{{ event.pk }}">View Details</a>
-                </div>
-            </div>
-            {% if forloop.last or forloop.counter|divisibleby:3 %}
-                </div>
-            {% endif %}
-        {% endfor %}
     </body>
 </html>
