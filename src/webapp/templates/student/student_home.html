@@ -179,7 +179,7 @@
 <!-- home page with "live" events -->
 <h1>Live and Upcoming Events</h1>
 
-{% if events|length == 0 %}
+{% if events|length == 0 and events_registered|length == 0 %}
     <h3>No events available</h3>
 {% endif %}
 {% for event in events %}
@@ -192,9 +192,27 @@
             <p>Start Date: {{ event.start_date }}</p>
             <p>End Date: {{ event.end_date }}</p>
             <p>Description: {{ event.description }}</p>
-            <!-- todo: update href -->
-            <a href="/student/register/{{ event.pk }}">Register</a>
+            
+            <a href="/student/register_event/{{ event.pk }}">Register</a>
             <a href="/student/volunteer/{{ event.pk}}">Volunteer</a>
+            <a href="/student/view_result/{{ event.pk }}">View details</a>
+        </div>
+    </div>
+    {% if forloop.last or forloop.counter|divisibleby:3 %}
+        </div>
+    {% endif %}
+{% endfor %}
+{% for event in events_registered %}
+    {% if forloop.first or forloop.counter0|divisibleby:3 %}
+        <div class="row">
+    {% endif %}
+    <div class="column">
+        <div class="card">
+            <h3>{{ event.name }}</h3>
+            <p>Start Date: {{ event.start_date }}</p>
+            <p>End Date: {{ event.end_date }}</p>
+            <p>Description: {{ event.description }}</p>
+            
             <a href="/student/view_result/{{ event.pk }}">View details</a>
         </div>
     </div>
