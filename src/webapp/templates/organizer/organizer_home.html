@@ -105,16 +105,21 @@
         }
         .viewbutton{
             width: 100%;
-            
-            padding: 5px;
-            color: #1352b1;
+            padding: 10px;
+            background-image: linear-gradient(to right, #61a6dd, #183aaa);
+            box-shadow: 0 5px 20px #89caff94;
+            transition: box-shadow .3s ease-in-out;
+            color: white;
             margin: auto;
-            border:1px solid #1352b1;
+            border-radius:5px;
+            border: none;
+            position: relative;
         }
         .viewbutton:hover{
-            background-color: #1352b1;
-            color:white;
+            box-shadow:none;
             cursor:pointer;
+            top:-1px;
+            transition:0.2s;
         }
 
         .search-container {
@@ -157,7 +162,6 @@
     <body>
         <div class="header">
             <a href="/organizer" style="border-bottom:2px solid #1352b1;">Home</a>
-            <!-- <a href="/organizer/logistics/">Logistics</a> -->
             <a href="/organizer/profile/">Profile</a>
             <a href="/organizer/register_event/">Create Event</a>
             <a href="/logout/" style="float:right">Logout</a>   

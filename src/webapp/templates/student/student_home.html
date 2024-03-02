@@ -10,6 +10,7 @@
         body {
             background-color: #f2f2f2;
             font-family: Arial, sans-serif;
+            margin:0;
         }
 
         h1, h3 {
@@ -142,17 +143,23 @@
         }
         .viewbutton{
             width: 100%;
-            
-            padding: 5px;
-            color: #1352b1;
+            padding: 10px;
+            background-image: linear-gradient(to right, #61a6dd, #183aaa);
+            box-shadow: 0 5px 20px #89caff94;
+            transition: box-shadow .3s ease-in-out;
+            color: white;
             margin: auto;
-            border:1px solid #1352b1;
+            border-radius:5px;
+            border: none;
+            position: relative;
         }
         .viewbutton:hover{
-            background-color: #1352b1;
-            color:white;
+            box-shadow:none;
             cursor:pointer;
+            top:-1px;
+            transition:0.2s;
         }
+
     </style>
 </head>
 
@@ -179,28 +186,21 @@
 <!-- home page with "live" events -->
 <h1>Live and Upcoming Events</h1>
 
-{% if events|length == 0 %}
-    <h3>No events available</h3>
-{% endif %}
-{% for event in events %}
-    {% if forloop.first or forloop.counter0|divisibleby:3 %}
-        <div class="row">
-    {% endif %}
-    <div class="column">
-        <div class="card">
-            <h3>{{ event.name }}</h3>
-            <p>Start Date: {{ event.start_date }}</p>
-            <p>End Date: {{ event.end_date }}</p>
-            <p>Description: {{ event.description }}</p>
-            <!-- todo: update href -->
-            <a href="#">Register</a>
-            <a href="/student/view_result/{{ event.pk }}">View details</a>
+        <div class="container">
+            <div class="events-container">
+                {% if events %}
+                    {% for event in events %}
+                        <div class="event-card">
+                            <div class="event-name">{{ event.name }}</div>
+                            <p>{{ event.description }}</p>
+                            <div class="btn"><a href="#" style="margin:auto;"><button class="viewbutton">Register</button></a></div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p>No events available at the moment.</p>
+                {% endif %}
+            </div>
+            
         </div>
-    </div>
-    {% if forloop.last or forloop.counter|divisibleby:3 %}
-        </div>
-    {% endif %}
-{% endfor %}
-
 </body>
 </html>
