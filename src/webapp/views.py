@@ -388,7 +388,8 @@ class OrganizerHomeView(View):
         if request.user.role != 'organizer':
             return redirect('/logout/')
         organizer = Organizer.objects.filter(user = request.user).first()
-        events_organized = Event.objects.filter(organizers = organizer)
+        events_organized = organizer.events.all()
+        print(events_organized,"\n\n\n\n\n")
         #Sort the events by date
         events_organized = sorted(events_organized, key = lambda x: x.start_date)
         current_date=datetime.now()
@@ -404,14 +405,14 @@ class OrganizerHomeView(View):
         end_date = request.POST.get('end_date')
         #If the search query is empty, then return all events
         organizer = Organizer.objects.filter(user = request.user).first()
-        events = Event.objects.filter(organizers = organizer)
+        events = organizer.events.all()
         if search_query:
             events = Event.objects.filter(name__icontains=search_query.lower())
         if start_date:
             events = events.filter(start_date__gte=start_date)
         if end_date:
             events = events.filter(end_date__lte=end_date)
-        return render(request, 'student/student_home.html', {'events': events})
+        return render(request, 'organizer/organizer_home.html', {'events': events})
 
 @method_decorator(login_required(login_url='login'), name='dispatch')   
 class OrganizerEventView(View):
