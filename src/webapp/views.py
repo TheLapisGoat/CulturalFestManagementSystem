@@ -646,8 +646,7 @@ class student_volunteer(View):
         student = Student.objects.filter(user=request.user).first()
         volunteer = Volunteer.objects.filter(student=student)
         if(not volunteer):
-            volunteer = Volunteer.objects.create(student=student,hours=random.randint(1,10))
-            volunteer.save()
+            return redirect("/student/register_volunteer/")
         existing_volunteer_event = Volunteer_event.objects.filter(volunteer=volunteer[0], event=event).first()
         if existing_volunteer_event:
             return HttpResponse("You are already registered as a volunteer for this event.")
