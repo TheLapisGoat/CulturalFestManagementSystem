@@ -702,7 +702,12 @@ class student_volunteer_view(View):
             return redirect('/logout/')
         student = Student.objects.filter(user=request.user).first()
         volunteer = Volunteer.objects.filter(student=student).first()
-        return render(request, 'student/student_volunteer.html', {'volunteer': volunteer})
+        events = list(Event.objects.all())
+        volunteer_events = Volunteer_event.objects.filter(volunteer=volunteer).values('event')
+        volunteer_events = [x['event'] for x in volunteer_events]
+        events = [x for x in events if x.pk in volunteer_events]
+        print(events,'\n\n\n\n\n')
+        return render(request, 'student/student_volunteer.html', {'events': events})
         
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class student_view_result(View):
