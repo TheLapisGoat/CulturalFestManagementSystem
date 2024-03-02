@@ -59,7 +59,7 @@ class LoginView(View):
 class OrganizerAddResult(View):
     def get(self,request,event_id):
         if request.user.role != 'organizer':
-            return redirect('index-redirector')
+            return redirect('/logout/')
         students = Student.objects.all()
         student_primary_keys = Student.objects.all().values('pk')
         student_names = [str(k) for k in students]
@@ -76,7 +76,7 @@ class OrganizerAddResult(View):
     
     def post(self,request,event_id):
         if request.user.role != 'organizer':
-            return redirect('index-redirector')
+            return redirect('/logout/')
         students = Student.objects.all()
         student_primary_keys = Student.objects.all().values('pk')
         student_names = [str(k) for k in students]
@@ -289,7 +289,7 @@ class Register_Event_View(View):
         if(request.user.is_anonymous):
             return HttpResponse("You're not logged in")
         if(request.user.role!='organizer'):
-            return redirect("index")
+            return redirect("/logout/")
         return render(request, self.template_name, {'form':form})
     
     def post(self,request):
@@ -348,11 +348,11 @@ class OTPVerificationView(View):
             if user.exists():
                 user = user[0]
                 if user.is_active:
-                    return redirect('index-redirector')
+                    return redirect('/login')
             else:
-                return redirect('index-redirector')
+                return redirect('/register')
         else:
-            return redirect('index-redirector')
+            return redirect('/login')
         
         form = OTPVerificationForm()
         return render(request, self.template_name, {'form': form})
@@ -386,7 +386,7 @@ class OrganizerHomeView(View):
     template_name = 'organizer/organizer_home.html'
     def get(self, request):
         if request.user.role != 'organizer':
-            return redirect('index-redirector')
+            return redirect('/logout/')
         organizer = Organizer.objects.filter(user = request.user).first()
         events_organized = Event.objects.filter(organizers = organizer)
         #Sort the events by date
@@ -397,6 +397,8 @@ class OrganizerHomeView(View):
         return render(request, 'organizer/organizer_home.html', {'events': events_organized, 'current_date': current_date})
     
     def post(self, request):
+        if request.user.role != 'organizer':
+            return redirect('/logout/')
         search_query = request.POST.get('search_query')
         start_date = request.POST.get('start_date')
         end_date = request.POST.get('end_date')
@@ -415,7 +417,7 @@ class OrganizerHomeView(View):
 class OrganizerEventView(View):
     def get(self, request, event_id):
         if request.user.role != 'organizer':
-            return redirect('index-redirector')
+            return redirect('/logout/')
         
         event = get_object_or_404(Event, pk=event_id)
         volunteers = Volunteer_event.objects.filter(event=event)
@@ -428,7 +430,7 @@ class OrganizerEventView(View):
 class OrganizerLogisticsView(View):
     def get(self, request):
         if request.user.role != 'organizer':
-            return redirect('index-redirector')
+            return redirect('/logout/')
         return render(request, 'organizer/organizer_logistics.html')
 
 
@@ -436,7 +438,7 @@ class OrganizerLogisticsView(View):
 class OrganizerProfileView(View):
     def get(self, request):
         if request.user.role != 'organizer':
-            return redirect('index-redirector')
+            return redirect('/logout/')
         
         organizer = Organizer.objects.filter(user=request.user).first()
         return render(request, 'organizer/organizer_profile.html', {'organizer': organizer})
@@ -449,12 +451,16 @@ class participant_view(View):
         if(request.user.is_anonymous):
             return HttpResponse("You're not logged in")
         if(request.user.role!='external_participant'):
-            return redirect("index/")
+            return redirect("/logout/")
         
         events = list(Event.objects.all())
         return render(request,"participant/home.html",{'events':events})
     
     def post(self, request):
+        if(request.user.is_anonymous):
+            return HttpResponse("You're not logged in")
+        if(request.user.role!='external_participant'):
+            return redirect("/logout/")
         search_query = request.POST.get('search_query')
         start_date = request.POST.get('start_date')
         end_date = request.POST.get('end_date')
@@ -476,7 +482,7 @@ class participant_register_view(View):
         if(request.user.is_anonymous):
             return HttpResponse("You're not logged in")
         if(request.user.role!='external_participant'):
-            return redirect("index")
+            return redirect("/logout/")
         event = get_object_or_404(Event, pk=event_id)
         participant = External_Participant.objects.filter(user=request.user).first()
         existing_participant_event = Participant_event.objects.filter(participant=participant, event=event).first()
@@ -494,7 +500,7 @@ class participant_event_view(View):
         if(request.user.is_anonymous):
             return HttpResponse("You're not logged in")
         if(request.user.role!='external_participant'):
-            return redirect("index")
+            return redirect("/logout/")
         event_data = Event.objects.filter(pk=event_id).values('name','description','start_date','end_date','registration_end_date')
         event = Event.objects.filter(pk=event_id).first()
         print(event_data,"\n\n\n\n\n\n")
@@ -544,7 +550,7 @@ class participant_profile_view(View):
         if(request.user.is_anonymous):
             return HttpResponse("You're not logged in")
         if(request.user.role!='external_participant'):
-            return redirect("index")
+            return redirect("/logout/")
         participant = External_Participant.objects.filter(user=request.user).first()
         return render(request, 'participant/participant_profile.html', {'participant': participant})
     def post(self, request, *args, **kwargs):
@@ -556,7 +562,7 @@ class participant_view_accomodation(View):
         if(request.user.is_anonymous):
             return HttpResponse("You're not logged in")
         if(request.user.role!='external_participant'):
-            return redirect("index")
+            return redirect("/logout/")
         participant = External_Participant.objects.filter(user=request.user).first()
         accomodation_id = Participant_Accomodation.objects.get(participant=participant)
         accomodation = Accomodation.objects.get(pk=accomodation_id.accomodation)
@@ -568,7 +574,7 @@ class student_home_view(View):
         if(request.user.is_anonymous):
             return HttpResponse("You're not logged in")
         if(request.user.role!='student'):
-            return redirect("index")
+            return redirect("/logout/")
         events = list(Event.objects.all())
 
         #todo: filter live events
@@ -576,6 +582,10 @@ class student_home_view(View):
         return render(request, 'student/student_home.html', {'events': events})
     
     def post(self, request):
+        if(request.user.is_anonymous):
+            return HttpResponse("You're not logged in")
+        if(request.user.role!='student'):
+            return redirect("/logout/")
         search_query = request.POST.get('search_query')
         start_date = request.POST.get('start_date')
         end_date = request.POST.get('end_date')
@@ -593,7 +603,7 @@ class student_home_view(View):
 class student_profile_view(View):
     def get(self, request):
         if request.user.role != 'student':
-            return redirect('index-redirector')
+            return redirect('/logout/')
         student = Student.objects.filter(user=request.user).first()
         return render(request, 'student/student_profile.html', {'student': student})
 
@@ -603,7 +613,7 @@ class student_volunteer_redirect(View):
         if request.user.is_anonymous:
             return HttpResponse("You're not logged in")
         if request.user.role != 'student':
-            return redirect("index")
+            return redirect("/logout/")
         student = Student.objects.filter(user=request.user).first()
         volunteer = Volunteer.objects.filter(student=student).first()
         if volunteer is not None:
@@ -615,7 +625,7 @@ class student_volunteer_redirect(View):
 class student_register_volunteer_view(View):
     def get(self, request):
         if request.user.role != 'student':
-            return redirect('index-redirector')
+            return redirect('/logout/')
         form = VolunteerRegistrationForm()
         return render(request, 'student/student_register_volunteer.html', {'form': form})
     def post(self, request):
@@ -632,7 +642,7 @@ class student_register_volunteer_view(View):
 class student_volunteer_view(View):
     def get(self, request):
         if request.user.role != 'student':
-            return redirect('index-redirector')
+            return redirect('/logout/')
         student = Student.objects.filter(user=request.user).first()
         volunteer = Volunteer.objects.filter(student=student).first()
         return render(request, 'student/student_volunteer.html', {'volunteer': volunteer})
@@ -643,7 +653,7 @@ class student_view_result(View):
         if(request.user.is_anonymous):
             return HttpResponse("You're not logged in")
         if(request.user.role!='student'):
-            return redirect("index")
+            return redirect("/logout/")
         event_data = Event.objects.filter(pk=event_id).values('name','description','start_date','end_date','registration_end_date')
         event = Event.objects.filter(pk=event_id).first()
         print(event_data,"\n\n\n\n\n\n")
@@ -684,7 +694,7 @@ class student_view_result(View):
             return HttpResponse("You are not registered for this event.")
         return render(request, 'student/student_event_view.html',context = merged_context)
     def post(self, request, *args, **kwargs):
-        return redirect('participant/')
+        return redirect('student/')
         
 def index(request):
     return HttpResponse("Hello, world. You're at the webapp index.")

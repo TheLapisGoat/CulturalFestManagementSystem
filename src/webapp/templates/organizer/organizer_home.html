@@ -174,7 +174,13 @@
                 <button type="submit" class="submit-button">Search</button>
             </form>
         </div>
-
+        {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                {{ message }}
+            {% endfor %}
+        </div>
+        {% endif %}
         <!-- home page with "live" events -->
         <h1>Live and Upcoming Events</h1>
         <!-- {% for event in events %}

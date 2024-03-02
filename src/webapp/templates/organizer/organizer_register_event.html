@@ -98,16 +98,147 @@
                 text-align: center;
                 padding: 0px;
             }
+            body {
+                background-color: #f2f2f2;
+                font-family: Arial, sans-serif;
+            }
+
+            h1 {
+                text-align: center;
+                color: #387adf;
+            }
+
+            .header {
+                overflow: hidden;
+                background-color: #f1f1f1;
+                padding: 20px 10px;
+            }
+
             .header a {
-            float: left;
-            display: block;
-            color: black;
+                float: left;
+                display: block;
+                color: black;
+                text-align: center;
+                padding-left: 14px;
+                padding-right: 14px;
+                padding-top: 4px;
+                padding-bottom: 4px;
+                text-decoration: none;
+            }
+
+            a:hover {
+                color: #387adf;
+            }
+
+            .card {
+                box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+                padding: 16px;
+                text-align: center;
+            }
+            body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 88%;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .events-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+        .event-card {
+            width: calc(33.33% - 20px); /* For PC view, display 3 cards in a row */
+            margin-bottom: 20px;
+            background-color: #f9f9f9;
+            border: 2px solid #0f0f0f;
+            border-radius: 5px;
+         padding: 20px;
+            box-sizing: border-box;
+        
+        }
+        @media (max-width: 768px) {
+            .event-card {
+                width: calc(100% - 20px); /* For mobile view, display 1 card in a row */
+            }
+        }
+        .event-card h2 {
+            margin-top: 0;
+            color: #333;
+        }
+        .event-card p {
+            margin: 5px 0;
+            color: #666;
+        }
+        .event-name{
+            width: 90%;
+        text-align: center;
+        background-color: #1352b1;
+        
+        color: white;
+        margin: auto;
+        margin-bottom: 2rem;
+        padding: 5%;
+        border-radius: 5px;
+        }
+        .btn{
+            width: 60%;
+            margin: auto;
+            margin-top: 2rem;
+        }
+        .viewbutton{
+            width: 100%;
+            
+            padding: 5px;
+            color: #1352b1;
+            margin: auto;
+            border:1px solid #1352b1;
+        }
+        .viewbutton:hover{
+            background-color: #1352b1;
+            color:white;
+            cursor:pointer;
+        }
+
+        .search-container {
             text-align: center;
-            padding-left: 14px;
-            padding-right: 14px;
-            padding-top: 4px;
-            padding-bottom: 4px;
-            text-decoration: none;
+            margin-bottom: 20px;
+        }
+
+        input[type=text] {
+            width: 50%;
+            padding: 10px;
+            margin: 8px 0;
+            box-sizing: border-box;
+            border: 2px solid #ccc;
+            border-radius: 4px;
+            outline: none;
+        }
+
+        input[type=text]:focus {
+            border: 2px solid #387adf;
+        }
+
+        .submit-button {
+            width: 20%;
+            background-color: #387adf;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .submit-button:hover {
+            background-color: #1f5f8b;
         }
             .message {
                 color: #333;
