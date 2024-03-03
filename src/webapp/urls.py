@@ -9,6 +9,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("admin/", admin.site.index, name = "admin-home"),
     path("api/student_home/", views.student_home_api.as_view(), name='student-home-api'),
+    path("api/participant_home/", views.participant_home_api.as_view(), name='participant-home-api'),
 
     path("organizer/event/<int:event_id>", views.OrganizerEventView.as_view(), name='organizer-event'),
     path('organizer/profile/', views.OrganizerProfileView.as_view(), name='organizer-profile'),
@@ -35,7 +36,7 @@ urlpatterns = [
     path('participant/',views.participant_view.as_view(), name='external-participant-home'),
     path('participant/register/<int:event_id>',views.participant_register_view.as_view(),name="participant_register"),
     path('participant/event/<int:event_id>',views.participant_event_view.as_view(),name="participant_event"),
-    path('participant/profile',views.participant_profile_view.as_view(),name="participant_profile"),
+    path('participant/profile/',views.participant_profile_view.as_view(),name="participant_profile"),
     path('participant/accomodation/',views.participant_view_accomodation.as_view(),name="participant_accomodation"),
 
     path('logout/', views.LogoutView.as_view(), name='logout'),
