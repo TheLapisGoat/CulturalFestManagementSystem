@@ -246,6 +246,14 @@ class RegisterView(View):
                     organization = form.cleaned_data['organization']
                 )
                 participant.save()
+                accomodations = Accomodation.objects.all()
+                accomodation = random.choice(accomodations)
+                participant_accomodation = Participant_Accomodation.objects.create(participant=participant, accomodation=accomodation)
+                participant_accomodation.room_number = accomodation.next_free_room
+                accomodation.next_free_room += 1
+                participant_accomodation.save()
+                accomodation.save()
+                
             elif role == 'organizer':
                 organizer = Organizer.objects.create(
                     user = user

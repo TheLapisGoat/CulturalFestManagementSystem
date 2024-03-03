@@ -148,12 +148,13 @@ class Accomodation(models.Model):
     cost_per_night = models.FloatField(blank=False)
     facilities = models.TextField(blank=True)
     contact = PhoneNumberField(blank=True)
+    next_free_room = models.IntegerField(default = 101)
 
 class Participant_Accomodation(models.Model):
     participant = models.ForeignKey(External_Participant,on_delete=models.CASCADE)
     accomodation = models.ForeignKey(Accomodation,on_delete=models.CASCADE)
-    start_date = models.DateTimeField(blank=False)
-    end_date = models.DateTimeField(blank=False)
+    start_date = models.DateTimeField(blank=True,null=True)
+    end_date = models.DateTimeField(blank=True,null=True)
     room_number = models.CharField(max_length=50,blank=False)
 
 class StudentEvent(models.Model):
