@@ -1,0 +1,40 @@
+<div class="events-container">
+    <!-- Unregistered Events -->
+    <div class="event-category">Unregistered Events</div>
+    {% if unregistered_events %}
+        {% for event in unregistered_events %}
+            <div class="event-card">
+                <div class="event-name">{{ event.name }}</div>
+                <p>{{ event.description }}</p>
+                <div class="buttons">
+                    {% if event.registered_participants <= event.max_participants %}
+                        <div class="btn"><a href="/participant/register/{{ event.pk }}"><button class="viewbutton">Register</button></a></div>
+                    {% else %}
+                        <p>Event is full</p>
+                    {% endif %}
+                    <div class="btn"><a href="/participant/event/{{ event.pk }}"><button class="viewbutton">View Details</button></a></div>    
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No unregistered events available.</p>
+    {% endif %}
+</div>
+
+<div class="events-container">
+    <!-- Events Registered as Participant -->
+    <div class="event-category">Events Registered as Participant</div>
+    {% if registered_events %}
+        {% for event in registered_events %}
+            <div class="event-card">
+                <div class="event-name">{{ event.name }}</div>
+                <p>{{ event.description }}</p>
+                <div class="buttons">
+                    <div class="btn"><a href="/participant/event/{{ event.pk }}"><button class="viewbutton">View Details</button></a></div>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No events registered as participant.</p>
+    {% endif %}
+</div>

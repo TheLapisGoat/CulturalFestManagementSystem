@@ -287,7 +287,7 @@ class Event_Registration_Form(forms.Form):
         )
         self.fields['max_participants'] = forms.IntegerField(required=True)
         self.fields['min_participants'] = forms.IntegerField(required=True)
-        self.fields['organizers'] = forms.ModelMultipleChoiceField(queryset=self.queryset, required=True, widget=forms.CheckboxSelectMultiple)
+        self.fields['organizers'] = forms.ModelMultipleChoiceField(queryset=self.queryset, required=False, widget=forms.CheckboxSelectMultiple)
 
     def clean(self) -> dict[str, Any]:
         return super().clean()

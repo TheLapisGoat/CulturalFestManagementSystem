@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ name }} Details</title>
+    <title>{{ event.name }} Details</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -45,39 +45,59 @@
         .place {
             margin-bottom: 10px;
         }
+
+        .button-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #387adf;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
     </style>
 </head>
 <body>
-    <div class="header">
-        <a href="/participant/">Home</a>
-        <a href="/participant/accomodation/">Logistics</a>
-        <a href="/participant/profile">Profile</a>
-        <a href="/logout/" style="float:right">Logout</a>
-    </div>
     <div class="event-container">
-        <h1>{{ name }}</h1>
-        <p>{{ description }}</p>
-        <p class="date"><strong>Event Dates:</strong> {{ start_date }} to {{ end_date }}</p>
-        <p class="date"><strong>Registration End Date:</strong> {{ registration_end_date }}</p>
+        <h1>{{ event.name }}</h1>
+        <p>{{ event.description }}</p>
+        <p class="date"><strong>Event Dates:</strong> {{ event.start_date }} to {{ event.end_date }}</p>
+        <p class="date"><strong>Registration End Date:</strong> {{ event.registration_end_date }}</p>
 
         <div class="places">
-            {% if first_place %}
-            <div class="place">
-                <strong>First Place:</strong> {{ first_place }}
-            </div>
-            {% endif %}
+            {% if result %}
+                {% for result_item in result %}
+                    {% if result_item.first_place %}
+                        <div class="place">
+                            <strong>First Place:</strong> {{ result_item.first_place }} - {{ result_item.first_place_description }}
+                        </div>
+                    {% endif %}
 
-            {% if second_place %}
-            <div class="place">
-                <strong>Second Place:</strong> {{ second_place }}
-            </div>
-            {% endif %}
+                    {% if result_item.second_place %}
+                        <div class="place">
+                            <strong>Second Place:</strong> {{ result_item.second_place }} - {{ result_item.second_place_description }}
+                        </div>
+                    {% endif %}
 
-            {% if third_place %}
-            <div class="place">
-                <strong>Third Place:</strong> {{ third_place }}
-            </div>
+                    {% if result_item.third_place %}
+                        <div class="place">
+                            <strong>Third Place:</strong> {{ result_item.third_place }} - {{ result_item.third_place_description }}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                <p>No results available.</p>
             {% endif %}
+        </div>
+
+        <div class="button-container">
+            <a href="/participant/" class="button">Home</a>
+            <a href="/participant/profile/" class="button">Profile</a>
         </div>
     </div>
 </body>

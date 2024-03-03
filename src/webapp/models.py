@@ -141,8 +141,8 @@ class Accomodation(models.Model):
     next_free_room = models.IntegerField(default = 101)
 
 class Participant_Accomodation(models.Model):
-    participant = models.ForeignKey(External_Participant,on_delete=models.CASCADE)
-    accomodation = models.ForeignKey(Accomodation,on_delete=models.CASCADE)
+    participant = models.ForeignKey(External_Participant,on_delete=models.CASCADE, related_name="participant_accomodation")
+    accomodation = models.ForeignKey(Accomodation,on_delete=models.CASCADE, related_name="participant_accomodation")
     start_date = models.DateTimeField(blank=True,null=True)
     end_date = models.DateTimeField(blank=True,null=True)
     room_number = models.CharField(max_length=50,blank=False)
