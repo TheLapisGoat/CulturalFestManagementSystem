@@ -19,7 +19,7 @@ from django.shortcuts import render, get_object_or_404
 from .models import *
 from .forms import StudentRegistrationForm, OTPVerificationForm, External_ParticipantRegistrationForm, OrganizerRegistrationForm, VolunteerRegistrationForm, Event_Registration_Form,EventResultForm
 from django.utils.decorators import method_decorator
-
+import random
 # Create your views here. (Using class based views)
 
 #Redirects to every home page
