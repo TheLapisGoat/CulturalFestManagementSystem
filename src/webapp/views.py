@@ -317,6 +317,12 @@ class Register_Event_View(View):
             for organizer in organizers:
                 event.organizers.add(organizer)
             event.save()
+            start_date = form.cleaned_data['start_date']
+            end_date = form.cleaned_data['end_date']
+            infra_schedule = Infra_schedule.objects.create(start_time = start_date, end_time = end_date)
+            infra_schedule.save()
+            venue_schedule_event = Venue_schedule_event.objects.create(event = event, venue = venue, schedule = infra_schedule)
+            venue_schedule_event.save()
             return redirect('organizer-home')
         else:
             # for field in form:

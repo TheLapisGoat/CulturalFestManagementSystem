@@ -261,17 +261,17 @@ class Event_Registration_Form(forms.Form):
         venue_list = Venue.objects.all()
         venue_choices = [(venue.pk, venue.venue_name) for venue in venue_list]
         self.fields['venue'] = forms.ChoiceField(choices = venue_choices, required=True)
-        self.fields['start_date'] = forms.DateField(
-            label="Start Date",
+        self.fields['start_date'] = forms.DateTimeField(
+            label="Start Date Time", 
             required=True,
-            widget=forms.DateInput(format="%Y-%m-%d", attrs={"type": "date"}),
-            input_formats=["%Y-%m-%d"]
+            widget=forms.DateTimeInput(format="%Y-%m-%d %H:%M", attrs={"type": "datetime-local"}),
+            input_formats=["%Y-%m-%d %H:%M"]
         )
-        self.fields['end_date'] = forms.DateField(
-            label="End Date",
+        self.fields['end_date'] = forms.DateTimeField(
+            label="End Date Time",
             required=True,
-            widget=forms.DateInput(format="%Y-%m-%d", attrs={"type": "date"}),
-            input_formats=["%Y-%m-%d"]
+            widget=forms.DateTimeInput(format="%Y-%m-%d %H:%M", attrs={"type": "datetime-local"}),
+            input_formats=["%Y-%m-%d %H:%M"]
         )
         self.fields['registration_start_date_time'] = forms.DateTimeField(
             label="Registration Start Date Time",
