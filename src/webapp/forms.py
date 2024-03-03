@@ -259,7 +259,7 @@ class Event_Registration_Form(forms.Form):
         self. fields['event_name'] = forms.CharField(max_length=100, required=True)
         self.fields['event_description'] = forms.CharField(max_length=100, required=True)
         venue_list = Venue.objects.all()
-        venue_choices = [(venue.pk, venue.venue_name) for venue in venue_list]
+        venue_choices = [(venue.pk, venue.name) for venue in venue_list]
         self.fields['venue'] = forms.ChoiceField(choices = venue_choices, required=True)
         self.fields['start_date'] = forms.DateTimeField(
             label="Start Date Time", 
@@ -333,10 +333,10 @@ class EventResultForm(forms.Form):
         self.options1 = options1
         self.options2 = options2
         self.options3 = options3
-        self.fields['result1'] = forms.ChoiceField(choices = self.options1, required=True)
-        self.fields['result2'] = forms.ChoiceField(choices = self.options2, required=True)
-        self.fields['result3'] = forms.ChoiceField(choices = self.options3, required=True)
-        self.fields['result_description'] = forms.CharField(widget=forms.Textarea, label='Multi-line Text Field', required=True)
+        self.fields['result1'] = forms.ChoiceField(choices = self.options1, required=False)
+        self.fields['result2'] = forms.ChoiceField(choices = self.options2, required=False)
+        self.fields['result3'] = forms.ChoiceField(choices = self.options3, required=False)
+        self.fields['result_description'] = forms.CharField(widget=forms.Textarea, label='Multi-line Text Field', required=False)
 
 
 

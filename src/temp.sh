@@ -108,11 +108,11 @@ max_participants=50
 min_participants=10
 
 # Create events
-echo "from webapp.models import Event, Venue, Organizer; from django.utils import timezone; organizer = Organizer.objects.get(user__username='$organizer_username'); venue = Venue.objects.create(venue_name='Your Venue', venue_capacity=100, address_line_1='Address Line 1'); event1 = Event.objects.create(name='$event_name1', description='$event_description1', start_date='$start_date1', end_date='$end_date1', venue=venue, registration_start_date='$registration_start_date', registration_end_date='$registration_end_date', max_participants=$max_participants, min_participants=$min_participants); event1.organizers.add(organizer)" | python manage.py shell
+echo "from webapp.models import Event, Venue, Organizer; from django.utils import timezone; organizer = Organizer.objects.get(user__username='$organizer_username'); venue = Venue.objects.create(name='Venue 1', capacity=100, address_line_1='Address Line 1'); event1 = Event.objects.create(name='$event_name1', description='$event_description1', start_date='$start_date1', end_date='$end_date1', venue=venue, registration_start_date='$registration_start_date', registration_end_date='$registration_end_date', max_participants=$max_participants, min_participants=$min_participants); event1.organizers.add(organizer)" | python manage.py shell
 
 echo "Event 1 created successfully."
 
-echo "from webapp.models import Event, Venue, Organizer; from django.utils import timezone; organizer = Organizer.objects.get(user__username='$organizer_username'); venue = Venue.objects.create(venue_name='Your Venue', venue_capacity=100, address_line_1='Address Line 1'); event2 = Event.objects.create(name='$event_name2', description='$event_description2', start_date='$start_date2', end_date='$end_date2', venue=venue, registration_start_date='$registration_start_date', registration_end_date='$registration_end_date', max_participants=$max_participants, min_participants=$min_participants); event2.organizers.add(organizer)" | python manage.py shell
+echo "from webapp.models import Event, Venue, Organizer; from django.utils import timezone; organizer = Organizer.objects.get(user__username='$organizer_username'); venue = Venue.objects.create(name='Venue 2', capacity=100, address_line_1='Address Line 1'); event2 = Event.objects.create(name='$event_name2', description='$event_description2', start_date='$start_date2', end_date='$end_date2', venue=venue, registration_start_date='$registration_start_date', registration_end_date='$registration_end_date', max_participants=$max_participants, min_participants=$min_participants); event2.organizers.add(organizer)" | python manage.py shell
 
 echo "Event 2 created successfully."
 

@@ -5,6 +5,112 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Event Details</title>
     <style>
+        body {
+            background-color: #f2f2f2;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .header {
+            overflow: hidden;
+            background-color: #f1f1f1;
+            padding: 20px 10px;
+        }
+
+        .header a {
+            float: left;
+            display: block;
+            color: black;
+            text-align: center;
+            padding-left: 14px;
+            padding-right: 14px;
+            padding-top: 4px;
+            padding-bottom: 4px;
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: #387adf;
+        }
+
+        h1 {
+            text-align: center;
+            color: #387adf;
+        }
+
+        .container {
+            max-width: 88%;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .events-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+
+        .event-card {
+            width: calc(33.33% - 20px); /* For PC view, display 3 cards in a row */
+            margin-bottom: 20px;
+            background-color: #f9f9f9;
+            border: 2px solid #0f0f0f;
+            border-radius: 5px;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        @media (max-width: 768px) {
+            .event-card {
+                width: calc(100% - 20px); /* For mobile view, display 1 card in a row */
+            }
+        }
+
+        .event-card h2 {
+            margin-top: 0;
+            color: #333;
+        }
+
+        .event-card p {
+            margin: 5px 0;
+            color: #666;
+        }
+
+        .event-name {
+            width: 90%;
+            text-align: center;
+            background-color: #1352b1;
+            color: white;
+            margin: auto;
+            margin-bottom: 2rem;
+            padding: 5%;
+            border-radius: 5px;
+        }
+
+        .btn {
+            width: 60%;
+            margin: auto;
+            margin-top: 2rem;
+        }
+
+        .viewbutton {
+            width: 100%;
+            padding: 5px;
+            color: #1352b1;
+            margin: auto;
+            border: 1px solid #1352b1;
+        }
+
+        .viewbutton:hover {
+            background-color: #1352b1;
+            color: white;
+            cursor: pointer;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
@@ -23,114 +129,6 @@
 
         tr:hover {
             background-color: #f5f5f5;
-        }
-        body {
-                background-color: #f2f2f2;
-                font-family: Arial, sans-serif;
-            }
-
-            h1 {
-                text-align: center;
-                color: #387adf;
-            }
-
-            .header {
-                overflow: hidden;
-                background-color: #f1f1f1;
-                padding: 20px 10px;
-            }
-
-            .header a {
-                float: left;
-                display: block;
-                color: black;
-                text-align: center;
-                padding-left: 14px;
-                padding-right: 14px;
-                padding-top: 4px;
-                padding-bottom: 4px;
-                text-decoration: none;
-            }
-
-            a:hover {
-                color: #387adf;
-            }
-
-            .card {
-                box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-                padding: 16px;
-                text-align: center;
-            }
-            body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-        }
-        .container {
-            max-width: 88%;
-            margin: 20px auto;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        .events-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-around;
-        }
-        .event-card {
-            width: calc(33.33% - 20px); /* For PC view, display 3 cards in a row */
-            margin-bottom: 20px;
-            background-color: #f9f9f9;
-            border: 2px solid #0f0f0f;
-            border-radius: 5px;
-         padding: 20px;
-            box-sizing: border-box;
-        
-        }
-        @media (max-width: 768px) {
-            .event-card {
-                width: calc(100% - 20px); /* For mobile view, display 1 card in a row */
-            }
-        }
-        .event-card h2 {
-            margin-top: 0;
-            color: #333;
-        }
-        .event-card p {
-            margin: 5px 0;
-            color: #666;
-        }
-        .event-name{
-            width: 90%;
-        text-align: center;
-        background-color: #1352b1;
-        
-        color: white;
-        margin: auto;
-        margin-bottom: 2rem;
-        padding: 5%;
-        border-radius: 5px;
-        }
-        .btn{
-            width: 60%;
-            margin: auto;
-            margin-top: 2rem;
-        }
-        .viewbutton{
-            width: 100%;
-            
-            padding: 5px;
-            color: #1352b1;
-            margin: auto;
-            border:1px solid #1352b1;
-        }
-        .viewbutton:hover{
-            background-color: #1352b1;
-            color:white;
-            cursor:pointer;
         }
 
         .search-container {
@@ -171,7 +169,6 @@
 <body>
     <div class="header">
         <a href="/organizer">Home</a>
-        <a href="/organizer/logistics/">Logistics</a>
         <a href="/organizer/profile/">Profile</a>
         <a href="/organizer/register_event/">Create Event</a>
         <a href="/logout/" style="float:right">Logout</a>   
@@ -179,58 +176,69 @@
         
     <h1>Event Details</h1>
     
-    {% if event %}
-        <p><strong>ID:</strong> {{ event.pk }}</p>
-        <p><strong>Name:</strong> {{ event.name }}</p>
-        <p><strong>Description:</strong> {{ event.description }}</p>
+    <div class="container">
+        {% if event %}
+            <div class="event-card">
+                <div class="event-name">{{ event.name }}</div>
+                <p><strong>Description:</strong> {{ event.description }}</p>
+                <p><strong>Start Date:</strong> {{ event.start_date }}</p>
+                <p><strong>End Date:</strong> {{ event.end_date }}</p>
+                <p><strong>Registration Start Date:</strong> {{ event.registration_start_date }}</p>
+                <p><strong>Registration End Date:</strong> {{ event.registration_end_date }}</p>
+            </div>
 
-        {% if volunteer_list %}
-            <h2>Volunteer List</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>First Name</th>
-                        <th>Hours</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for volunteer in volunteer_list %}
-                        <tr>
-                            <td>{{ volunteer.student.user.first_name }}</td>
-                            <td>{{ volunteer.hours }}</td>
-                        </tr>
+            <div class="event-card">
+                <h2>Organizers</h2>
+                <ul>
+                    {% for organizer in organizer_list %}
+                        <li>{{ organizer.user.first_name }}</li>
                     {% endfor %}
-                </tbody>
-            </table>
-        {% else %}
-            <p>No volunteers for this event.</p>
-        {% endif %}
+                </ul>
+            </div>
 
-        {% if venue_list %}
-            <h2>Venue List</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Venue Name</th>
-                        <th>Start Time</th>
-                        <th>End Time</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for venue in venue_list %}
-                        <tr>
-                            <td>{{ venue.venue.venue_name }}</td>
-                            <td>{{ venue.schedule.start_time }}</td>
-                            <td>{{ venue.schedule.end_time }}</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+            <div class="event-card">
+                <h2>Participant Count</h2>
+                <p>{{ participant_count }}</p>
+            </div>
+
+            <div class="event-card">
+                {% if volunteer_list %}
+                    <h2>Volunteer List</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>First Name</th>
+                                <th>Hours</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for volunteer in volunteer_list %}
+                                <tr>
+                                    <td>{{ volunteer.student.user.first_name }}</td>
+                                    <td>{{ volunteer.hours }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <p>No volunteers for this event.</p>
+                {% endif %}
+            </div>
+
+            <div class="event-card">
+                {% if venue %}
+                    <h2>Venue</h2>
+                    <p><strong>Name:</strong> {{ venue.name }}</p>
+                    <p><strong>Address Line 1:</strong> {{ venue.address_line_1 }}</p>
+                    <p><strong>Address Line 2:</strong> {{ venue.address_line_2 }}</p>
+                    <p><strong>Capacity:</strong> {{ venue.capacity }}</p>
+                {% else %}
+                    <p>No venue for this event.</p>
+                {% endif %}
+            </div>
         {% else %}
-            <p>No venues for this event.</p>
+            <p>No event found.</p>
         {% endif %}
-    {% else %}
-        <p>No event found.</p>
-    {% endif %}
+    </div>
 </body>
 </html>

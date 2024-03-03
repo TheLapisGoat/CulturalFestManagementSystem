@@ -60,15 +60,16 @@ class LoginView(View):
 class OrganizerAddResult(View):
     def get(self,request,event_id):
         if request.user.role != 'organizer':
-            return redirect('/logout/')
+            return redirect('index-redirector')
+        # Student choices are in the form of: (roll number) first_name last_name
         students = Student.objects.all()
-        student_primary_keys = Student.objects.all().values('pk')
-        student_names = [str(k) for k in students]
+        student_choices = [('0','---')]
+        student_choices += [(str(student.pk), '(' + str(student.roll_number) + ') ' + str(student.user.first_name) + ' ' + str(student.user.last_name)) for student in students]
+
+        # External participant choices are in the form of: (organization) first_name last_name
         participants = External_Participant.objects.all()
-        participant_primary_keys = External_Participant.objects.all().values('pk')
-        participant_names = [str(k) for k in participants]
-        student_choices = [(str(pk), name) for pk, name in zip(student_primary_keys, student_names)]
-        participant_choices = [(str(pk), name) for pk, name in zip(participant_primary_keys, participant_names)]
+        participant_choices = [('0','---')]
+        participant_choices += [(str(participant.pk), '(' + str(participant.organization) + ') ' + str(participant.user.first_name) + ' ' + str(participant.user.last_name)) for participant in participants]
         request.session['register_current_role1'] = 'student'
         request.session['register_current_role2'] = 'student'
         request.session['register_current_role3'] = 'student'
@@ -77,20 +78,20 @@ class OrganizerAddResult(View):
     
     def post(self,request,event_id):
         if request.user.role != 'organizer':
-            return redirect('/logout/')
+            return redirect('index-redirector')
         students = Student.objects.all()
-        student_primary_keys = Student.objects.all().values('pk')
-        student_names = [str(k) for k in students]
+        student_choices = [('0','---')]
+        student_choices += [(str(student.pk), '(' + str(student.roll_number) + ') ' + str(student.user.first_name) + ' ' + str(student.user.last_name)) for student in students]
+
+        # External participant choices are in the form of: (organization) first_name last_name
         participants = External_Participant.objects.all()
-        participant_primary_keys = External_Participant.objects.all().values('pk')
-        participant_names = [str(k) for k in participants]
-        student_choices = [(str(pk), name) for pk, name in zip(student_primary_keys, student_names)]
-        participant_choices = [(str(pk), name) for pk, name in zip(participant_primary_keys, participant_names)]
+        participant_choices = [('0','---')]
+        participant_choices += [(str(participant.pk), '(' + str(participant.organization) + ') ' + str(participant.user.first_name) + ' ' + str(participant.user.last_name)) for participant in participants]
+
         action = request.POST.get('action')
         self.template_name = 'organization/add_result.html'
         if action == 'role_change1' or action == 'role_change2' or action == 'role_change3':
             
-            form = None
             role1 = request.session['register_current_role1']
             role2 = request.session['register_current_role2']
             role3 = request.session['register_current_role3']
@@ -116,6 +117,8 @@ class OrganizerAddResult(View):
                 choice3 = student_choices
             elif role3 == 'external_participant':
                 choice3 = participant_choices
+            
+            #Checking for no 
             form = EventResultForm(options1=choice1,options2=choice2,options3=choice3)
             return render(request, 'organizer/add_result.html', {'form': form, 'default_role1': role1, 'default_role2': role2, 'default_role3': role3})
         form = None
@@ -137,43 +140,50 @@ class OrganizerAddResult(View):
             choice3 = participant_choices
         form = EventResultForm(choice1,choice2,choice3,request.POST)
         if(form.is_valid()):
-            result1 = int(form.cleaned_data['result1'][6:-1])
-            result2 = int(form.cleaned_data['result2'][6:-1])
-            result3 = int(form.cleaned_data['result3'][6:-1])
-            print(result1,result2,result3,'\n\n\n\n\n')
+            result1 = form.cleaned_data['result1']
+            result2 = form.cleaned_data['result2']
+            result3 = form.cleaned_data['result3']
+            result_description = form.cleaned_data['result_description']
+
             event = Event.objects.get(pk=event_id)
-            role1 = request.session['register_current_role1']
-            role2 = request.session['register_current_role2']
-            role3 = request.session['register_current_role3']
-            existing_results = EventResults.objects.filter(event=event)
-            if existing_results:
-                existing_results.delete()
-            choice1 = choice2 = choice3 = None
-            if role1 == 'student':
-                choice1 = ContentType.objects.get_for_model(Student)
-            elif role1 == 'external_participant':
-                choice1 = ContentType.objects.get_for_model(External_Participant)
-            if role2 == 'student':
-                choice2 = ContentType.objects.get_for_model(Student)
-            elif role2 == 'external_participant':
-                choice2 = ContentType.objects.get_for_model(External_Participant)
-            if role3 == 'student':
-                choice3 = ContentType.objects.get_for_model(Student)
-            elif role3 == 'external_participant':
-                choice3 = ContentType.objects.get_for_model(External_Participant)
-            eventresults = EventResults.objects.create(event=event,
-                                                       first_place_content_type=choice1,
-                                                       first_place_object_id=result1,
-                                                       second_place_content_type=choice2,
-                                                       second_place_object_id=result2,
-                                                       third_place_content_type=choice3,
-                                                       third_place_object_id=result3,
-                                                       result_description=form.cleaned_data['result_description']
-                                )
-            eventresults.save()
-            messages.success(request, 'Results added successfully')
+            first_place = None
+            second_place = None
+            third_place = None
+            if result1 != '0':
+                if role1 == 'student':
+                    first_place = Student.objects.get(pk=result1).user
+                elif role1 == 'external_participant':
+                    first_place = External_Participant.objects.get(pk=result1).user
+
+            if result2 != '0':
+                if role2 == 'student':
+                    second_place = Student.objects.get(pk=result2).user
+                elif role2 == 'external_participant':
+                    second_place = External_Participant.objects.get(pk=result2).user
+
+            if result3 != '0':
+                if role3 == 'student':
+                    third_place = Student.objects.get(pk=result3).user
+                elif role3 == 'external_participant':
+                    third_place = External_Participant.objects.get(pk=result3).user
+
+            #If the result already exists, then update the result
+            event_result = EventResults.objects.filter(event=event).first()
+            if event_result:
+                event_result.first_place = first_place
+                event_result.second_place = second_place
+                event_result.third_place = third_place
+                event_result.result_description = result_description
+                event_result.save()
+                return redirect('organizer-home')
+
+            event_result = EventResults.objects.create(event=event,first_place=first_place,second_place=second_place,third_place=third_place)
+            if result_description:
+                event_result.result_description = result_description
+            event_result.save()
             return redirect('organizer-home')
-       
+        else:
+            return render(request, 'organizer/add_result.html', {'form': form, 'default_role1': role1, 'default_role2': role2, 'default_role3': role3})
 class RegisterView(View):
     template_name = 'registration/register.html'
 
@@ -306,12 +316,26 @@ class Register_Event_View(View):
         if form.is_valid():
             # using organizers.set() to add multiple organizers
             organizers = form.cleaned_data['organizers']
-            print(organizers)
             # add the current user as an organizer
             organizers |= Organizer.objects.filter(user=request.user)
             venue = form.cleaned_data['venue']
             venue = Venue.objects.get(pk = venue)
-            print(organizers)
+
+            #First checking for the availability of the venue
+            events = Event.objects.filter(venue = venue)
+            for event in events:
+                if form.cleaned_data['start_date'] < event.end_date and form.cleaned_data['end_date'] > event.start_date:
+                    messages.error(request, 'Venue not available for the given dates')
+                    return render(request,self.template_name,{'form':form})
+                
+            #Checking if the registration occurs before the event and if the registration end date occurs before the event end date
+            if form.cleaned_data['start_date'] < form.cleaned_data['registration_start_date_time']:
+                messages.error(request, 'Registration start date should occur before the event start date')
+                return render(request,self.template_name,{'form':form})
+            if form.cleaned_data['end_date'] < form.cleaned_data['registration_end_date_time']:
+                messages.error(request, 'Registration end date should occur before the event end date')
+                return render(request,self.template_name,{'form':form})
+            
             event = Event.objects.create(
                 name = form.cleaned_data['event_name'],
                 description = form.cleaned_data['event_description'],
@@ -323,20 +347,14 @@ class Register_Event_View(View):
                 max_participants = form.cleaned_data['max_participants'],
                 min_participants = form.cleaned_data['min_participants']
             )
+
             for organizer in organizers:
                 event.organizers.add(organizer)
             event.save()
-            start_date = form.cleaned_data['start_date']
-            end_date = form.cleaned_data['end_date']
-            infra_schedule = Infra_schedule.objects.create(start_time = start_date, end_time = end_date)
-            infra_schedule.save()
-            venue_schedule_event = Venue_schedule_event.objects.create(event = event, venue = venue, schedule = infra_schedule)
-            venue_schedule_event.save()
+
             return redirect('organizer-home')
+        
         else:
-            # for field in form:
-            #     print(field, field.errors)
-            # print(form.errors)
             return render(request,self.template_name,{'form':form})
 
 def schedule_deletion(request, extra_args):
@@ -349,8 +367,6 @@ def schedule_deletion(request, extra_args):
         if extra_args['role'] == 'organizer':
             organizer_key = Organizer_Key.objects.create(key = extra_args['organizer_key'])
             organizer_key.save()
-
-    #todo: seems like this fn is incomplete
 
 class OTPVerificationView(View):
     template_name = 'registration/otp_verification.html'
@@ -436,11 +452,12 @@ class OrganizerEventView(View):
             return redirect('/logout/')
         
         event = get_object_or_404(Event, pk=event_id)
-        volunteers = Volunteer_event.objects.filter(event=event)
-        volunteer_list = [x.volunteer for x in volunteers]
-        venue_list = Venue_schedule_event.objects.filter(event=event)
+        volunteer_list = event.volunteers.all()
+        organizer_list = event.organizers.all()
+        participant_count = event.students.count() + event.external_participants.count()
+        venue = event.venue
 
-        return render(request, 'organizer/organizer_event.html', {'event': event, 'volunteer_list': volunteer_list, 'venue_list': venue_list})
+        return render(request, 'organizer/organizer_event.html', {'event': event, 'volunteer_list': volunteer_list, 'venue': venue, 'organizer_list': organizer_list, 'participant_count': participant_count})
     
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class OrganizerLogisticsView(View):

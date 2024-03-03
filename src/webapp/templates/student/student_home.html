@@ -185,7 +185,7 @@
                             {% else %}
                                 <p>Event is full</p>
                             {% endif %}
-                            <div class="btn"><a href="/student/become_volunteer/{{ event.pk }}"><button class="viewbutton">View Details</button></a></div>    
+                            <div class="btn"><a href="/student/view_result/{{ event.pk }}"><button class="viewbutton">View Details</button></a></div>    
                         </div>
                     </div>
                 {% endfor %}
@@ -233,7 +233,7 @@
 
     <script>
         // Variable to keep track of whether a search is in progress
-        searchInProgress = true;
+        searchInProgress = false;
 
         // Function to fetch updated event data from the server and render the HTML
         function fetchAndRenderEvents() {

@@ -110,8 +110,8 @@ class Organizer_Key(models.Model):
         verbose_name_plural = "Organizer Keys"
 
 class Venue(models.Model):
-    venue_name = models.CharField("venue_name",max_length=50,blank=False)
-    venue_capacity = models.IntegerField("venue_capacity",blank=False)
+    name = models.CharField("venue_name",max_length=50,blank=False)
+    capacity = models.IntegerField("venue_capacity",blank=False)
     address_line_1 = models.CharField("address_line_1",max_length=50,blank=False)
     address_line_2 = models.CharField("address_line_2",max_length=50,blank=True,default="",null=False)
 
@@ -130,15 +130,6 @@ class Event(models.Model):
     max_participants = models.IntegerField("Max Participants",blank=False)
     min_participants = models.IntegerField("Min Participants",blank=False)
     registered_participants = models.IntegerField("Registered Participants", default=0)
-    
-class Infra_schedule(models.Model):
-    start_time = models.DateTimeField(blank=False)
-    end_time = models.DateTimeField(blank=False)
-
-class Venue_schedule_event(models.Model):
-    schedule = models.ForeignKey(Infra_schedule,on_delete=models.CASCADE)
-    venue = models.ForeignKey(Venue,on_delete=models.CASCADE)
-    event = models.ForeignKey(Event,on_delete=models.CASCADE)
 
 class Accomodation(models.Model):
     accomodation_name = models.CharField(max_length=50,blank=False)
