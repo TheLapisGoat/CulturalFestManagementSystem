@@ -256,7 +256,7 @@ class Event_Registration_Form(forms.Form):
         else: self.user = None
         super(Event_Registration_Form, self).__init__(*args, **kwargs)
         self.queryset = Organizer.objects.filter(~Q(user = self.user))
-        self. fields['event_name'] = forms.CharField(max_length=100, required=True)
+        self.fields['event_name'] = forms.CharField(max_length=100, required=True)
         self.fields['event_description'] = forms.CharField(max_length=100, required=True)
         venue_list = Venue.objects.all()
         venue_choices = [(venue.pk, venue.name) for venue in venue_list]
@@ -287,7 +287,7 @@ class Event_Registration_Form(forms.Form):
         )
         self.fields['max_participants'] = forms.IntegerField(required=True)
         self.fields['min_participants'] = forms.IntegerField(required=True)
-        self.fields['organizers'] = forms.ModelMultipleChoiceField(queryset=self.queryset, required=True, widget=forms.CheckboxSelectMultiple)
+        self.fields['organizers'] = forms.ModelMultipleChoiceField(queryset=self.queryset, required=False, widget=forms.CheckboxSelectMultiple)
 
     def clean(self) -> dict[str, Any]:
         return super().clean()
