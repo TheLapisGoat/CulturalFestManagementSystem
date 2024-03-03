@@ -1,0 +1,58 @@
+<div class="events-container">
+    <!-- Unregistered Events -->
+    <div class="event-category">Unregistered Events</div>
+    {% if unregistered_events %}
+        {% for event in unregistered_events %}
+            <div class="event-card">
+                <div class="event-name">{{ event.name }}</div>
+                <p>{{ event.description }}</p>
+                <div class="buttons">
+                    {% if event.registered_participants <= event.max_participants %}
+                        <div class="btn"><a href="/student/register_event/{{ event.pk }}"><button class="viewbutton">Register</button></a></div>
+                    {% else %}
+                        <p>Event is full</p>
+                    {% endif %}
+                    <div class="btn"><a href="/student/become_volunteer/{{ event.pk }}"><button class="viewbutton">View Details</button></a></div>    
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No unregistered events available.</p>
+    {% endif %}
+</div>
+
+<div class="events-container">
+    <!-- Events Registered as Participant -->
+    <div class="event-category">Events Registered as Participant</div>
+    {% if events_registered_as_participant %}
+        {% for event in events_registered_as_participant %}
+            <div class="event-card">
+                <div class="event-name">{{ event.name }}</div>
+                <p>{{ event.description }}</p>
+                <div class="buttons">
+                    <div class="btn"><a href="/student/view_result/{{ event.pk }}"><button class="viewbutton">View Details</button></a></div>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No events registered as participant.</p>
+    {% endif %}
+</div>
+
+<div class="events-container">
+    <!-- Events Registered as Volunteer -->
+    <div class="event-category">Events Registered as Volunteer</div>
+    {% if events_registered_as_volunteer %}
+        {% for event in events_registered_as_volunteer %}
+            <div class="event-card">
+                <div class="event-name">{{ event.name }}</div>
+                <p>{{ event.description }}</p>
+                <div class="buttons">
+                    <div class="btn"><a href="/student/view_result/{{ event.pk }}"><button class="viewbutton">View Details</button></a></div>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No events registered as volunteer.</p>
+    {% endif %}
+</div>

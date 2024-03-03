@@ -8,6 +8,7 @@ urlpatterns = [
     path('', views.MainViewRedirect.as_view(), name='index-redirector'),
     path("admin/", admin.site.urls),
     path("admin/", admin.site.index, name = "admin-home"),
+    path("api/student_home/", views.student_home_api.as_view(), name='student-home-api'),
 
     path("organizer/event/<int:event_id>", views.OrganizerEventView.as_view(), name='organizer-event'),
     path('organizer/profile/', views.OrganizerProfileView.as_view(), name='organizer-profile'),
@@ -28,7 +29,7 @@ urlpatterns = [
     path('student/profile/', views.student_profile_view.as_view(), name='student-profile'),
     path('student/view_result/<int:event_id>', views.student_view_result.as_view(), name='student-view-result'),
     path('student/register_event/<int:event_id>', views.student_register_event.as_view(), name='student-register-event'),
-    path('student/become_volunteer/<int:event_id>', views.student_volunteer.as_view(), name='student-volunteer'),
+    path('student/become_volunteer/<int:event_id>', views.student_volunteer_for_event.as_view(), name='student-volunteer-for-event'),
 
     path('events/', views.events, name='events'),
     path('participant/',views.participant_view.as_view(), name='external-participant-home'),

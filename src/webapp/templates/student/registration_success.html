@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Success</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h1 {
+            color: #387adf;
+            margin-bottom: 20px;
+        }
+
+        p {
+            margin-bottom: 20px;
+        }
+
+        .redirect-info {
+            color: #666;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Registration Successful!</h1>
+        <p>You have successfully registered as a volunteer for the event "{{ event_name }}".</p>
+        <p class="redirect-info">Redirecting you to the home page in <span id="countdown">5</span> seconds...</p>
+    </div>
+
+    <script>
+        // Function to update countdown every second
+        function updateCountdown() {
+            var countdownElement = document.getElementById('countdown');
+            var countdownValue = parseInt(countdownElement.innerText);
+            if (countdownValue > 0) {
+                countdownElement.innerText = countdownValue - 1;
+                setTimeout(updateCountdown, 1000); // Update every second
+            } else {
+                window.location.href = "/student"; // Redirect after countdown ends
+            }
+        }
+
+        // Call updateCountdown function initially
+        updateCountdown();
+    </script>
+</body>
+</html>

@@ -10,12 +10,7 @@
         body {
             background-color: #f2f2f2;
             font-family: Arial, sans-serif;
-            margin:0;
-        }
-
-        h1, h3 {
-            text-align: center;
-            color: #387adf;
+            margin: 0;
         }
 
         .header {
@@ -33,23 +28,8 @@
             text-decoration: none;
         }
 
-        a:hover {
+        .header a:hover {
             color: #387adf;
-        }
-
-        .row {
-            display: flex;
-        }
-
-        .column {
-            flex: 33.33%;
-            padding: 10px;
-        }
-
-        .card {
-            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-            padding: 16px;
-            text-align: center;
         }
 
         .search-container {
@@ -85,6 +65,7 @@
         .submit-button:hover {
             background-color: #1f5f8b;
         }
+
         .container {
             max-width: 88%;
             margin: 20px auto;
@@ -93,141 +74,240 @@
             border-radius: 5px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
+
         .events-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-around;
+            margin-top: 20px;
         }
+
+        .event-category {
+            margin-bottom: 10px;
+            font-size: 20px;
+            color: #387adf;
+        }
+
         .event-card {
             width: calc(33.33% - 20px); /* For PC view, display 3 cards in a row */
             margin-bottom: 20px;
             background-color: #f9f9f9;
             border: 2px solid #0f0f0f;
             border-radius: 5px;
-         padding: 20px;
+            padding: 20px;
             box-sizing: border-box;
-        
         }
+
         @media (max-width: 768px) {
             .event-card {
                 width: calc(100% - 20px); /* For mobile view, display 1 card in a row */
             }
         }
+
         .event-card h2 {
             margin-top: 0;
             color: #333;
+            font-size: 18px;
         }
+
         .event-card p {
             margin: 5px 0;
             color: #666;
         }
-        .event-name{
-            width: 90%;
-        text-align: center;
-        background-color: #1352b1;
-        
-        color: white;
-        margin: auto;
-        margin-bottom: 2rem;
-        padding: 5%;
-        border-radius: 5px;
+
+        .event-name {
+            text-align: center;
+            background-color: #1352b1;
+            color: white;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
         }
-        .buttons{
-            display:flex;
-            flex-wrap: wrap;
+
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
         }
-        .btn{
-            width: 40%;
-            margin: auto;
-            margin-top: 2rem;
+
+        .btn {
+            width: 48%;
         }
-        .viewbutton{
+
+        .viewbutton {
             width: 100%;
             padding: 10px;
             background-image: linear-gradient(to right, #61a6dd, #183aaa);
             box-shadow: 0 5px 20px #89caff94;
             transition: box-shadow .3s ease-in-out;
             color: white;
-            margin: auto;
-            border-radius:5px;
+            border-radius: 5px;
             border: none;
-            position: relative;
-        }
-        .viewbutton:hover{
-            box-shadow:none;
-            cursor:pointer;
-            top:-1px;
-            transition:0.2s;
+            cursor: pointer;
         }
 
+        .viewbutton:hover {
+            box-shadow: none;
+            cursor: pointer;
+        }
     </style>
 </head>
-
 <body>
     <div class="header">
-        <a href="/student" style="border-bottom:2px solid #1352b1;">Home</a>
+        <a href="/student" style="border-bottom: 2px solid #1352b1;">Home</a>
         <a href="/student/volunteer_redirect/">Volunteer</a>
         <a href="/student/profile/">Profile</a>
-        <a href="/logout/" style="float:right">Logout</a>
+        <a href="/logout/" style="float: right;">Logout</a>
     </div>
 
-<div class="search-container">
-    <form action="" method="post">
-        {% csrf_token %}
-        <input type="text" placeholder="Search for events..." name="search_query">
-        <label for="start_date">Start Date:</label>
-        <input type="datetime-local" id="start_date" name="start_date">
-        <label for="end_date">End Date:</label>
-        <input type="datetime-local" id="end_date" name="end_date">
-        <button type="submit" class="submit-button">Search</button>
-    </form>
-</div>
-
-<!-- home page with "live" events -->
-<h1>Live and Upcoming Events</h1>
-
-<div class="container">
-    <div class="events-container">
-        {% if events %}
-            {% for event in events %}
-                <div class="event-card">
-                    <div class="event-name">{{ event.name }}</div>
-                    <p>{{ event.description }}</p>
-                    <div class="buttons">
-                        {% if event.registered_participants <= event.max_participants %}
-                        <div class="btn"><a href="/student/register_event/{{ event.pk }}" style="margin:auto;"><button class="viewbutton">Register</button></a></div>
-                        {% else %}
-                        <p>Event is full</p>
-                        {% endif %}
-                        <div class="btn"><a href="/student/become_volunteer/{{ event.pk}}" style="margin:auto;"><button class="viewbutton">Volunteer</button></a></div>    
-                    </div>
-                <div class="btn" style="width: 90%"><a href="/student/view_result/{{ event.pk }}" style="margin:auto;"><button class="viewbutton">View Details</button></a></div>
-                </div>
-            {% endfor %}
-        {% else %}
-            {% if events_registered %}
-            <p>You are registered for all avaliable events.</p>
-            {% else %}   
-            <p>No events available at the moment.</p>
-            {% endif %}
-        {% endif %}
+    <div class="search-container">
+        <form id="search-form">
+            {% csrf_token %}
+            <input type="text" placeholder="Search for events..." id="search_query" name="search_query">
+            <label for="start_date">Start Date:</label>
+            <input type="datetime-local" id="start_date" name="start_date">
+            <label for="end_date">End Date:</label>
+            <input type="datetime-local" id="end_date" name="end_date">
+            <button type="submit" class="submit-button">Search</button>
+        </form>
     </div>
-</div>
 
-        <div class="container">
-            <div class="events-container">
-                {% if events_registered %}
-                    {% for event in events_registered %}
-                        <div class="event-card">
-                            <div class="event-name">{{ event.name }}</div>
-                            <p>{{ event.description }}</p>
-                            <div class="btn" style="width: 90%"><a href="/student/view_result/{{ event.pk }}" style="margin:auto;"><button class="viewbutton">View Details</button></a></div>
+    <!-- Live and Upcoming Events -->
+    <div class="container", id = "full-events-container">
+        <div class="events-container">
+            <!-- Unregistered Events -->
+            <div class="event-category">Unregistered Events</div>
+            {% if unregistered_events %}
+                {% for event in unregistered_events %}
+                    <div class="event-card">
+                        <div class="event-name">{{ event.name }}</div>
+                        <p>{{ event.description }}</p>
+                        <div class="buttons">
+                            {% if event.registered_participants <= event.max_participants %}
+                                <div class="btn"><a href="/student/register_event/{{ event.pk }}"><button class="viewbutton">Register</button></a></div>
+                            {% else %}
+                                <p>Event is full</p>
+                            {% endif %}
+                            <div class="btn"><a href="/student/become_volunteer/{{ event.pk }}"><button class="viewbutton">View Details</button></a></div>    
                         </div>
-                    {% endfor %}
-                {% else %}
-                    <p>You have not registered for any event yet.</p>
-                {% endif %}
-            </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No unregistered events available.</p>
+            {% endif %}
         </div>
+
+        <div class="events-container">
+            <!-- Events Registered as Participant -->
+            <div class="event-category">Events Registered as Participant</div>
+            {% if events_registered_as_participant %}
+                {% for event in events_registered_as_participant %}
+                    <div class="event-card">
+                        <div class="event-name">{{ event.name }}</div>
+                        <p>{{ event.description }}</p>
+                        <div class="buttons">
+                            <div class="btn"><a href="/student/view_result/{{ event.pk }}"><button class="viewbutton">View Details</button></a></div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No events registered as participant.</p>
+            {% endif %}
+        </div>
+
+        <div class="events-container">
+            <!-- Events Registered as Volunteer -->
+            <div class="event-category">Events Registered as Volunteer</div>
+            {% if events_registered_as_volunteer %}
+                {% for event in events_registered_as_volunteer %}
+                    <div class="event-card">
+                        <div class="event-name">{{ event.name }}</div>
+                        <p>{{ event.description }}</p>
+                        <div class="buttons">
+                            <div class="btn"><a href="/student/view_result/{{ event.pk }}"><button class="viewbutton">View Details</button></a></div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No events registered as volunteer.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <script>
+        // Variable to keep track of whether a search is in progress
+        searchInProgress = true;
+
+        // Function to fetch updated event data from the server and render the HTML
+        function fetchAndRenderEvents() {
+            if (searchInProgress) {
+                return;
+            }
+            fetch('/api/student_home/')
+            .then(response => response.json())
+            .then(data => {
+                // Update the events container with the new HTML content
+                document.getElementById('full-events-container').innerHTML = data.html_content;
+            })
+            .catch(error => console.error('Error fetching events:', error));
+        }
+
+        // Function to handle form submission
+        function handleFormSubmit(event) {
+            searchInProgress = true;
+            event.preventDefault(); // Prevent default form submission
+            const searchQuery = document.getElementById('search_query').value;
+            const start_date = document.getElementById('start_date').value;
+            const end_date = document.getElementById('end_date').value;
+            const formData = new FormData();
+            formData.append('search_query', searchQuery);
+            formData.append('start_date', start_date);
+            formData.append('end_date', end_date);
+
+            if (searchQuery === '' && start_date === '' && end_date === '') {
+                searchInProgress = false;
+                fetchAndRenderEvents();
+                return;
+            }
+
+            // Fetch CSRF token from cookie
+            const csrftoken = getCookie('csrftoken');
+            fetch('/api/student_home/', {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': csrftoken
+                },
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Update the events container with the search results
+                document.getElementById('full-events-container').innerHTML = data.html_content;
+            })
+            .catch(error => console.error('Error fetching events:', error));
+        }
+
+        // Call fetchAndRenderEvents initially when the page loads
+        fetchAndRenderEvents();
+
+        // Schedule fetching events periodically (every 5 seconds)
+        setInterval(fetchAndRenderEvents, 5000);
+
+        // Add event listener to the form for handling form submission
+        document.getElementById('search-form').addEventListener('submit', handleFormSubmit);
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+    </script>
 </body>
 </html>

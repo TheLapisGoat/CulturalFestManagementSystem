@@ -116,7 +116,10 @@ class Venue(models.Model):
     address_line_2 = models.CharField("address_line_2",max_length=50,blank=True,default="",null=False)
 
 class Event(models.Model):
-    organizers = models.ManyToManyField(Organizer, related_name='events')
+    organizers = models.ManyToManyField(Organizer, related_name='events', blank=True)
+    volunteers = models.ManyToManyField(Volunteer, related_name='events', blank=True)
+    students = models.ManyToManyField(Student, related_name='events', blank=True)
+    external_participants = models.ManyToManyField(External_Participant, related_name='events', blank=True)
     name = models.CharField("Event Name",max_length=50,blank=False)
     description = models.TextField("Event Description",blank=True)
     start_date = models.DateTimeField("Event Start Date",blank=False)
@@ -131,10 +134,6 @@ class Event(models.Model):
 class Infra_schedule(models.Model):
     start_time = models.DateTimeField(blank=False)
     end_time = models.DateTimeField(blank=False)
-
-class Volunteer_event(models.Model):
-    volunteer = models.ForeignKey(Volunteer,on_delete=models.CASCADE)
-    event = models.ForeignKey(Event,on_delete=models.CASCADE)
 
 class Venue_schedule_event(models.Model):
     schedule = models.ForeignKey(Infra_schedule,on_delete=models.CASCADE)
@@ -157,38 +156,13 @@ class Participant_Accomodation(models.Model):
     end_date = models.DateTimeField(blank=True,null=True)
     room_number = models.CharField(max_length=50,blank=False)
 
-class StudentEvent(models.Model):
-    student = models.ForeignKey(Student, on_delete=models.CASCADE)
-    event = models.ForeignKey(Event, on_delete=models.CASCADE)
-    # Add other fields as needed
-    class Meta:
-        unique_together = ('student', 'event',)
-
-class Participant_event(models.Model):
-    participant = models.ForeignKey(External_Participant,on_delete=models.CASCADE)
-    event = models.ForeignKey(Event,on_delete=models.CASCADE)
-
 class EventResults(models.Model):
-    event = models.ForeignKey(Event, on_delete=models.CASCADE)
-    first_place_content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, related_name='first_place_content_type')
-    first_place_object_id = models.PositiveIntegerField()
-    first_place = GenericForeignKey('first_place_content_type', 'first_place_object_id')
+    event = models.OneToOneField(Event,on_delete=models.CASCADE, related_name="results", primary_key=True)
+    result_description = models.TextField(blank=True)
+    first_place = models.ForeignKey(User_Entity,on_delete=models.CASCADE,related_name="first_place",blank=True,null=True)
+    second_place = models.ForeignKey(User_Entity,on_delete=models.CASCADE,related_name="second_place",blank=True,null=True)
+    third_place = models.ForeignKey(User_Entity,on_delete=models.CASCADE,related_name="third_place",blank=True,null=True)
 
-    second_place_content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, related_name='second_place_content_type', null=True, blank=True)
-    second_place_object_id = models.PositiveIntegerField(null=True, blank=True)
-    second_place = GenericForeignKey('second_place_content_type', 'second_place_object_id')
-
-    third_place_content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, related_name='third_place_content_type', null=True, blank=True)
-    third_place_object_id = models.PositiveIntegerField(null=True, blank=True)
-    third_place = GenericForeignKey('third_place_content_type', 'third_place_object_id')
-
-    result_description = models.TextField()
-    def get_first_place_type(self):
-        return self.first_place_content_type.model_class()
-    def get_second_place_type(self):
-        return self.second_place_content_type.model_class()
-    def get_third_place_type(self):
-        return self.third_place_content_type.model_class()
     def __str__(self):
         return f"Event Result: {self.result_description}"
 
