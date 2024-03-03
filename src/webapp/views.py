@@ -613,6 +613,7 @@ class student_home_api(View):
     def get(self, request):
         student = Student.objects.get(user=request.user)
         # Getting list of unregistered events (excluding both the events registered by the student as a participant and as a volunteer)
+        events=Event.objects.all()
         unregistered_events = Event.objects.exclude(students=student)
         unregistered_events = unregistered_events.exclude(volunteers__student=student)
         
@@ -623,7 +624,7 @@ class student_home_api(View):
         events_registered_as_volunteer = Volunteer.objects.filter(student=student).values_list('events', flat=True)
         events_registered_as_volunteer = Event.objects.filter(pk__in=events_registered_as_volunteer)
         
-        html_content = render(request, 'api/student_home.html', {'unregistered_events': unregistered_events, 'events_registered_as_participant': events_registered_as_participant, 'events_registered_as_volunteer': events_registered_as_volunteer})
+        html_content = render(request, 'api/student_home.html', {'events':events,'unregistered_events': unregistered_events, 'events_registered_as_participant': events_registered_as_participant, 'events_registered_as_volunteer': events_registered_as_volunteer})
         return JsonResponse({'html_content': html_content.content.decode('utf-8')})
     
     def post(self, request):
