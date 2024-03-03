@@ -1,79 +1,16 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Festival Management System Login</title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <style>
-
-            body {
-                background-color: #f2f2f2;
-                font-family: Arial, sans-serif;
-                margin:0;
-            }
-
-            h1 {
-                text-align: center;
-                color: #387adf;
-            }
-
-            h3 {
-                text-align: center;
-                color: #387adf;
-            }
-
-
-            .header {
-                overflow: hidden;
-                background-color: #f1f1f1;
-                padding: 0px 10px;
-            }
-
-            .header a {
-                float: left;
-                display: block;
-                color: black;
-                text-align: center;
-                padding-left: 14px;
-                padding-right: 14px;
-                padding-top: 24px;
-                padding-bottom: 18px;
-                text-decoration: none;
-            }
-
-            .header a:hover {
-                color: #387adf;
-            }
-
-            a:hover {
-                color: black;
-            }
-
-            .submitbutton {
-               /* center align */
-                display: block;
-                margin: 0 auto;
-                width: 20%;
-                padding: 14px 20px;
-                font-size: 16px;
-                cursor: pointer;
-                text-align: center;
-                text-decoration: none;
-                outline: none;
-                color: #fff;
-                background-color: #387adf;
-                border: none;
-                border-radius: 5px;
-            }
-
-            .button:hover {
-                background-color: #1f5f8b;
-            }
-            body {
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Festival Management System Login</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
             background-color: #f2f2f2;
             font-family: Arial, sans-serif;
+            margin: 0;
         }
 
         h1, h3 {
@@ -96,22 +33,106 @@
             text-decoration: none;
         }
 
-        a:hover {
+        .header a:hover {
             color: #387adf;
         }
 
-        .row {
+        .submit-button {
+            display: block;
+            margin: 0 auto;
+            width: 20%;
+            padding: 14px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            outline: none;
+            color: #fff;
+            background-color: #387adf;
+            border: none;
+            border-radius: 5px;
+        }
+
+        .submit-button:hover {
+            background-color: #1f5f8b;
+        }
+
+        .container {
+            max-width: 88%;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .events-container {
             display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start; /* Align event boxes to the left */
         }
 
-        .column {
-            flex: 33.33%;
+        .event-card {
+            width: calc(33.33% - 20px); /* For PC view, display 3 cards in a row */
+            margin-bottom: 20px;
+            background-color: #f9f9f9;
+            border: 2px solid #0f0f0f;
+            border-radius: 5px;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        @media (max-width: 768px) {
+            .event-card {
+                width: calc(100% - 20px); /* For mobile view, display 1 card in a row */
+            }
+        }
+
+        .event-card h2 {
+            margin-top: 0;
+            color: #333;
+        }
+
+        .event-card p {
+            margin: 5px 0;
+            color: #666;
+        }
+
+        .event-name {
+            text-align: center;
+            background-color: #1352b1;
+            color: white;
+            margin-bottom: 10px;
             padding: 10px;
+            border-radius: 5px;
         }
 
-        .card {
-            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-            padding: 16px;
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .btn {
+            width: 48%;
+        }
+
+        .viewbutton {
+            width: 100%;
+            padding: 5px;
+            color: #1352b1;
+            margin: auto;
+            border: 1px solid #1352b1;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .viewbutton:hover {
+            background-color: #1352b1;
+            color: white;
+        }
+
+        .center-text {
             text-align: center;
         }
 
@@ -133,141 +154,67 @@
         input[type=text]:focus {
             border: 2px solid #387adf;
         }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="/student">Home</a>
+        <a href="/student/volunteer_redirect/" style="border-bottom:2px solid #1352b1;">Volunteer</a>
+        <a href="/student/profile/">Profile</a>
+        <a href="/logout/" style="float:right">Logout</a>
+    </div>
 
-        .submit-button {
-            width: 20%;
-            background-color: #387adf;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            outline: none;
-        }
+    <div class="search-container">
+        <form action="" method="post">
+            {% csrf_token %}
+            <input type="text" placeholder="Search for events..." name="search_query">
+            <label for="start_date">Start Date:</label>
+            <input type="datetime-local" id="start_date" name="start_date">
+            <label for="end_date">End Date:</label>
+            <input type="datetime-local" id="end_date" name="end_date">
+            <button type="submit" class="submit-button">Search</button>
+        </form>
+    </div>
 
-        .submit-button:hover {
-            background-color: #1f5f8b;
-        }
-        .container {
-            max-width: 88%;
-            margin: 20px auto;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        .events-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-around;
-        }
-        .event-card {
-            width: calc(33.33% - 20px); /* For PC view, display 3 cards in a row */
-            margin-bottom: 20px;
-            background-color: #f9f9f9;
-            border: 2px solid #0f0f0f;
-            border-radius: 5px;
-         padding: 20px;
-            box-sizing: border-box;
-        
-        }
-        @media (max-width: 768px) {
-            .event-card {
-                width: calc(100% - 20px); /* For mobile view, display 1 card in a row */
-            }
-        }
-        .event-card h2 {
-            margin-top: 0;
-            color: #333;
-        }
-        .event-card p {
-            margin: 5px 0;
-            color: #666;
-        }
-        .event-name{
-            width: 90%;
-        text-align: center;
-        background-color: #1352b1;
-        
-        color: white;
-        margin: auto;
-        margin-bottom: 2rem;
-        padding: 5%;
-        border-radius: 5px;
-        }
-        .buttons{
-            display:flex;
-            flex-wrap: wrap;
-        }
-        .btn{
-            width: 40%;
-            margin: auto;
-            margin-top: 2rem;
-        }
-        .viewbutton{
-            width: 100%;
-            
-            padding: 5px;
-            color: #1352b1;
-            margin: auto;
-            border:1px solid #1352b1;
-        }
-        .viewbutton:hover{
-            background-color: #1352b1;
-            color:white;
-            cursor:pointer;
-        }
-
-        </style>
-
-    </head>
-
-    <body>
-        <div class="header">
-            <a href="/student">Home</a>
-            <a href="/student/volunteer_redirect/" style="border-bottom:2px solid #1352b1;">Volunteer</a>
-            <a href="/student/profile/">Profile</a>
-            <a href="/logout/" style="float:right">Logout</a>
-        </div>
-
+    <div class="container">
         <h1>Volunteering</h1>
-        <!-- display list of events that they are volunteering in -->
-        <div class="container">
-            {% if events %}
-            <h1>Choose any event to volunteer for</h1>
-            <div class="events-container">
-                
-                    {% for event in events %}
-                        <div class="event-card">
-                            <div class="event-name">{{ event.name }}</div>
-                            <p>{{ event.description }}</p>
-                            <div class="buttons">
-                            <div class="btn"><a href="/student/register_event/{{ event.pk }}" style="margin:auto;"><button class="viewbutton">Register</button></a></div>
-                            <div class="btn"><a href="/student/view_result/{{ event.pk }}" style="margin:auto;"><button class="viewbutton">View Details</button></a></div>
-                            </div> 
-                        </div>
-                    {% endfor %}
-                {% else %}
-                    <p>No more events available to volunteer for.</p>
-                {% endif %}
+        <!-- Display list of events that they are volunteering in -->
+        {% if events %}
+        <h3>Choose any event to volunteer for</h3>
+        <div class="events-container">
+            {% for event in events %}
+            <div class="event-card">
+                <div class="event-name">{{ event.name }}</div>
+                <p>{{ event.description }}</p>
+                <div class="buttons">
+                    <div class="btn"><a href="/student/become_volunteer/{{ event.pk }}"><button class="viewbutton">Volunteer</button></a></div>
+                    <div class="btn"><a href="/student/view_result/{{ event.pk }}"><button class="viewbutton">View Details</button></a></div>
+                </div>
             </div>
+            {% endfor %}
         </div>
+        {% else %}
+        <h3 class="center-text">Choose any event to volunteer for</h3>
+        <p class="center-text">No more events available to volunteer for.</p>
+        {% endif %}
+    </div>
 
-        <div class="container">
-            {% if volunteering_events %}
-            <h1>Events you are volunteering for</h1>
-            <div class="events-container">
-                
-                    {% for event in volunteering_events %}
-                        <div class="event-card">
-                            <div class="event-name">{{ event.name }}</div>
-                            <p>{{ event.description }}</p>
-                            <div class="btn" style="width: 90%"><a href="/student/view_result/{{ event.pk }}" style="margin:auto;"><button class="viewbutton">View Details</button></a></div>
-                        </div>
-                    {% endfor %}
-                
+    <div class="container">
+        {% if volunteering_events %}
+        <h3>Events you are volunteering for</h3>
+        <div class="events-container">
+            {% for event in volunteering_events %}
+            <div class="event-card">
+                <div class="event-name">{{ event.name }}</div>
+                <p>{{ event.description }}</p>
+                <div class="btn" style="width: 90%"><a href="/student/view_result/{{ event.pk }}"><button class="viewbutton">View Details</button></a></div>
             </div>
-            {%endif%}
+            {% endfor %}
         </div>
-    </body>
+        {% else %}
+        <h3 class="center-text">Events you are volunteering for</h3>
+        <p class="center-text">You are not volunteering for any events.</p>
+        {% endif %}
+    </div>
+</body>
 </html>
