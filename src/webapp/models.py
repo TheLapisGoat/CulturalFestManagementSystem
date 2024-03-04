@@ -96,8 +96,6 @@ class Organizer(models.Model):
     class Meta:
         verbose_name = "Organizer"
         verbose_name_plural = "Organizers"
-    
-    # REQUIRED_FIELDS = ['department']
         
 class Organizer_Key(models.Model):
     key = models.CharField("Key", max_length = 100, primary_key = True, blank = False, unique = True)
@@ -115,6 +113,9 @@ class Venue(models.Model):
     address_line_1 = models.CharField("address_line_1",max_length=50,blank=False)
     address_line_2 = models.CharField("address_line_2",max_length=50,blank=True,default="",null=False)
 
+    def __str__(self):
+        return self.name
+
 class Event(models.Model):
     organizers = models.ManyToManyField(Organizer, related_name='events', blank=True)
     volunteers = models.ManyToManyField(Volunteer, related_name='events', blank=True)
@@ -131,6 +132,9 @@ class Event(models.Model):
     min_participants = models.IntegerField("Min Participants",blank=False)
     registered_participants = models.IntegerField("Registered Participants", default=0)
 
+    def __str__(self):
+        return self.name
+
 class Accomodation(models.Model):
     accomodation_name = models.CharField(max_length=50,blank=False)
     address_line_1 = models.CharField(max_length=50,blank=False)
@@ -139,6 +143,9 @@ class Accomodation(models.Model):
     facilities = models.TextField(blank=True)
     contact = PhoneNumberField(blank=True)
     next_free_room = models.IntegerField(default = 101)
+
+    def __str__(self):
+        return self.accomodation_name
 
 class Participant_Accomodation(models.Model):
     participant = models.ForeignKey(External_Participant,on_delete=models.CASCADE, related_name="participant_accomodation")
