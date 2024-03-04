@@ -1,141 +1,139 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Festival Management System Login</title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <style>
-
-            
-            input[type="text"], input[type="password"] {
-              box-sizing: border-box; 
-              display: block;
-              width: 100%;
-              height: 40px; 
-              padding: 10px;
-              margin-bottom: 20px;
-              border-radius: 5px;
-              border: 1px solid #ccc;
-            }
-            
-            div {
-              margin-top: 10px;
-            }
-
-            body {
-                background-color: #f2f2f2;
-                font-family: Arial, sans-serif;
-            }
-            
-            
-            h1 {
-                text-align: center;
-                color: #387adf;
-            }
-
-            h2 {
-                padding: 20px;
-                text-align: center;
-                color: #387adf;
-            }
-
-            p {
-                color: #333;
-                font-size: 16px;
-                text-align: center;
-                margin-top: 20px;
-            }
-            
-            .message {
-                color: #333;
-                font-size: 16px;
-                text-align: center;
-                margin-top: 20px;
-            }
-            .container {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 80%;
-        background-color: #fff;
-        border-radius: 10px;
-        overflow: hidden;
-        display: grid;
-        grid-template-columns: 3fr 4fr;
-    }
-    .image {
-        flex: 1;
-        background-image: url('https://www.iitkgp.ac.in/assets/images/about-iitk-video.jpg');
-        background-size: cover;
-        margin: 15px;
-    }
-
-    .form-container {
-        flex: 1;
-        padding: 32px;
-    }
-    h1 {
-        text-align: center;
-    }
-    form {
-        margin-top: 20px;
-    }
-    input[type="text"],
-    input[type="password"] {
-        width: 100%;
-        padding: 10px;
-        margin-bottom: 15px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        box-sizing: border-box;
-    }
-    input[type="submit"] {
-        width: 100%;
-        background-image: linear-gradient(to right, #61a6dd, #183aaa);
-        box-shadow: 0 5px 20px #89caff94;
-        transition: box-shadow .3s ease-in-out;
-        color: white;
-        padding: 10px;
-        border: none;
-        cursor: pointer;
-        font-size: 1em;
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Festival Management System Login</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        input[type="text"], input[type="password"] {
+          box-sizing: border-box; 
+          display: block;
+          width: 100%;
+          height: 40px; 
+          padding: 10px;
+          margin-bottom: 20px;
+          border-radius: 5px;
+          border: 1px solid #ccc;
+        }
         
-    }
-    input[type="submit"]:hover {
-        transition: all 0.2s;
-        box-shadow: none;
-    }
-        </style>
-    </head>
-    <body>
+        div {
+          margin-top: 10px;
+        }
 
+        body {
+            background-color: #f2f2f2;
+            font-family: Arial, sans-serif;
+        }
         
-        <div class="container">
-            <div class="image">
+        h1 {
+            text-align: center;
+            color: #387adf;
+        }
+
+        h2 {
+            padding: 20px;
+            text-align: center;
+            color: #387adf;
+        }
+
+        p {
+            color: #333;
+            font-size: 16px;
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .message {
+            color: #333;
+            font-size: 16px;
+            text-align: center;
+            margin-top: 20px;
+        }
+        .container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            background-color: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: 3fr 4fr;
+        }
+        .image {
+            background-image: url('https://www.iitkgp.ac.in/assets/images/about-iitk-video.jpg');
+            background-size: cover;
+            background-position: center;
+            width: 100%;
+            height: 100%;
+            margin: 0; /* Remove margin */
+            padding: 0; /* Remove padding */
+        }
+        
+
+        .form-container {
+            padding: 32px;
+        }
+        h1 {
+            text-align: center;
+        }
+        form {
+            margin-top: 20px;
+        }
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        input[type="submit"] {
+            width: 100%;
+            background-image: linear-gradient(to right, #61a6dd, #183aaa);
+            box-shadow: 0 5px 20px #89caff94;
+            transition: box-shadow .3s ease-in-out;
+            color: white;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            font-size: 1em;
+            
+        }
+        input[type="submit"]:hover {
+            transition: all 0.2s;
+            box-shadow: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="image"></div>
+        <div class="form-container">
+            <h1>College Fest Login</h1>
+            <p>Welcome to our college fest! Please login to continue.</p>
+            <form action="" method="post">
+                {% csrf_token %}
+                {{ form }}
+                <input type="submit" value="Submit">
+            </form>
+
+            <div class="message">
+                {% if messages %}
+                    {% for message in messages %}
+                        {{ message }}
+                    {% endfor %}
+                {% endif %}
             </div>
-            <div class="form-container">
-                <h1>College Fest Login</h1>
-                <p>Welcome to our college fest! Please login to continue.</p>
-                <form action="" method="post">
-                    {% csrf_token %}
-                    {{ form }}
-                    <input type="submit" value="Submit">
-                </form>
-        
-                <div class="message">
-                    {%if messages%}
-                        {%for message in messages%}
-                            {{message}}
-                        {%endfor%}
-                    {%endif%}
-                </div>
-                <p>Don't have an account? <a href="{% url 'register' %}">Register</a></p>
-            </div>
+            <p>Don't have an account? <a href="{% url 'register' %}">Register</a></p>
         </div>
+    </div>
 
-        <script src="" async defer></script>
-    </body>
+    <script src="" async defer></script>
+</body>
 </html>
