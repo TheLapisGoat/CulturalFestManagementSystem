@@ -35,6 +35,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'djangoviz',
     "anymail",
     'phonenumber_field',
     'webapp.apps.WebappConfig',
